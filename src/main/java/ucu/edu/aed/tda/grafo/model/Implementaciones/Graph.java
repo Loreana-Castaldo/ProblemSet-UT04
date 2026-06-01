@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import ucu.edu.aed.tda.grafo.IDirectedIGraph;
@@ -11,14 +12,16 @@ import ucu.edu.aed.tda.grafo.model.IGraph;
 import ucu.edu.aed.tda.grafo.model.edge.DirectedEdge;
 import ucu.edu.aed.tda.grafo.model.edge.Edge;
 
-public class Graph<V, D> implements IGraph<V, D> {
+public abstract class Graph<V, D> implements IGraph<V, D> {
 
-    public Set<V> vertices = new HashSet<>();
-    private Set<Edge<V, D>> aristas = new HashSet<>();
+    protected Set<V> vertices = new HashSet<>();
+    protected Set<Edge<V, D>> aristas = new HashSet<>();
+    protected Map<V, List<Edge<V, D>>> adyacencias;
 
-    public Graph(Set<V> vertices, Set<Edge<V, D>> aristas) {
+    public Graph(Set<V> vertices, Set<Edge<V, D>> aristas, Map<V, List<Edge<V, D>>> adyacencias) {
         this.vertices = vertices;
         this.aristas = aristas;
+        this.adyacencias = adyacencias;
     }
 
     @Override
