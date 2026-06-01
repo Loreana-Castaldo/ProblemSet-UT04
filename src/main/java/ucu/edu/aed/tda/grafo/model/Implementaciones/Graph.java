@@ -13,8 +13,13 @@ import ucu.edu.aed.tda.grafo.model.edge.Edge;
 
 public class Graph<V, D> implements IGraph<V, D> {
 
-    private final Set<V> vertices = new HashSet<>();
-    private final Set<Edge<V, D>> aristas = new HashSet<>();
+    public Set<V> vertices = new HashSet<>();
+    private Set<Edge<V, D>> aristas = new HashSet<>();
+
+    public Graph(Set<V> vertices, Set<Edge<V, D>> aristas) {
+        this.vertices = vertices;
+        this.aristas = aristas;
+    }
 
     @Override
     public boolean agregarVertice(V vertex) {

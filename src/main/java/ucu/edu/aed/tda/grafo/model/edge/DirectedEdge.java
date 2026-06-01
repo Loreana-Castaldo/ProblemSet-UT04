@@ -2,7 +2,6 @@ package ucu.edu.aed.tda.grafo.model.edge;
 
 import java.util.Objects;
 
-
 //arista 
 public class DirectedEdge<V, D> implements Edge<V, D> {
     private final V source, target;
@@ -14,10 +13,12 @@ public class DirectedEdge<V, D> implements Edge<V, D> {
         this.dato = dato;
     }
 
+    // origen
     public V source() {
         return source;
     }
 
+    // destino
     public V target() {
         return target;
     }
@@ -32,8 +33,10 @@ public class DirectedEdge<V, D> implements Edge<V, D> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DirectedEdge<?, ?> e)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof DirectedEdge<?, ?> e))
+            return false;
         return Objects.equals(source, e.source)
                 && Objects.equals(target, e.target);
     }
