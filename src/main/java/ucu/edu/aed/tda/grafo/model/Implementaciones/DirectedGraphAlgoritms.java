@@ -1,10 +1,13 @@
 package ucu.edu.aed.tda.grafo.model.Implementaciones;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import ucu.edu.aed.tda.grafo.IDirectedGraphAlgorithms;
@@ -17,40 +20,7 @@ import ucu.edu.aed.tda.grafo.model.result.IDijkstraResult;
 import ucu.edu.aed.tda.grafo.model.result.IFloydWarshallResult;
 import ucu.edu.aed.tda.grafo.model.result.Path;
 
-public class DirectedGraphAlgoritms<D, V> extends DirectedGraph<V, D> implements IDirectedGraphAlgorithms {
-
-    public  IDijkstraResult<V> dijkstra(DirectedGraph<V,D> graph, V source) {
-       Map<V, Double> dist = new HashMap<>();
-       Map<V, V> prev = new HashMap<>();
-       PriorityQueue<V> pq = new PriorityQueue<>(Comparator.comparingDouble(dist::get));
-        
-       for (V v : graph.vertices) { {
-              dist.put(v, Double.POSITIVE_INFINITY);
-              prev.put(v, null);
-              pq.add(v);
-         }
-         dist.put(source, 0.0); 
-            while (!pq.isEmpty()) {
-                V u = pq.poll();
-
-                for (V v1 : graph.successors(graph.construirComparable(u))) {
-                    
-                  //  Edge<V, Double> edge = graph.aristas(graph.construirComparable(u), graph.construirComparable(v1));  
-            Edge<V,D> edge =    graph.obtenerArista(        graph.construirComparable(u),        graph.construirComparable(v1)
-    );
-                if(edge == null) continue; // Si no hay arista, saltar
-                  double peso = edge.dato;
-                  double nuevaDist = dist.get(u) + peso;
-                    if (nuevaDist < dist.get(v1)) {
-                        dist.put(v1, nuevaDist  );
-                        prev.put(v1, u);
-                        pq.remove(v1); // Actualizar prioridad
-                        pq.add(v1);
-                      }
-                }
-                return new DijkstraResult<>(dist, prev);
-            }
-    }
+public class DirectedGraphAlgoritms implements IDirectedGraphAlgorithms {
 
     @Override
     public <V, D extends WeightedEdge> IDijkstraResult<V> dijkstra(Comparable<V> source, IDirectedIGraph<V, D> grafo) {
@@ -60,8 +30,62 @@ public class DirectedGraphAlgoritms<D, V> extends DirectedGraph<V, D> implements
 
     @Override
     public <V, D extends WeightedEdge> IFloydWarshallResult<V> floyd(IDirectedIGraph<V, D> grafo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'floyd'");
+
+        List<V> vertices = new ArrayList<>(grafo.vertices());
+
+        int n = vertices.size();
+
+        double[][] A = new double[n][n];
+        Integer[][] next = new Integer[n][n];
+
+        for (int i = 0; i < n; i++) {
+
+            for (int j = 0; j < n; j++) {
+
+                A[i][j] = Double.POSITIVE_INFINITY;
+
+            }
+
+            A[i][i] = 0;
+
+        }
+
+        for (Edge<V, D> edge : grafo.aristas()) {
+
+            int i = vertices.indexOf(
+                    edge.source());
+
+            int j = vertices.indexOf(
+                    edge.target());
+
+            A[i][j] = edge.dato().getWeight();
+
+            next[i][j] = j;
+
+        }
+
+        for (int k = 0; k < n; k++) {
+
+            for (int i = 0; i < n; i++) {
+
+                for (int j = 0; j < n; j++) {
+
+                    if (A[i][k] + A[k][j] < A[i][j]) {
+
+                        A[i][j] = A[i][k]
+                                + A[k][j];
+
+                        next[i][j] = next[i][k];
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        return new FloydWarshallResult<>(vertices, A, next);
     }
 
     @Override
@@ -92,8 +116,23 @@ public class DirectedGraphAlgoritms<D, V> extends DirectedGraph<V, D> implements
 
     @Override
     public <V, D> void recorridoEnProfundidad(IGraph<V, D> grafo, Comparable<V> sourceCriteria, Consumer<V> consumer) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'recorridoEnProfundidad'");
+
+        Set<V> visitados = new HashSet<>();
+
+        V source = grafo.buscarVertice(
+                sourceCriteria);
+
+        if (source == null) {
+
+            return;
+
+        }
+
+        dfs(
+                grafo,
+                source,
+                visitados,
+                consumer);
     }
 
     @Override
@@ -108,4 +147,23 @@ public class DirectedGraphAlgoritms<D, V> extends DirectedGraph<V, D> implements
         throw new UnsupportedOperationException("Unimplemented method 'calcularClasificacionTopologica'");
     }
 
+    private <V, D> void dfs(IGraph<V, D> grafo, V actual, Set<V> visitados, Consumer<V> consumer) {
+
+        visitados.add(actual);
+
+        consumer.accept(actual);
+
+        for (Edge<V, D> edge : grafo.adyacencias(grafo.construirComparable(actual))) {
+
+            V vecino = edge.target();
+
+            if (!visitados.contains(vecino)) {
+
+                dfs(grafo, vecino, visitados, consumer);
+
+            }
+
+        }
+
+    }
 }
