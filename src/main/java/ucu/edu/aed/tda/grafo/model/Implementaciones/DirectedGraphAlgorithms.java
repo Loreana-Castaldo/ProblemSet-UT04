@@ -17,6 +17,8 @@ import ucu.edu.aed.tda.grafo.IDirectedIGraph;
 import ucu.edu.aed.tda.grafo.model.IGraph;
 import ucu.edu.aed.tda.grafo.model.edge.Edge;
 import ucu.edu.aed.tda.grafo.model.edge.WeightedEdge;
+import ucu.edu.aed.tda.grafo.model.result.CriticalPathResult;
+import ucu.edu.aed.tda.grafo.model.result.ICriticalPathResult;
 import ucu.edu.aed.tda.grafo.model.result.IDijkstraResult;
 import ucu.edu.aed.tda.grafo.model.result.IFloydWarshallResult;
 import ucu.edu.aed.tda.grafo.model.result.Path;
@@ -378,6 +380,28 @@ public class DirectedGraphAlgorithms implements IDirectedGraphAlgorithms {
 
     @Override
     public <V, D> List<V> calcularClasificacionTopologica(IDirectedIGraph<V, D> grafo) {
+        /**
+         * ALGORITMO DE KAHN - Clasificación Topológica
+         * 
+         * Calcula un orden topológico de los vértices de un DAG (Directed Acyclic Graph).
+         * Útil para representar:
+         * - Sistemas de previaturas (requisitos previos de asignaturas)
+         * - Órdenes de ejecución de tareas en un proyecto
+         * - Dependencias de compilación
+         * 
+         * Complejidad: O(V + E) donde V = vértices, E = aristas
+         * 
+         * Pasos:
+         * 1. Calcular el grado de entrada de cada vértice
+         * 2. Encolar vértices sin dependencias (grado entrada = 0)
+         * 3. Procesar cola: 
+         *    - Sacar vértice, agregarlo al resultado
+         *    - Disminuir grado de entrada de sucesores
+         *    - Encolar sucesores que quedan sin dependencias
+         * 4. Si no se procesaron todos los vértices → hay ciclos
+         */
+        
+        // Paso 1: Inicializar grados de entrada
         Map<V, Integer> gradoEntrada = new HashMap<>();
 
         for (V vertice : grafo.vertices()) {
@@ -389,6 +413,7 @@ public class DirectedGraphAlgorithms implements IDirectedGraphAlgorithms {
             gradoEntrada.put(destino, gradoEntrada.getOrDefault(destino, 0) + 1);
         }
 
+        // Paso 2: Encolar vértices sin dependencias
         Queue<V> cola = new ArrayDeque<>();
 
         for (V vertice : gradoEntrada.keySet()) {
@@ -397,26 +422,62 @@ public class DirectedGraphAlgorithms implements IDirectedGraphAlgorithms {
             }
         }
 
+        // Paso 3: Procesar la cola
         List<V> resultado = new ArrayList<>();
 
         while (!cola.isEmpty()) {
             V actual = cola.poll();
             resultado.add(actual);
 
+            // Para cada sucesor del vértice actual
             for (V sucesor : grafo.successors(grafo.construirComparable(actual))) {
                 int nuevoGrado = gradoEntrada.get(sucesor) - 1;
                 gradoEntrada.put(sucesor, nuevoGrado);
 
+                // Si el sucesor queda sin dependencias, lo encolamos
                 if (nuevoGrado == 0) {
                     cola.add(sucesor);
                 }
             }
         }
 
+        // Paso 4: Verificar si hay ciclos
         if (resultado.size() != grafo.vertices().size()) {
             throw new IllegalStateException("El grafo tiene ciclos, no existe clasificación topológica.");
         }
 
         return resultado;
+    }
+
+    @Override
+    public <V, D extends WeightedEdge> ICriticalPathResult<V> calcularRutaCritica(
+            Comparable<V> source,
+            Comparable<V> target,
+            IDirectedIGraph<V, D> grafo) {
+
+        V origen = grafo.buscarVertice(source);
+        V destino = grafo.buscarVertice(target);
+
+        if (origen == null || destino == null) {
+            throw new IllegalArgumentException("Origen o destino no encontrados en el grafo");
+        }
+
+        // Obtener todos los caminos posibles
+        List<Path<V>> todosCaminos = obtenerTodosLosCaminos(source, target, grafo);
+
+        if (todosCaminos.isEmpty()) {
+            throw new IllegalStateException("No hay caminos entre " + origen + " y " + destino);
+        }
+
+        // Encontrar el camino crítico (el de mayor costo)
+        Path<V> caminoCritico = todosCaminos.get(0);
+        for (Path<V> camino : todosCaminos) {
+            if (camino.getCost() > caminoCritico.getCost()) {
+                caminoCritico = camino;
+            }
+        }
+
+        // Retornar resultado con todos los caminos y el crítico
+        return new CriticalPathResult<>(caminoCritico, todosCaminos, origen, destino);
     }
 }

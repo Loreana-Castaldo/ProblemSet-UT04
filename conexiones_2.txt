@@ -1,0 +1,7 @@
+Montevideo,Canelones,30
+Montevideo,Punta del Este,130
+Canelones,Punta del Este,90
+Punta del Este,Rocha,90
+Canelones,Durazno,170
+Durazno,Florida,80
+Florida,Artigas,220

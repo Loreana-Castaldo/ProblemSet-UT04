@@ -5,6 +5,7 @@ import ucu.edu.aed.tda.grafo.model.IGraph;
 import ucu.edu.aed.tda.grafo.model.edge.WeightedEdge;
 import ucu.edu.aed.tda.grafo.model.result.IDijkstraResult;
 import ucu.edu.aed.tda.grafo.model.result.IFloydWarshallResult;
+import ucu.edu.aed.tda.grafo.model.result.ICriticalPathResult;
 import ucu.edu.aed.tda.grafo.model.result.Path;
 
 import java.util.List;
@@ -56,6 +57,17 @@ public interface IDirectedGraphAlgorithms {
      * Calcula la clasificación topológica del grafo actual
      */
     <V, D> List<V> calcularClasificacionTopologica(IDirectedIGraph<V, D> grafo);
+
+    /**
+     * Calcula el camino crítico entre dos vértices en un DAG.
+     * Retorna el camino con costo máximo y la holgura de todos los demás caminos.
+     * Útil para análisis de rutas críticas en gestión de proyectos (PERT/CPM).
+     */
+    <V, D extends WeightedEdge> ICriticalPathResult<V> calcularRutaCritica(
+        Comparable<V> source, 
+        Comparable<V> target, 
+        IDirectedIGraph<V, D> grafo
+    );
 
     default <V, D> void recorridoEnProfundidad(IGraph<V, D> grafo, Consumer<V> consumer) {
         for (V vertex : grafo.vertices()) {

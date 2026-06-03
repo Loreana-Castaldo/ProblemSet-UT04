@@ -1,19 +1,22 @@
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\Main.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IDirectedGraphAlgorithms.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IDirectedIGraph.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IUndirectedGraph.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IUndirectedGraphAlgorithm.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\DirectedEdge.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\Edge.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\UndirectedEdge.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\WeightedEdge.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\IGraph.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\DijkstraResult.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\DirectedGraph.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\DirectedGraphAlgorithms.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\FloydWarshallResult.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\Graph.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\IDijkstraResult.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\IFloydWarshallResult.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\Path.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\main\java\ucu\edu\aed\utils\PrettyGrid.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\IFloydWarshallResult.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\Edge.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IUndirectedGraph.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IDirectedIGraph.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IDirectedGraphAlgorithms.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\utils\PrettyGrid.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\DirectedEdge.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\Path.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\ICriticalPathResult.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\UndirectedEdge.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\IDijkstraResult.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\DirectedGraphAlgorithms.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\Graph.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\CriticalPathResult.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\FloydWarshallResult.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\WeightedEdge.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\Main.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\IGraph.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\PathWithSlack.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\DijkstraResult.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\DirectedGraph.java
+C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IUndirectedGraphAlgorithm.java
