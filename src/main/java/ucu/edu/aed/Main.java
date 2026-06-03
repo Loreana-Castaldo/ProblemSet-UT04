@@ -49,8 +49,8 @@ public class Main  {
         System.out.println(grafo.vertices());
 
 
-        //Por el toString de arista de los Sets de la coleccion de java, los valroes de las aristas se imprimen con un guión antes de su valor.
-        
+        //Por el toString de arista de los Sets de la coleccion de java, los valores de las aristas se imprimen con un guión antes de su valor.
+
         System.out.println("\nAristas:");
         for (Edge<String, WeightedEdge> arista : grafo.aristas()) {
             System.out.println(arista);
