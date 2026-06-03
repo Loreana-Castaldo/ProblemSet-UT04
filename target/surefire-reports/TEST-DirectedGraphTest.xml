@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="DijkstraResultTest" time="0.038" tests="10" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="DirectedGraphTest" time="0.028" tests="38" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -59,14 +59,42 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoElDestinoNoTieneCostoRegistrado" classname="DijkstraResultTest" time="0.005"/>
-  <testcase name="testGetPathDeberiaRetornarSoloElOrigenCuandoElDestinoEsElOrigen" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarCaminoCompletoDesdeElOrigenHastaElDestino" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoElDestinoEsInalcanzable" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoNoSePuedeReconstruirHastaElOrigen" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetCostDeberiaRetornarElCostoCuandoElVerticeExiste" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoElDestinoEsNull" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoElOrigenEsNull" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetCostDeberiaRetornarInfinitoCuandoElVerticeNoExiste" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testConstructorDeberiaHacerCopiaDefensivaDeLosMapas" classname="DijkstraResultTest" time="0.0"/>
+  <testcase name="testNoAgregaAristaDuplicada" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testVerticesDevuelveVistaInmodificable" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testTieneCiclosDevuelveTrueSiHayCiclo" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testBuscarVerticeInexistenteDevuelveNull" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAgregarAristaEsDirigida" classname="DirectedGraphTest" time="0.001"/>
+  <testcase name="testAdyacenciasDevuelveAristasSalientes" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAristasDevuelveVistaInmodificable" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testVaciarCumplePostcondiciones" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testEsConexoConGrafoConectadoFuerte" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testEsConexoConGrafoDesconectado" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testObtenerAristaInexistenteDevuelveNull" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAgregarVerticeCumplePostcondicion" classname="DirectedGraphTest" time="0.001"/>
+  <testcase name="testSuccessorsConVariosVecinos" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testTieneCiclosDevuelveFalseSiNoHayCiclo" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAgregarVerticeDuplicadoNoModificaGrafo" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAgregarAristaCumplePostcondiciones" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testPredecessorsConVariosVecinos" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testExisteVertice" classname="DirectedGraphTest" time="0.003"/>
+  <testcase name="testGrafoInicialmenteVacio" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testObtenerAristaExistente" classname="DirectedGraphTest" time="0.003"/>
+  <testcase name="testBuscarVerticeExistente" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testGradoDeEntrada" classname="DirectedGraphTest" time="0.003"/>
+  <testcase name="testGradoDeSalida" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testEsConexoConGrafoVacio" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testConstructorConVerticesInicialesCreaAdyacencias" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testEliminarAristaExistenteCumplePostcondiciones" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testRemoverVerticeEliminaAristasEntrantesYSalientes" classname="DirectedGraphTest" time="0.001"/>
+  <testcase name="testAgregarAristaConSourceInexistenteViolaPrecondicion" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testRemoverVerticeInexistenteNoModificaGrafo" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testPredecessorsDeVerticeInexistenteDevuelveVacio" classname="DirectedGraphTest" time="0.001"/>
+  <testcase name="testSuccessorsSinAristasSalientesDevuelveVacio" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testModificarListaDevueltaPorAdyacenciasNoModificaGrafo" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testConstructorConAristasInicialesMantieneAdyacencias" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testPredecessorsSinAristasEntrantesDevuelveVacio" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testSuccessorsDeVerticeInexistenteDevuelveVacio" classname="DirectedGraphTest" time="0.001"/>
+  <testcase name="testAgregarAristaConTargetInexistenteViolaPrecondicion" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testEliminarAristaInexistenteNoModificaGrafo" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAdyacenciasDeVerticeInexistenteDevuelveVacio" classname="DirectedGraphTest" time="0.0"/>
 </testsuite>

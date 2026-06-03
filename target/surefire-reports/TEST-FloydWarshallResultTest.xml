@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="DijkstraResultTest" time="0.038" tests="10" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="FloydWarshallResultTest" time="0.006" tests="29" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -59,14 +59,33 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoElDestinoNoTieneCostoRegistrado" classname="DijkstraResultTest" time="0.005"/>
-  <testcase name="testGetPathDeberiaRetornarSoloElOrigenCuandoElDestinoEsElOrigen" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarCaminoCompletoDesdeElOrigenHastaElDestino" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoElDestinoEsInalcanzable" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoNoSePuedeReconstruirHastaElOrigen" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetCostDeberiaRetornarElCostoCuandoElVerticeExiste" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoElDestinoEsNull" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoElOrigenEsNull" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetCostDeberiaRetornarInfinitoCuandoElVerticeNoExiste" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testConstructorDeberiaHacerCopiaDefensivaDeLosMapas" classname="DijkstraResultTest" time="0.0"/>
+  <testcase name="testConnectedDevuelveFalseSiNoExisteCamino" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetPathConSourceNullDevuelveListaVacia" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testNextNullPermiteCaminoDeVerticeASiMismo" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetPathConTargetNullDevuelveListaVacia" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testNextConValorInvalidoDevuelveListaVacia" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testCostsNullDevuelveInfinito" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testConstructorCopiaListaDeVertices" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetPathSinCaminoDevuelveListaVacia" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testConstructorConVerticesNullNoRompe" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetCostSinCaminoDevuelveInfinito" classname="FloydWarshallResultTest" time="0.001"/>
+  <testcase name="testGetCostConSourceNullDevuelveInfinito" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetCostConTargetNullDevuelveInfinito" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testConnectedDevuelveTrueParaMismoVertice" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetCostCaminoDirecto" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetCostMismoVertice" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetCostCaminoIndirecto" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetPathCaminoDirecto" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetPathCaminoIndirecto" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetPathMismoVertice" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetCostConSourceInexistenteDevuelveInfinito" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testConnectedDevuelveTrueSiExisteCaminoIndirecto" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testConnectedConVerticeInexistenteDevuelveFalse" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetCostConTargetInexistenteDevuelveInfinito" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testConnectedDevuelveTrueSiExisteCaminoDirecto" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetPathConSourceInexistenteDevuelveListaVacia" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testModificarPathDevueltoNoRompeResultadoInterno" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testNextNullDevuelveListaVaciaParaCaminoNoTrivial" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testGetPathConTargetInexistenteDevuelveListaVacia" classname="FloydWarshallResultTest" time="0.0"/>
+  <testcase name="testConstructorConIndicesNullReconstruyeIndicesDesdeVertices" classname="FloydWarshallResultTest" time="0.0"/>
 </testsuite>

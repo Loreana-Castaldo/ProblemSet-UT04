@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="DirectedGraphAlgorithmsTest" time="0.007" tests="15" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="DirectedGraphAlgorithmsTest" time="0.011" tests="15" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="UY"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-25.0.2\bin"/>
-    <property name="sun.java.command" value="C:\Users\Acer\AppData\Local\Temp\surefire10011545095583021798\surefirebooter-20260603100553962_3.jar C:\Users\Acer\AppData\Local\Temp\surefire10011545095583021798 2026-06-03T10-05-53_854-jvmRun1 surefire-20260603100553962_1tmp surefire_0-20260603100553962_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\Acer\AppData\Local\Temp\surefire4634314952131701623\surefirebooter-20260603101012699_3.jar C:\Users\Acer\AppData\Local\Temp\surefire4634314952131701623 2026-06-03T10-10-12_565-jvmRun1 surefire-20260603101012699_1tmp surefire_0-20260603101012699_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\target\test-classes;C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\target\classes;C:\Users\Acer\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Acer\AppData\Local\Temp\surefire10011545095583021798\surefirebooter-20260603100553962_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Acer\AppData\Local\Temp\surefire4634314952131701623\surefirebooter-20260603101012699_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="25.0.2+10-LTS-69"/>
@@ -59,19 +59,19 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="testDijkstraCalculaCostoYCaminoMinimo" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
   <testcase name="testDijkstraConPesoNegativoLanzaExcepcion" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
+  <testcase name="testDijkstraCalculaCostoYCaminoMinimo" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
   <testcase name="testWarshallCalculaAlcanzabilidad" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
-  <testcase name="testObtenerTodosLosCaminosConOrigenInexistenteRetornaListaVacia" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
-  <testcase name="testObtenerExcentricidadConVerticeInexistenteRetornaInfinito" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
+  <testcase name="testObtenerExcentricidadConVerticeInexistenteRetornaInfinito" classname="DirectedGraphAlgorithmsTest" time="0.001"/>
   <testcase name="testObtenerCentroGrafoRetornaElVerticeConMenorExcentricidad" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
-  <testcase name="testRecorridoEnProfundidadVisitaVerticesEnOrdenDFS" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
-  <testcase name="testRecorridosConOrigenInexistenteNoVisitaNada" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
-  <testcase name="testObtenerExcentricidadRetornaMayorCostoDesdeUnVertice" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
-  <testcase name="testClasificacionTopologicaRespetaDependencias" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
-  <testcase name="testClasificacionTopologicaConCicloLanzaExcepcion" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
-  <testcase name="testFloydCalculaElCaminoMinimoEntreTodosLosVertices" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
-  <testcase name="testDijkstraConOrigenInexistenteRetornaCostosInfinitos" classname="DirectedGraphAlgorithmsTest" time="0.001"/>
+  <testcase name="testObtenerTodosLosCaminosConOrigenInexistenteRetornaListaVacia" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
   <testcase name="testRecorridoEnAmplitudVisitaVerticesEnOrdenBFS" classname="DirectedGraphAlgorithmsTest" time="0.001"/>
+  <testcase name="testRecorridosConOrigenInexistenteNoVisitaNada" classname="DirectedGraphAlgorithmsTest" time="0.001"/>
+  <testcase name="testDijkstraConOrigenInexistenteRetornaCostosInfinitos" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
+  <testcase name="testClasificacionTopologicaRespetaDependencias" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
+  <testcase name="testObtenerExcentricidadRetornaMayorCostoDesdeUnVertice" classname="DirectedGraphAlgorithmsTest" time="0.001"/>
+  <testcase name="testFloydCalculaElCaminoMinimoEntreTodosLosVertices" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
+  <testcase name="testRecorridoEnProfundidadVisitaVerticesEnOrdenDFS" classname="DirectedGraphAlgorithmsTest" time="0.001"/>
   <testcase name="testObtenerTodosLosCaminosRetornaTodosLosCaminosSimples" classname="DirectedGraphAlgorithmsTest" time="0.001"/>
+  <testcase name="testClasificacionTopologicaConCicloLanzaExcepcion" classname="DirectedGraphAlgorithmsTest" time="0.0"/>
 </testsuite>

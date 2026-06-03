@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="DijkstraResultTest" time="0.038" tests="10" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="GraphTest" time="0.011" tests="41" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -59,14 +59,45 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoElDestinoNoTieneCostoRegistrado" classname="DijkstraResultTest" time="0.005"/>
-  <testcase name="testGetPathDeberiaRetornarSoloElOrigenCuandoElDestinoEsElOrigen" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarCaminoCompletoDesdeElOrigenHastaElDestino" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoElDestinoEsInalcanzable" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoNoSePuedeReconstruirHastaElOrigen" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetCostDeberiaRetornarElCostoCuandoElVerticeExiste" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoElDestinoEsNull" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetPathDeberiaRetornarListaVaciaCuandoElOrigenEsNull" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testGetCostDeberiaRetornarInfinitoCuandoElVerticeNoExiste" classname="DijkstraResultTest" time="0.0"/>
-  <testcase name="testConstructorDeberiaHacerCopiaDefensivaDeLosMapas" classname="DijkstraResultTest" time="0.0"/>
+  <testcase name="testConstructorConEstructurasVacias" classname="GraphTest" time="0.0"/>
+  <testcase name="testEsConexoConUnSoloVertice" classname="GraphTest" time="0.0"/>
+  <testcase name="testTieneCiclosConGrafoVacioDevuelveFalse" classname="GraphTest" time="0.0"/>
+  <testcase name="testConstruirComparableFuncionaConEquals" classname="GraphTest" time="0.0"/>
+  <testcase name="testCantidadDeVerticesYCantidadDeAristas" classname="GraphTest" time="0.0"/>
+  <testcase name="testTieneCiclosDevuelveTrueConAutoBucle" classname="GraphTest" time="0.0"/>
+  <testcase name="testNoAgregaAristaDuplicada" classname="GraphTest" time="0.0"/>
+  <testcase name="testVerticesDevuelveVistaInmodificable" classname="GraphTest" time="0.0"/>
+  <testcase name="testTieneCiclosDevuelveTrueSiHayCiclo" classname="GraphTest" time="0.0"/>
+  <testcase name="testBuscarVerticeInexistenteDevuelveNull" classname="GraphTest" time="0.0"/>
+  <testcase name="testAdyacenciasDevuelveAristasSalientes" classname="GraphTest" time="0.0"/>
+  <testcase name="testAristasDevuelveVistaInmodificable" classname="GraphTest" time="0.0"/>
+  <testcase name="testVaciarCumplePostcondiciones" classname="GraphTest" time="0.001"/>
+  <testcase name="testEsConexoConGrafoDesconectado" classname="GraphTest" time="0.0"/>
+  <testcase name="testObtenerAristaInexistenteDevuelveNull" classname="GraphTest" time="0.0"/>
+  <testcase name="testAgregarVerticeCumplePostcondicion" classname="GraphTest" time="0.0"/>
+  <testcase name="testTieneCiclosDevuelveFalseSiNoHayCiclo" classname="GraphTest" time="0.0"/>
+  <testcase name="testAgregarVerticeDuplicadoNoModificaGrafo" classname="GraphTest" time="0.0"/>
+  <testcase name="testAgregarAristaCumplePostcondiciones" classname="GraphTest" time="0.001"/>
+  <testcase name="testExisteVertice" classname="GraphTest" time="0.0"/>
+  <testcase name="testObtenerAristaExistente" classname="GraphTest" time="0.0"/>
+  <testcase name="testBuscarVerticeExistente" classname="GraphTest" time="0.001"/>
+  <testcase name="testExisteArista" classname="GraphTest" time="0.0"/>
+  <testcase name="testEsConexoConGrafoVacio" classname="GraphTest" time="0.0"/>
+  <testcase name="testBuscarVerticeConCriterioNullDevuelveNull" classname="GraphTest" time="0.0"/>
+  <testcase name="testEliminarAristaExistenteCumplePostcondiciones" classname="GraphTest" time="0.001"/>
+  <testcase name="testRemoverVerticeEliminaAristasEntrantesYSalientes" classname="GraphTest" time="0.0"/>
+  <testcase name="testConstructorCreaAdyacenciasParaVerticesIniciales" classname="GraphTest" time="0.001"/>
+  <testcase name="testRemoverVerticeInexistenteNoModificaGrafo" classname="GraphTest" time="0.0"/>
+  <testcase name="testConstructorCargaAristasInicialesEnAdyacencias" classname="GraphTest" time="0.0"/>
+  <testcase name="testAgregarAristaConSourceInexistenteLanzaExcepcion" classname="GraphTest" time="0.001"/>
+  <testcase name="testModificarListaDevueltaPorAdyacenciasNoModificaGrafo" classname="GraphTest" time="0.0"/>
+  <testcase name="testEliminarAristaInexistenteNoModificaGrafo" classname="GraphTest" time="0.0"/>
+  <testcase name="testConstructorConNullInicializaEstructuras" classname="GraphTest" time="0.0"/>
+  <testcase name="testAdyacenciasDeVerticeInexistenteDevuelveVacio" classname="GraphTest" time="0.0"/>
+  <testcase name="testRemoverVerticeConCriterioNullNoModificaGrafo" classname="GraphTest" time="0.0"/>
+  <testcase name="testEsConexoConCaminoDesdePrimerVerticeATodos" classname="GraphTest" time="0.001"/>
+  <testcase name="testObtenerAristaConCriterioNullDevuelveNull" classname="GraphTest" time="0.0"/>
+  <testcase name="testEliminarAristaConCriterioNullNoModificaGrafo" classname="GraphTest" time="0.0"/>
+  <testcase name="testAdyacenciasDeVerticeSinAristasDevuelveVacio" classname="GraphTest" time="0.001"/>
+  <testcase name="testAgregarAristaConTargetInexistenteLanzaExcepcion" classname="GraphTest" time="0.0"/>
 </testsuite>
