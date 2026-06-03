@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PathWithSlack.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aed-2026-s1</a> &gt; <a href="index.source.html" class="el_package">ucu.edu.aed.tda.grafo.model.result</a> &gt; <span class="el_source">PathWithSlack.java</span></div><h1>PathWithSlack.java</h1><pre class="source lang-java linenums">package ucu.edu.aed.tda.grafo.model.result;
+
+import java.util.List;
+
+/**
+ * Representa un camino con su costo total y la holgura (slack) calculada.
+ * La holgura es la diferencia entre el camino crítico y el costo de este camino.
+ */
+public class PathWithSlack&lt;V&gt; {
+    private final List&lt;V&gt; path;
+    private final double cost;
+    private final double slack;
+    private final boolean isCritical;
+
+<span class="fc" id="L15">    public PathWithSlack(List&lt;V&gt; path, double cost, double slack, boolean isCritical) {</span>
+<span class="fc" id="L16">        this.path = path;</span>
+<span class="fc" id="L17">        this.cost = cost;</span>
+<span class="fc" id="L18">        this.slack = slack;</span>
+<span class="fc" id="L19">        this.isCritical = isCritical;</span>
+<span class="fc" id="L20">    }</span>
+
+    public List&lt;V&gt; getPath() {
+<span class="fc" id="L23">        return path;</span>
+    }
+
+    public double getCost() {
+<span class="fc" id="L27">        return cost;</span>
+    }
+
+    public double getSlack() {
+<span class="fc" id="L31">        return slack;</span>
+    }
+
+    public boolean isCritical() {
+<span class="fc" id="L35">        return isCritical;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L40">        return String.format(</span>
+            &quot;Camino: %s | Costo: %.2f | Holgura: %.2f | Crítico: %s&quot;,
+<span class="fc" id="L42">            path, cost, slack, isCritical</span>
+        );
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

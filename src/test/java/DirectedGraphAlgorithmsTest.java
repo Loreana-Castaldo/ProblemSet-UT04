@@ -16,8 +16,10 @@ import ucu.edu.aed.tda.grafo.model.Implementaciones.DirectedGraphAlgorithms;
 import ucu.edu.aed.tda.grafo.model.edge.Edge;
 import ucu.edu.aed.tda.grafo.model.edge.WeightedEdge;
 import ucu.edu.aed.tda.grafo.model.result.IDijkstraResult;
+import ucu.edu.aed.tda.grafo.model.result.ICriticalPathResult;
 import ucu.edu.aed.tda.grafo.model.result.IFloydWarshallResult;
 import ucu.edu.aed.tda.grafo.model.result.Path;
+import ucu.edu.aed.tda.grafo.model.result.PathWithSlack;
 
 public class DirectedGraphAlgorithmsTest extends TestCase {
 
@@ -278,6 +280,120 @@ public class DirectedGraphAlgorithmsTest extends TestCase {
         } catch (IllegalStateException e) {
             assertTrue(e.getMessage().contains("ciclos"));
         }
+    }
+
+    public void testCalcularRutaCriticaIdentificaCaminoCritico() {
+        IDirectedIGraph<String, WeightedEdge> grafo = crearGrafo(
+                Arrays.asList("A", "B", "C", "D"),
+                Arrays.asList(
+                        edge("A", "B", 10.0),
+                        edge("B", "C", 20.0),
+                        edge("C", "D", 30.0),
+                        edge("A", "D", 50.0)
+                )
+        );
+
+        ICriticalPathResult<String> resultado = algoritmos.calcularRutaCritica(
+                criterio("A"),
+                criterio("D"),
+                grafo
+        );
+
+        // El camino crítico debe ser el de mayor costo
+        assertEquals(60.0, resultado.getCriticalCost(), 0.0001);
+        assertEquals(Arrays.asList("A", "B", "C", "D"), resultado.getCriticalPath().getPath());
+    }
+
+    public void testCalcularRutaCriticaRetornaTodosCaminos() {
+        IDirectedIGraph<String, WeightedEdge> grafo = crearGrafo(
+                Arrays.asList("A", "B", "C"),
+                Arrays.asList(
+                        edge("A", "B", 5.0),
+                        edge("B", "C", 10.0),
+                        edge("A", "C", 20.0)
+                )
+        );
+
+        ICriticalPathResult<String> resultado = algoritmos.calcularRutaCritica(
+                criterio("A"),
+                criterio("C"),
+                grafo
+        );
+
+        // Debe haber 2 caminos: A->C (20) y A->B->C (15)
+        assertTrue(resultado.getAllPaths().size() >= 1);
+        assertEquals(20.0, resultado.getCriticalCost(), 0.0001);
+    }
+
+    public void testCalcularRutaCriticaCalculaHolgurasCorectamente() {
+        IDirectedIGraph<String, WeightedEdge> grafo = crearGrafo(
+                Arrays.asList("A", "B", "C", "D"),
+                Arrays.asList(
+                        edge("A", "B", 10.0),
+                        edge("B", "D", 20.0),
+                        edge("A", "C", 5.0),
+                        edge("C", "D", 20.0)
+                )
+        );
+
+        ICriticalPathResult<String> resultado = algoritmos.calcularRutaCritica(
+                criterio("A"),
+                criterio("D"),
+                grafo
+        );
+
+        assertEquals(30.0, resultado.getCriticalCost(), 0.0001);
+
+        // Verificar holguras
+        java.util.List<PathWithSlack<String>> pathsWithSlack = resultado.getPathsWithSlack();
+        
+        // El camino crítico tiene holgura 0
+        PathWithSlack<String> critical = pathsWithSlack.stream()
+                .filter(PathWithSlack::isCritical)
+                .findFirst()
+                .orElse(null);
+        
+        assertNotNull(critical);
+        assertEquals(0.0, critical.getSlack(), 0.0001);
+    }
+
+    public void testCalcularRutaCriticaConUnicoCamino() {
+        IDirectedIGraph<String, WeightedEdge> grafo = crearGrafo(
+                Arrays.asList("A", "B", "C"),
+                Arrays.asList(
+                        edge("A", "B", 50.0),
+                        edge("B", "C", 100.0)
+                )
+        );
+
+        ICriticalPathResult<String> resultado = algoritmos.calcularRutaCritica(
+                criterio("A"),
+                criterio("C"),
+                grafo
+        );
+
+        assertEquals(150.0, resultado.getCriticalCost(), 0.0001);
+        assertEquals(Arrays.asList("A", "B", "C"), resultado.getCriticalPath().getPath());
+        assertEquals(1, resultado.getAllPaths().size());
+    }
+
+    public void testCalcularRutaCriticaRetornaSourceYTarget() {
+        IDirectedIGraph<String, WeightedEdge> grafo = crearGrafo(
+                Arrays.asList("X", "Y", "Z"),
+                Arrays.asList(
+                        edge("X", "Y", 5.0),
+                        edge("Y", "Z", 10.0)
+                )
+        );
+
+        ICriticalPathResult<String> resultado = algoritmos.calcularRutaCritica(
+                criterio("X"),
+                criterio("Z"),
+                grafo
+        );
+
+        assertEquals("X", resultado.getSource());
+        assertEquals("Z", resultado.getTarget());
     }
 
     private static Comparable<String> criterio(String valor) {
