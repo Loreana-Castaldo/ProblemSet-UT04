@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DirectedGraph.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aed-2026-s1</a> &gt; <a href="index.source.html" class="el_package">ucu.edu.aed.tda.grafo.model.Implementaciones</a> &gt; <span class="el_source">DirectedGraph.java</span></div><h1>DirectedGraph.java</h1><pre class="source lang-java linenums">package ucu.edu.aed.tda.grafo.model.Implementaciones;
+
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+
+import ucu.edu.aed.tda.grafo.IDirectedIGraph;
+import ucu.edu.aed.tda.grafo.model.edge.DirectedEdge;
+import ucu.edu.aed.tda.grafo.model.edge.Edge;
+
+public class DirectedGraph&lt;V, D&gt; extends Graph&lt;V, D&gt; implements IDirectedIGraph&lt;V, D&gt; {
+
+    public DirectedGraph(
+            Set&lt;V&gt; vertices,
+            Set&lt;Edge&lt;V, D&gt;&gt; aristas,
+            Map&lt;V, Set&lt;Edge&lt;V, D&gt;&gt;&gt; adyacencias) {
+
+<span class="fc" id="L19">        super(vertices, aristas, adyacencias);</span>
+
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        for (V vertice : this.vertices) {</span>
+<span class="fc" id="L22">            this.adyacencias.putIfAbsent(vertice, new LinkedHashSet&lt;&gt;());</span>
+<span class="fc" id="L23">        }</span>
+<span class="fc" id="L24">    }</span>
+
+    @Override
+    public boolean agregarVertice(V vertex) {
+<span class="fc" id="L28">        boolean agregado = vertices.add(vertex);</span>
+
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (agregado) {</span>
+<span class="fc" id="L31">            adyacencias.putIfAbsent(vertex, new LinkedHashSet&lt;&gt;());</span>
+        }
+
+<span class="fc" id="L34">        return agregado;</span>
+    }
+
+    @Override
+    public Set&lt;V&gt; successors(Comparable&lt;V&gt; criteria) {
+<span class="fc" id="L39">        Set&lt;V&gt; sucesores = new HashSet&lt;&gt;();</span>
+
+<span class="fc" id="L41">        V vertice = buscarVertice(criteria);</span>
+
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (vertice == null) {</span>
+<span class="fc" id="L44">            return sucesores;</span>
+        }
+
+<span class="fc" id="L47">        Set&lt;Edge&lt;V, D&gt;&gt; aristasSalientes = adyacencias.get(vertice);</span>
+
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        if (aristasSalientes == null) {</span>
+<span class="nc" id="L50">            return sucesores;</span>
+        }
+
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (Edge&lt;V, D&gt; arista : aristasSalientes) {</span>
+<span class="fc" id="L54">            sucesores.add(arista.target());</span>
+<span class="fc" id="L55">        }</span>
+
+<span class="fc" id="L57">        return sucesores;</span>
+    }
+
+    @Override
+    public Set&lt;V&gt; predecessors(Comparable&lt;V&gt; criteria) {
+<span class="fc" id="L62">        Set&lt;V&gt; predecesores = new HashSet&lt;&gt;();</span>
+
+<span class="fc" id="L64">        V vertice = buscarVertice(criteria);</span>
+
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (vertice == null) {</span>
+<span class="fc" id="L67">            return predecesores;</span>
+        }
+
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        for (Edge&lt;V, D&gt; arista : aristas) {</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">            if (arista.target().equals(vertice)) {</span>
+<span class="fc" id="L72">                predecesores.add(arista.source());</span>
+            }
+<span class="fc" id="L74">        }</span>
+
+<span class="fc" id="L76">        return predecesores;</span>
+    }
+
+    @Override
+    public boolean agregarArista(V source, V target, D dato) {
+<span class="fc bfc" id="L81" title="All 4 branches covered.">        if (!vertices.contains(source) || !vertices.contains(target)) {</span>
+<span class="fc" id="L82">            throw new IllegalArgumentException(&quot;Source and target vertices must be in the graph.&quot;);</span>
+        }
+
+<span class="fc" id="L85">        adyacencias.putIfAbsent(source, new LinkedHashSet&lt;&gt;());</span>
+<span class="fc" id="L86">        adyacencias.putIfAbsent(target, new LinkedHashSet&lt;&gt;());</span>
+
+<span class="fc" id="L88">        Edge&lt;V, D&gt; nuevaArista = new DirectedEdge&lt;&gt;(source, target, dato);</span>
+
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (aristas.add(nuevaArista)) {</span>
+<span class="fc" id="L91">            adyacencias.get(source).add(nuevaArista);</span>
+<span class="fc" id="L92">            return true;</span>
+        }
+
+<span class="fc" id="L95">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
