@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="DirectedGraphTest" time="0.032" tests="38" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="DirectedGraphTest" time="0.028" tests="38" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="25"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="user.country" value="ES"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-25.0.2\bin"/>
-    <property name="sun.java.command" value="C:\Users\ferom\AppData\Local\Temp\surefire6706373452711115170\surefirebooter-20260603093325832_3.jar C:\Users\ferom\AppData\Local\Temp\surefire6706373452711115170 2026-06-03T09-33-25_754-jvmRun1 surefire-20260603093325832_1tmp surefire_0-20260603093325832_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\ferom\AppData\Local\Temp\surefire17253382584740338867\surefirebooter-20260603100821190_3.jar C:\Users\ferom\AppData\Local\Temp\surefire17253382584740338867 2026-06-03T10-08-21_102-jvmRun1 surefire-20260603100821190_1tmp surefire_0-20260603100821190_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="test" value="DirectedGraphTest"/>
     <property name="surefire.test.class.path" value="C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\target\test-classes;C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\target\classes;C:\Users\ferom\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;"/>
@@ -31,7 +31,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\ferom\AppData\Local\Temp\surefire6706373452711115170\surefirebooter-20260603093325832_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\ferom\AppData\Local\Temp\surefire17253382584740338867\surefirebooter-20260603100821190_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="25.0.2+10-LTS-69"/>
@@ -61,42 +61,42 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="69.0"/>
   </properties>
-  <testcase name="testAgregarAristaConTargetInexistenteViolaPrecondicion" classname="DirectedGraphTest" time="0.005"/>
-  <testcase name="testModificarListaDevueltaPorAdyacenciasNoModificaGrafo" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testConstructorConAristasInicialesMantieneAdyacencias" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testPredecessorsSinAristasEntrantesDevuelveVacio" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testAdyacenciasDeVerticeInexistenteDevuelveVacio" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testSuccessorsSinAristasSalientesDevuelveVacio" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testEliminarAristaInexistenteNoModificaGrafo" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testRemoverVerticeInexistenteNoModificaGrafo" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testEliminarAristaExistenteCumplePostcondiciones" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testSuccessorsDeVerticeInexistenteDevuelveVacio" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testPredecessorsDeVerticeInexistenteDevuelveVacio" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testAgregarAristaConSourceInexistenteViolaPrecondicion" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testRemoverVerticeEliminaAristasEntrantesYSalientes" classname="DirectedGraphTest" time="0.001"/>
-  <testcase name="testConstructorConVerticesInicialesCreaAdyacencias" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testEsConexoConGrafoConectadoFuerte" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testPredecessorsConVariosVecinos" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testObtenerAristaInexistenteDevuelveNull" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testAdyacenciasDevuelveAristasSalientes" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testAgregarVerticeCumplePostcondicion" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testAristasDevuelveVistaInmodificable" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testVaciarCumplePostcondiciones" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testTieneCiclosDevuelveFalseSiNoHayCiclo" classname="DirectedGraphTest" time="0.001"/>
-  <testcase name="testAgregarVerticeDuplicadoNoModificaGrafo" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testSuccessorsConVariosVecinos" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testBuscarVerticeInexistenteDevuelveNull" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testAgregarAristaCumplePostcondiciones" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testVerticesDevuelveVistaInmodificable" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testTieneCiclosDevuelveTrueSiHayCiclo" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testNoAgregaAristaDuplicada" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testAgregarAristaEsDirigida" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testGradoDeEntrada" classname="DirectedGraphTest" time="0.004"/>
   <testcase name="testEsConexoConGrafoVacio" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testExisteVertice" classname="DirectedGraphTest" time="0.001"/>
-  <testcase name="testGrafoInicialmenteVacio" classname="DirectedGraphTest" time="0.0"/>
   <testcase name="testGradoDeSalida" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testObtenerAristaExistente" classname="DirectedGraphTest" time="0.0"/>
   <testcase name="testBuscarVerticeExistente" classname="DirectedGraphTest" time="0.0"/>
-  <testcase name="testGradoDeEntrada" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testGrafoInicialmenteVacio" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testExisteVertice" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testObtenerAristaExistente" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testEsConexoConGrafoConectadoFuerte" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAgregarVerticeDuplicadoNoModificaGrafo" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testTieneCiclosDevuelveFalseSiNoHayCiclo" classname="DirectedGraphTest" time="0.0"/>
   <testcase name="testEsConexoConGrafoDesconectado" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testObtenerAristaInexistenteDevuelveNull" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testVerticesDevuelveVistaInmodificable" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testBuscarVerticeInexistenteDevuelveNull" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testVaciarCumplePostcondiciones" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testTieneCiclosDevuelveTrueSiHayCiclo" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testPredecessorsConVariosVecinos" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAgregarAristaEsDirigida" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAgregarAristaCumplePostcondiciones" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testSuccessorsConVariosVecinos" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAristasDevuelveVistaInmodificable" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testNoAgregaAristaDuplicada" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAgregarVerticeCumplePostcondicion" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAdyacenciasDevuelveAristasSalientes" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAdyacenciasDeVerticeInexistenteDevuelveVacio" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAgregarAristaConTargetInexistenteViolaPrecondicion" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testModificarListaDevueltaPorAdyacenciasNoModificaGrafo" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testConstructorConVerticesInicialesCreaAdyacencias" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testPredecessorsSinAristasEntrantesDevuelveVacio" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testRemoverVerticeEliminaAristasEntrantesYSalientes" classname="DirectedGraphTest" time="0.001"/>
+  <testcase name="testSuccessorsDeVerticeInexistenteDevuelveVacio" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testEliminarAristaExistenteCumplePostcondiciones" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testConstructorConAristasInicialesMantieneAdyacencias" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testAgregarAristaConSourceInexistenteViolaPrecondicion" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testEliminarAristaInexistenteNoModificaGrafo" classname="DirectedGraphTest" time="0.001"/>
+  <testcase name="testRemoverVerticeInexistenteNoModificaGrafo" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testPredecessorsDeVerticeInexistenteDevuelveVacio" classname="DirectedGraphTest" time="0.0"/>
+  <testcase name="testSuccessorsSinAristasSalientesDevuelveVacio" classname="DirectedGraphTest" time="0.0"/>
 </testsuite>

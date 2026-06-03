@@ -1,5 +1,4 @@
 
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +18,7 @@ public class DirectedGraphTest extends TestCase {
     protected void setUp() {
         Set<String> vertices = new HashSet<>();
         Set<Edge<String, Integer>> aristas = new HashSet<>();
-        Map<String, List<Edge<String, Integer>>> adyacencias = new HashMap<>();
+        Map<String, Set<Edge<String, Integer>>> adyacencias = new HashMap<>();
 
         grafo = new DirectedGraph<>(vertices, aristas, adyacencias);
     }
@@ -450,7 +449,7 @@ public class DirectedGraphTest extends TestCase {
         vertices.add("B");
 
         Set<Edge<String, Integer>> aristas = new HashSet<>();
-        Map<String, List<Edge<String, Integer>>> adyacencias = new HashMap<>();
+        Map<String, Set<Edge<String, Integer>>> adyacencias = new HashMap<>();
 
         DirectedGraph<String, Integer> otroGrafo = new DirectedGraph<>(vertices, aristas, adyacencias);
 
@@ -468,7 +467,7 @@ public class DirectedGraphTest extends TestCase {
         Set<Edge<String, Integer>> aristas = new HashSet<>();
         aristas.add(new DirectedEdge<>("A", "B", 10));
 
-        Map<String, List<Edge<String, Integer>>> adyacencias = new HashMap<>();
+        Map<String, Set<Edge<String, Integer>>> adyacencias = new HashMap<>();
 
         DirectedGraph<String, Integer> otroGrafo = new DirectedGraph<>(vertices, aristas, adyacencias);
 

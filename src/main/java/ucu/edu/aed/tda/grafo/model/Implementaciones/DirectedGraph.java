@@ -1,8 +1,7 @@
 package ucu.edu.aed.tda.grafo.model.Implementaciones;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,12 +14,12 @@ public class DirectedGraph<V, D> extends Graph<V, D> implements IDirectedIGraph<
     public DirectedGraph(
             Set<V> vertices,
             Set<Edge<V, D>> aristas,
-            Map<V, List<Edge<V, D>>> adyacencias) {
+            Map<V, Set<Edge<V, D>>> adyacencias) {
 
         super(vertices, aristas, adyacencias);
 
-        for (V vertice : vertices) {
-            this.adyacencias.putIfAbsent(vertice, new ArrayList<>());
+        for (V vertice : this.vertices) {
+            this.adyacencias.putIfAbsent(vertice, new LinkedHashSet<>());
         }
     }
 
@@ -29,7 +28,7 @@ public class DirectedGraph<V, D> extends Graph<V, D> implements IDirectedIGraph<
         boolean agregado = vertices.add(vertex);
 
         if (agregado) {
-            adyacencias.putIfAbsent(vertex, new ArrayList<>());
+            adyacencias.putIfAbsent(vertex, new LinkedHashSet<>());
         }
 
         return agregado;
@@ -45,7 +44,7 @@ public class DirectedGraph<V, D> extends Graph<V, D> implements IDirectedIGraph<
             return sucesores;
         }
 
-        List<Edge<V, D>> aristasSalientes = adyacencias.get(vertice);
+        Set<Edge<V, D>> aristasSalientes = adyacencias.get(vertice);
 
         if (aristasSalientes == null) {
             return sucesores;
@@ -83,8 +82,8 @@ public class DirectedGraph<V, D> extends Graph<V, D> implements IDirectedIGraph<
             throw new IllegalArgumentException("Source and target vertices must be in the graph.");
         }
 
-        adyacencias.putIfAbsent(source, new ArrayList<>());
-        adyacencias.putIfAbsent(target, new ArrayList<>());
+        adyacencias.putIfAbsent(source, new LinkedHashSet<>());
+        adyacencias.putIfAbsent(target, new LinkedHashSet<>());
 
         Edge<V, D> nuevaArista = new DirectedEdge<>(source, target, dato);
 

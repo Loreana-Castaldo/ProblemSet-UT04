@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -18,23 +19,20 @@ public abstract class Graph<V, D> implements IGraph<V, D> {
 
     protected Set<V> vertices;
     protected Set<Edge<V, D>> aristas;
-    protected Map<V, List<Edge<V, D>>> adyacencias;
+    protected Map<V, Set<Edge<V, D>>> adyacencias;
 
-    public Graph(Set<V> vertices, Set<Edge<V, D>> aristas, Map<V, List<Edge<V, D>>> adyacencias) {
-        this.vertices = vertices != null ? vertices : new HashSet<>();
-        this.aristas = aristas != null ? aristas : new HashSet<>();
+    public Graph(Set<V> vertices, Set<Edge<V, D>> aristas, Map<V, Set<Edge<V, D>>> adyacencias) {
+        this.vertices = vertices != null ? vertices : new LinkedHashSet<>();
+        this.aristas = aristas != null ? aristas : new LinkedHashSet<>();
         this.adyacencias = adyacencias != null ? adyacencias : new HashMap<>();
 
         for (V v : this.vertices) {
-            this.adyacencias.putIfAbsent(v, new ArrayList<>());
+            this.adyacencias.putIfAbsent(v, new LinkedHashSet<>());
         }
 
         for (Edge<V, D> edge : this.aristas) {
-            this.adyacencias.putIfAbsent(edge.source(), new ArrayList<>());
-
-            if (!this.adyacencias.get(edge.source()).contains(edge)) {
-                this.adyacencias.get(edge.source()).add(edge);
-            }
+            this.adyacencias.putIfAbsent(edge.source(), new LinkedHashSet<>());
+            this.adyacencias.get(edge.source()).add(edge);
         }
     }
 
@@ -43,7 +41,7 @@ public abstract class Graph<V, D> implements IGraph<V, D> {
         boolean agregado = vertices.add(vertex);
 
         if (agregado) {
-            adyacencias.putIfAbsent(vertex, new ArrayList<>());
+            adyacencias.putIfAbsent(vertex, new LinkedHashSet<>());
         }
 
         return agregado;
@@ -73,7 +71,7 @@ public abstract class Graph<V, D> implements IGraph<V, D> {
         Edge<V, D> nuevaArista = new DirectedEdge<>(source, target, dato);
 
         if (aristas.add(nuevaArista)) {
-            adyacencias.putIfAbsent(source, new ArrayList<>());
+            adyacencias.putIfAbsent(source, new LinkedHashSet<>());
             adyacencias.get(source).add(nuevaArista);
             return true;
         }
@@ -91,10 +89,10 @@ public abstract class Graph<V, D> implements IGraph<V, D> {
 
         aristas.remove(edge);
 
-        List<Edge<V, D>> lista = adyacencias.get(edge.source());
+        Set<Edge<V, D>> conjunto = adyacencias.get(edge.source());
 
-        if (lista != null) {
-            lista.remove(edge);
+        if (conjunto != null) {
+            conjunto.remove(edge);
         }
 
         return true;
@@ -114,8 +112,8 @@ public abstract class Graph<V, D> implements IGraph<V, D> {
 
         adyacencias.remove(v);
 
-        for (List<Edge<V, D>> lista : adyacencias.values()) {
-            lista.removeIf(e -> e.source().equals(v) || e.target().equals(v));
+        for (Set<Edge<V, D>> conjunto : adyacencias.values()) {
+            conjunto.removeIf(e -> e.source().equals(v) || e.target().equals(v));
         }
 
         return true;
@@ -160,13 +158,13 @@ public abstract class Graph<V, D> implements IGraph<V, D> {
             return new ArrayList<>();
         }
 
-        List<Edge<V, D>> lista = adyacencias.get(vertice);
+        Set<Edge<V, D>> conjunto = adyacencias.get(vertice);
 
-        if (lista == null) {
+        if (conjunto == null) {
             return new ArrayList<>();
         }
 
-        return new ArrayList<>(lista);
+        return new ArrayList<>(conjunto);
     }
 
     @Override

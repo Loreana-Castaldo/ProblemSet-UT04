@@ -19,7 +19,7 @@ public class GraphTest extends TestCase {
         public ConcreteGraph(
                 Set<V> vertices,
                 Set<Edge<V, D>> aristas,
-                Map<V, List<Edge<V, D>>> adyacencias) {
+                Map<V, Set<Edge<V, D>>> adyacencias) {
 
             super(vertices, aristas, adyacencias);
         }
@@ -29,7 +29,7 @@ public class GraphTest extends TestCase {
     protected void setUp() {
         Set<String> vertices = new LinkedHashSet<>();
         Set<Edge<String, Integer>> aristas = new HashSet<>();
-        Map<String, List<Edge<String, Integer>>> adyacencias = new HashMap<>();
+        Map<String, Set<Edge<String, Integer>>> adyacencias = new HashMap<>();
 
         grafo = new ConcreteGraph<>(vertices, aristas, adyacencias);
     }
