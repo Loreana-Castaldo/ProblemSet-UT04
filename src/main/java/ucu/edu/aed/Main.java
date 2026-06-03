@@ -3,6 +3,8 @@ package ucu.edu.aed;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import ucu.edu.aed.tda.grafo.IDirectedGraphAlgorithms;
 import ucu.edu.aed.tda.grafo.model.Implementaciones.DirectedGraph;
@@ -19,10 +21,13 @@ public class Main  {
 
         System.out.println("CREAR GRAFO Y PROBAR OPERACIONES BASICAS");
 
+
+        Map<String, Set<Edge<String, WeightedEdge>>> adyacencias = new HashMap<>();
+
         DirectedGraph<String, WeightedEdge> grafo = new DirectedGraph<>(
-                new LinkedHashSet<>(),
-                new LinkedHashSet<>(),
-                new HashMap<>()
+            new LinkedHashSet<>(),
+            new LinkedHashSet<>(),
+            adyacencias 
         );
 
         grafo.agregarVertice("Montevideo");
@@ -131,10 +136,11 @@ public class Main  {
 
         System.out.println("\nFLOYD, WARSHALL Y CENTRO DEL GRAFO");
 
+        Map<String, Set<Edge<String, WeightedEdge>>> adyacenciasPuertos = new HashMap<>();
         DirectedGraph<String, WeightedEdge> grafoPuertos = new DirectedGraph<>(
-                new LinkedHashSet<>(),
-                new LinkedHashSet<>(),
-                new HashMap<>()
+        new LinkedHashSet<>(),
+        new LinkedHashSet<>(),
+        adyacenciasPuertos
         );
 
         grafoPuertos.agregarVertice("Montevideo");
