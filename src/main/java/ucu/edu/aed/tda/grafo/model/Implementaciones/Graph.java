@@ -1,74 +1,122 @@
 package ucu.edu.aed.tda.grafo.model.Implementaciones;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
-import ucu.edu.aed.tda.grafo.IDirectedIGraph;
 import ucu.edu.aed.tda.grafo.model.IGraph;
 import ucu.edu.aed.tda.grafo.model.edge.DirectedEdge;
 import ucu.edu.aed.tda.grafo.model.edge.Edge;
 
 public abstract class Graph<V, D> implements IGraph<V, D> {
 
-    protected Set<V> vertices = new HashSet<>();
-    protected Set<Edge<V, D>> aristas = new HashSet<>();
+    protected Set<V> vertices;
+    protected Set<Edge<V, D>> aristas;
     protected Map<V, List<Edge<V, D>>> adyacencias;
 
     public Graph(Set<V> vertices, Set<Edge<V, D>> aristas, Map<V, List<Edge<V, D>>> adyacencias) {
-        this.vertices = vertices;
-        this.aristas = aristas;
-        this.adyacencias = adyacencias;
+        this.vertices = vertices != null ? vertices : new HashSet<>();
+        this.aristas = aristas != null ? aristas : new HashSet<>();
+        this.adyacencias = adyacencias != null ? adyacencias : new HashMap<>();
+
+        for (V v : this.vertices) {
+            this.adyacencias.putIfAbsent(v, new ArrayList<>());
+        }
+
+        for (Edge<V, D> edge : this.aristas) {
+            this.adyacencias.putIfAbsent(edge.source(), new ArrayList<>());
+
+            if (!this.adyacencias.get(edge.source()).contains(edge)) {
+                this.adyacencias.get(edge.source()).add(edge);
+            }
+        }
     }
 
     @Override
     public boolean agregarVertice(V vertex) {
-        // TODO Auto-generated method stub
-        return vertices.add(vertex);
+        boolean agregado = vertices.add(vertex);
+
+        if (agregado) {
+            adyacencias.putIfAbsent(vertex, new ArrayList<>());
+        }
+
+        return agregado;
     }
 
     @Override
     public V buscarVertice(Comparable<V> criterio) {
-        // TODO Auto-generated method stub
+        if (criterio == null) {
+            return null;
+        }
+
         for (V v : vertices) {
-            if (v.equals(criterio)) {
+            if (criterio.compareTo(v) == 0) {
                 return v;
             }
         }
+
         return null;
     }
 
     @Override
     public boolean agregarArista(V source, V target, D dato) {
-        // TODO Auto-generated method stub
         if (!vertices.contains(source) || !vertices.contains(target)) {
             throw new IllegalArgumentException("Source and target vertices must be in the graph.");
         }
-        Edge<V, D> newEdge = new DirectedEdge<>(source, target, dato);
-        return aristas.add(newEdge);
+
+        Edge<V, D> nuevaArista = new DirectedEdge<>(source, target, dato);
+
+        if (aristas.add(nuevaArista)) {
+            adyacencias.putIfAbsent(source, new ArrayList<>());
+            adyacencias.get(source).add(nuevaArista);
+            return true;
+        }
+
+        return false;
     }
 
     @Override
     public boolean eliminarArista(Comparable<V> source, Comparable<V> target) {
-        // TODO Auto-generated method stub
-        return aristas.removeIf(edge -> edge.source().equals(source) && edge.target().equals(target));
+        Edge<V, D> edge = obtenerArista(source, target);
 
+        if (edge == null) {
+            return false;
+        }
+
+        aristas.remove(edge);
+
+        List<Edge<V, D>> lista = adyacencias.get(edge.source());
+
+        if (lista != null) {
+            lista.remove(edge);
+        }
+
+        return true;
     }
 
     @Override
     public boolean removerVertice(Comparable<V> criteria) {
-        // TODO Auto-generated method stub
         V v = buscarVertice(criteria);
-        if (v == null)
+
+        if (v == null) {
             return false;
+        }
 
         vertices.remove(v);
 
-        // eliminar aristas asociadas
         aristas.removeIf(e -> e.source().equals(v) || e.target().equals(v));
+
+        adyacencias.remove(v);
+
+        for (List<Edge<V, D>> lista : adyacencias.values()) {
+            lista.removeIf(e -> e.source().equals(v) || e.target().equals(v));
+        }
 
         return true;
     }
@@ -76,86 +124,124 @@ public abstract class Graph<V, D> implements IGraph<V, D> {
     @Override
     public Set<V> vertices() {
         return Collections.unmodifiableSet(vertices);
-
     }
 
     @Override
     public Set<Edge<V, D>> aristas() {
-        // TODO Auto-generated method stub
         return Collections.unmodifiableSet(aristas);
     }
 
     @Override
     public boolean existeArista(Comparable<V> sourceCriteria, Comparable<V> targetCriteria) {
-        // TODO Auto-generated method stub
         return obtenerArista(sourceCriteria, targetCriteria) != null;
     }
 
     @Override
     public Edge<V, D> obtenerArista(Comparable<V> sourceCriteria, Comparable<V> targetCriteria) {
+        if (sourceCriteria == null || targetCriteria == null) {
+            return null;
+        }
+
         for (Edge<V, D> edge : aristas) {
-            if (edge.source().equals(sourceCriteria) && edge.target().equals(targetCriteria)) {
+            if (sourceCriteria.compareTo(edge.source()) == 0
+                    && targetCriteria.compareTo(edge.target()) == 0) {
                 return edge;
             }
         }
+
         return null;
     }
 
     @Override
     public List<Edge<V, D>> adyacencias(Comparable<V> verticeCriteria) {
-        List<Edge<V, D>> adyacentes = new java.util.ArrayList<>();
-        for (Edge<V, D> edge : aristas) {
-            if (edge.source().equals(verticeCriteria)) {
-                adyacentes.add(edge);
-            }
+        V vertice = buscarVertice(verticeCriteria);
+
+        if (vertice == null) {
+            return new ArrayList<>();
         }
-        return adyacentes;
+
+        List<Edge<V, D>> lista = adyacencias.get(vertice);
+
+        if (lista == null) {
+            return new ArrayList<>();
+        }
+
+        return new ArrayList<>(lista);
     }
 
     @Override
     public boolean esConexo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'esConexo'");
+        if (vertices.isEmpty()) {
+            return true;
+        }
+
+        Set<V> visitados = new HashSet<>();
+        Queue<V> cola = new ArrayDeque<>();
+
+        V inicio = vertices.iterator().next();
+
+        visitados.add(inicio);
+        cola.add(inicio);
+
+        while (!cola.isEmpty()) {
+            V actual = cola.poll();
+
+            for (Edge<V, D> edge : adyacencias(construirComparable(actual))) {
+                V vecino = edge.target();
+
+                if (!visitados.contains(vecino)) {
+                    visitados.add(vecino);
+                    cola.add(vecino);
+                }
+            }
+        }
+
+        return visitados.size() == vertices.size();
     }
 
     @Override
     public void vaciar() {
         vertices.clear();
         aristas.clear();
+        adyacencias.clear();
     }
 
     @Override
     public boolean tieneCiclos() {
-        Set<V> visited = new HashSet<>();
-        Set<V> recStack = new HashSet<>();
+        Set<V> visitados = new HashSet<>();
+        Set<V> enRecursion = new HashSet<>();
+
         for (V v : vertices) {
-            if (!visited.contains(v)) {
-                if (dfsCiclo(v, visited, recStack)) {
+            if (!visitados.contains(v)) {
+                if (dfsCiclo(v, visitados, enRecursion)) {
                     return true;
                 }
             }
         }
+
         return false;
     }
 
-    private boolean dfsCiclo(V vertex, Set<V> visited, Set<V> recStack) {
-        if (recStack.contains(vertex)) {
-            return true; // ciclo detectado
+    private boolean dfsCiclo(V vertex, Set<V> visitados, Set<V> enRecursion) {
+        if (enRecursion.contains(vertex)) {
+            return true;
         }
-        if (visited.contains(vertex)) {
-            return false; // ya visitado, no ciclo por aquí
+
+        if (visitados.contains(vertex)) {
+            return false;
         }
-        visited.add(vertex);
-        recStack.add(vertex);
-        for (Edge<V, D> edge : aristas) {
-            if (edge.source().equals(vertex)) {
-                if (dfsCiclo(edge.target(), visited, recStack)) {
-                    return true;
-                }
+
+        visitados.add(vertex);
+        enRecursion.add(vertex);
+
+        for (Edge<V, D> edge : adyacencias(construirComparable(vertex))) {
+            if (dfsCiclo(edge.target(), visitados, enRecursion)) {
+                return true;
             }
         }
-        recStack.remove(vertex);
+
+        enRecursion.remove(vertex);
+
         return false;
     }
-
 }
