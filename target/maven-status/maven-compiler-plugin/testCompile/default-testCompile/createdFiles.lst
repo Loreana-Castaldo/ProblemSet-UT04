@@ -1,5 +1,6 @@
 DirectedGraphAlgorithmsTest$ListaSet.class
 DirectedGraphAlgorithmsTest$1.class
+<<<<<<< HEAD
 PathTest.class
 DirectedGraphAlgorithmsTest$2.class
 DirectedGraphTest.class
@@ -9,4 +10,17 @@ DirectedGraphAlgorithmsTest$CriterioString.class
 GraphTest.class
 DirectedGraphAlgorithmsTest$3.class
 DijkstraResultTest.class
+=======
+DirectedGraphAlgorithmsTest$2.class
+FloydWarshallResultTest.class
+GraphTest$ConcreteGraph.class
+DirectedGraphAlgorithmsTest$3.class
+CriticalPathResultTest.class
+DijkstraResultTest.class
+PathWithSlackTest.class
+PathTest.class
+DirectedGraphTest.class
+DirectedGraphAlgorithmsTest$CriterioString.class
+GraphTest.class
+>>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0
 DirectedGraphAlgorithmsTest.class

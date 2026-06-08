@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: FloydWarshallResultTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 29, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in FloydWarshallResultTest
+=======
+Tests run: 29, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in FloydWarshallResultTest
+>>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0

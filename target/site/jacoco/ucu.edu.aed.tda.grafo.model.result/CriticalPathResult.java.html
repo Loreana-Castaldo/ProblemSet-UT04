@@ -13,6 +13,7 @@ public class CriticalPathResult&lt;V&gt; implements ICriticalPathResult&lt;V&gt;
     private final V source;
     private final V target;
 
+<<<<<<< HEAD
 <span class="nc" id="L16">    public CriticalPathResult(Path&lt;V&gt; criticalPath, List&lt;Path&lt;V&gt;&gt; allPaths, V source, V target) {</span>
 <span class="nc" id="L17">        this.criticalPath = criticalPath;</span>
 <span class="nc" id="L18">        this.allPaths = allPaths;</span>
@@ -23,20 +24,41 @@ public class CriticalPathResult&lt;V&gt; implements ICriticalPathResult&lt;V&gt;
     @Override
     public Path&lt;V&gt; getCriticalPath() {
 <span class="nc" id="L25">        return criticalPath;</span>
+=======
+<span class="fc" id="L16">    public CriticalPathResult(Path&lt;V&gt; criticalPath, List&lt;Path&lt;V&gt;&gt; allPaths, V source, V target) {</span>
+<span class="fc" id="L17">        this.criticalPath = criticalPath;</span>
+<span class="fc" id="L18">        this.allPaths = allPaths;</span>
+<span class="fc" id="L19">        this.source = source;</span>
+<span class="fc" id="L20">        this.target = target;</span>
+<span class="fc" id="L21">    }</span>
+
+    @Override
+    public Path&lt;V&gt; getCriticalPath() {
+<span class="fc" id="L25">        return criticalPath;</span>
+>>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0
     }
 
     @Override
     public double getCriticalCost() {
+<<<<<<< HEAD
 <span class="nc" id="L30">        return criticalPath.getCost();</span>
+=======
+<span class="fc" id="L30">        return criticalPath.getCost();</span>
+>>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0
     }
 
     @Override
     public List&lt;Path&lt;V&gt;&gt; getAllPaths() {
+<<<<<<< HEAD
 <span class="nc" id="L35">        return new ArrayList&lt;&gt;(allPaths);</span>
+=======
+<span class="fc" id="L35">        return new ArrayList&lt;&gt;(allPaths);</span>
+>>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0
     }
 
     @Override
     public List&lt;PathWithSlack&lt;V&gt;&gt; getPathsWithSlack() {
+<<<<<<< HEAD
 <span class="nc" id="L40">        List&lt;PathWithSlack&lt;V&gt;&gt; result = new ArrayList&lt;&gt;();</span>
 <span class="nc" id="L41">        double criticalCost = getCriticalCost();</span>
         
@@ -52,21 +74,50 @@ public class CriticalPathResult&lt;V&gt; implements ICriticalPathResult&lt;V&gt;
 <span class="nc" id="L52">        }</span>
         
 <span class="nc" id="L54">        return result;</span>
+=======
+<span class="fc" id="L40">        List&lt;PathWithSlack&lt;V&gt;&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L41">        double criticalCost = getCriticalCost();</span>
+        
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        for (Path&lt;V&gt; path : allPaths) {</span>
+<span class="fc" id="L44">            double slack = criticalCost - path.getCost();</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">            boolean isCritical = slack == 0;</span>
+<span class="fc" id="L46">            result.add(new PathWithSlack&lt;&gt;(</span>
+<span class="fc" id="L47">                path.getPath(),</span>
+<span class="fc" id="L48">                path.getCost(),</span>
+                slack,
+                isCritical
+            ));
+<span class="fc" id="L52">        }</span>
+        
+<span class="fc" id="L54">        return result;</span>
+>>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0
     }
 
     @Override
     public double getSlack(Path&lt;V&gt; path) {
+<<<<<<< HEAD
 <span class="nc" id="L59">        return getCriticalCost() - path.getCost();</span>
+=======
+<span class="fc" id="L59">        return getCriticalCost() - path.getCost();</span>
+>>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0
     }
 
     @Override
     public V getSource() {
+<<<<<<< HEAD
 <span class="nc" id="L64">        return source;</span>
+=======
+<span class="fc" id="L64">        return source;</span>
+>>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0
     }
 
     @Override
     public V getTarget() {
+<<<<<<< HEAD
 <span class="nc" id="L69">        return target;</span>
+=======
+<span class="fc" id="L69">        return target;</span>
+>>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

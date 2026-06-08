@@ -1,4 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: DirectedGraphAlgorithmsTest
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.037 s -- in DirectedGraphAlgorithmsTest
+=======
+Tests run: 20, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.039 s -- in DirectedGraphAlgorithmsTest
+>>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0
