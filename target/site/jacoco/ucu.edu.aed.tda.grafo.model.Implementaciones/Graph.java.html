@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Graph.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aed-2026-s1</a> &gt; <a href="index.source.html" class="el_package">ucu.edu.aed.tda.grafo.model.Implementaciones</a> &gt; <span class="el_source">Graph.java</span></div><h1>Graph.java</h1><pre class="source lang-java linenums">package ucu.edu.aed.tda.grafo.model.Implementaciones;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+
+import ucu.edu.aed.tda.grafo.model.IGraph;
+import ucu.edu.aed.tda.grafo.model.edge.DirectedEdge;
+import ucu.edu.aed.tda.grafo.model.edge.Edge;
+
+public abstract class Graph&lt;V, D&gt; implements IGraph&lt;V, D&gt; {
+
+    protected Set&lt;V&gt; vertices;
+    protected Set&lt;Edge&lt;V, D&gt;&gt; aristas;
+    protected Map&lt;V, Set&lt;Edge&lt;V, D&gt;&gt;&gt; adyacencias;
+
+<span class="fc" id="L24">    public Graph(Set&lt;V&gt; vertices, Set&lt;Edge&lt;V, D&gt;&gt; aristas, Map&lt;V, Set&lt;Edge&lt;V, D&gt;&gt;&gt; adyacencias) {</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        this.vertices = vertices != null ? vertices : new LinkedHashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        this.aristas = aristas != null ? aristas : new LinkedHashSet&lt;&gt;();</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        this.adyacencias = adyacencias != null ? adyacencias : new HashMap&lt;&gt;();</span>
+
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        for (V v : this.vertices) {</span>
+<span class="fc" id="L30">            this.adyacencias.putIfAbsent(v, new LinkedHashSet&lt;&gt;());</span>
+<span class="fc" id="L31">        }</span>
+
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        for (Edge&lt;V, D&gt; edge : this.aristas) {</span>
+<span class="fc" id="L34">            this.adyacencias.putIfAbsent(edge.source(), new LinkedHashSet&lt;&gt;());</span>
+<span class="fc" id="L35">            this.adyacencias.get(edge.source()).add(edge);</span>
+<span class="fc" id="L36">        }</span>
+<span class="fc" id="L37">    }</span>
+
+    @Override
+    public boolean agregarVertice(V vertex) {
+<span class="fc" id="L41">        boolean agregado = vertices.add(vertex);</span>
+
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (agregado) {</span>
+<span class="fc" id="L44">            adyacencias.putIfAbsent(vertex, new LinkedHashSet&lt;&gt;());</span>
+        }
+
+<span class="fc" id="L47">        return agregado;</span>
+    }
+
+    @Override
+    public V buscarVertice(Comparable&lt;V&gt; criterio) {
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (criterio == null) {</span>
+<span class="fc" id="L53">            return null;</span>
+        }
+
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        for (V v : vertices) {</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">            if (criterio.compareTo(v) == 0) {</span>
+<span class="fc" id="L58">                return v;</span>
+            }
+<span class="fc" id="L60">        }</span>
+
+<span class="fc" id="L62">        return null;</span>
+    }
+
+    @Override
+    public boolean agregarArista(V source, V target, D dato) {
+<span class="fc bfc" id="L67" title="All 4 branches covered.">        if (!vertices.contains(source) || !vertices.contains(target)) {</span>
+<span class="fc" id="L68">            throw new IllegalArgumentException(&quot;Source and target vertices must be in the graph.&quot;);</span>
+        }
+
+<span class="fc" id="L71">        Edge&lt;V, D&gt; nuevaArista = new DirectedEdge&lt;&gt;(source, target, dato);</span>
+
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (aristas.add(nuevaArista)) {</span>
+<span class="fc" id="L74">            adyacencias.putIfAbsent(source, new LinkedHashSet&lt;&gt;());</span>
+<span class="fc" id="L75">            adyacencias.get(source).add(nuevaArista);</span>
+<span class="fc" id="L76">            return true;</span>
+        }
+
+<span class="fc" id="L79">        return false;</span>
+    }
+
+    @Override
+    public boolean eliminarArista(Comparable&lt;V&gt; source, Comparable&lt;V&gt; target) {
+<span class="fc" id="L84">        Edge&lt;V, D&gt; edge = obtenerArista(source, target);</span>
+
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (edge == null) {</span>
+<span class="fc" id="L87">            return false;</span>
+        }
+
+<span class="fc" id="L90">        aristas.remove(edge);</span>
+
+<span class="fc" id="L92">        Set&lt;Edge&lt;V, D&gt;&gt; conjunto = adyacencias.get(edge.source());</span>
+
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (conjunto != null) {</span>
+<span class="fc" id="L95">            conjunto.remove(edge);</span>
+        }
+
+<span class="fc" id="L98">        return true;</span>
+    }
+
+    @Override
+    public boolean removerVertice(Comparable&lt;V&gt; criteria) {
+<span class="fc" id="L103">        V v = buscarVertice(criteria);</span>
+
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (v == null) {</span>
+<span class="fc" id="L106">            return false;</span>
+        }
+
+<span class="fc" id="L109">        vertices.remove(v);</span>
+
+<span class="pc bpc" id="L111" title="1 of 4 branches missed.">        aristas.removeIf(e -&gt; e.source().equals(v) || e.target().equals(v));</span>
+
+<span class="fc" id="L113">        adyacencias.remove(v);</span>
+
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        for (Set&lt;Edge&lt;V, D&gt;&gt; conjunto : adyacencias.values()) {</span>
+<span class="pc bpc" id="L116" title="2 of 4 branches missed.">            conjunto.removeIf(e -&gt; e.source().equals(v) || e.target().equals(v));</span>
+<span class="fc" id="L117">        }</span>
+
+<span class="fc" id="L119">        return true;</span>
+    }
+
+    @Override
+    public Set&lt;V&gt; vertices() {
+<span class="fc" id="L124">        return Collections.unmodifiableSet(vertices);</span>
+    }
+
+    @Override
+    public Set&lt;Edge&lt;V, D&gt;&gt; aristas() {
+<span class="fc" id="L129">        return Collections.unmodifiableSet(aristas);</span>
+    }
+
+    @Override
+    public boolean existeArista(Comparable&lt;V&gt; sourceCriteria, Comparable&lt;V&gt; targetCriteria) {
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        return obtenerArista(sourceCriteria, targetCriteria) != null;</span>
+    }
+
+    @Override
+    public Edge&lt;V, D&gt; obtenerArista(Comparable&lt;V&gt; sourceCriteria, Comparable&lt;V&gt; targetCriteria) {
+<span class="fc bfc" id="L139" title="All 4 branches covered.">        if (sourceCriteria == null || targetCriteria == null) {</span>
+<span class="fc" id="L140">            return null;</span>
+        }
+
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        for (Edge&lt;V, D&gt; edge : aristas) {</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">            if (sourceCriteria.compareTo(edge.source()) == 0</span>
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">                    &amp;&amp; targetCriteria.compareTo(edge.target()) == 0) {</span>
+<span class="fc" id="L146">                return edge;</span>
+            }
+<span class="fc" id="L148">        }</span>
+
+<span class="fc" id="L150">        return null;</span>
+    }
+
+    @Override
+    public List&lt;Edge&lt;V, D&gt;&gt; adyacencias(Comparable&lt;V&gt; verticeCriteria) {
+<span class="fc" id="L155">        V vertice = buscarVertice(verticeCriteria);</span>
+
+<span class="fc bfc" id="L157" title="All 2 branches covered.">        if (vertice == null) {</span>
+<span class="fc" id="L158">            return new ArrayList&lt;&gt;();</span>
+        }
+
+<span class="fc" id="L161">        Set&lt;Edge&lt;V, D&gt;&gt; conjunto = adyacencias.get(vertice);</span>
+
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        if (conjunto == null) {</span>
+<span class="nc" id="L164">            return new ArrayList&lt;&gt;();</span>
+        }
+
+<span class="fc" id="L167">        return new ArrayList&lt;&gt;(conjunto);</span>
+    }
+
+    @Override
+    public boolean esConexo() {
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        if (vertices.isEmpty()) {</span>
+<span class="fc" id="L173">            return true;</span>
+        }
+
+<span class="fc" id="L176">        Set&lt;V&gt; visitados = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L177">        Queue&lt;V&gt; cola = new ArrayDeque&lt;&gt;();</span>
+
+<span class="fc" id="L179">        V inicio = vertices.iterator().next();</span>
+
+<span class="fc" id="L181">        visitados.add(inicio);</span>
+<span class="fc" id="L182">        cola.add(inicio);</span>
+
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        while (!cola.isEmpty()) {</span>
+<span class="fc" id="L185">            V actual = cola.poll();</span>
+
+<span class="fc bfc" id="L187" title="All 2 branches covered.">            for (Edge&lt;V, D&gt; edge : adyacencias(construirComparable(actual))) {</span>
+<span class="fc" id="L188">                V vecino = edge.target();</span>
+
+<span class="fc bfc" id="L190" title="All 2 branches covered.">                if (!visitados.contains(vecino)) {</span>
+<span class="fc" id="L191">                    visitados.add(vecino);</span>
+<span class="fc" id="L192">                    cola.add(vecino);</span>
+                }
+<span class="fc" id="L194">            }</span>
+<span class="fc" id="L195">        }</span>
+
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        return visitados.size() == vertices.size();</span>
+    }
+
+    @Override
+    public void vaciar() {
+<span class="fc" id="L202">        vertices.clear();</span>
+<span class="fc" id="L203">        aristas.clear();</span>
+<span class="fc" id="L204">        adyacencias.clear();</span>
+<span class="fc" id="L205">    }</span>
+
+    @Override
+    public boolean tieneCiclos() {
+<span class="fc" id="L209">        Set&lt;V&gt; visitados = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L210">        Set&lt;V&gt; enRecursion = new HashSet&lt;&gt;();</span>
+
+<span class="fc bfc" id="L212" title="All 2 branches covered.">        for (V v : vertices) {</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">            if (!visitados.contains(v)) {</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">                if (dfsCiclo(v, visitados, enRecursion)) {</span>
+<span class="fc" id="L215">                    return true;</span>
+                }
+            }
+<span class="fc" id="L218">        }</span>
+
+<span class="fc" id="L220">        return false;</span>
+    }
+
+    private boolean dfsCiclo(V vertex, Set&lt;V&gt; visitados, Set&lt;V&gt; enRecursion) {
+<span class="fc bfc" id="L224" title="All 2 branches covered.">        if (enRecursion.contains(vertex)) {</span>
+<span class="fc" id="L225">            return true;</span>
+        }
+
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">        if (visitados.contains(vertex)) {</span>
+<span class="nc" id="L229">            return false;</span>
+        }
+
+<span class="fc" id="L232">        visitados.add(vertex);</span>
+<span class="fc" id="L233">        enRecursion.add(vertex);</span>
+
+<span class="fc bfc" id="L235" title="All 2 branches covered.">        for (Edge&lt;V, D&gt; edge : adyacencias(construirComparable(vertex))) {</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">            if (dfsCiclo(edge.target(), visitados, enRecursion)) {</span>
+<span class="fc" id="L237">                return true;</span>
+            }
+<span class="fc" id="L239">        }</span>
+
+<span class="fc" id="L241">        enRecursion.remove(vertex);</span>
+
+<span class="fc" id="L243">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

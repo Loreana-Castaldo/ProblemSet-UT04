@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IGraph.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aed-2026-s1</a> &gt; <a href="index.source.html" class="el_package">ucu.edu.aed.tda.grafo.model</a> &gt; <span class="el_source">IGraph.java</span></div><h1>IGraph.java</h1><pre class="source lang-java linenums">package ucu.edu.aed.tda.grafo.model;
+
+
+import ucu.edu.aed.tda.grafo.model.edge.Edge;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * Modela un grafo, donde los vértices son del tipo V, y las aristas guardan el dato D
+ */
+public interface IGraph&lt;V, D&gt; {
+    /**
+     * Agrega un vértice, y retorna true si efectivamente lo agrega
+     */
+    boolean agregarVertice(V vertex);
+
+    /**
+     * Operación &quot;Bulk&quot;,  agrega muchos vértices en la misma llamada
+     */
+    default void agregarVertices(Collection&lt;V&gt; vertices) {
+<span class="nc" id="L23">        vertices.forEach(this::agregarVertice);</span>
+<span class="nc" id="L24">    }</span>
+
+
+    V buscarVertice(Comparable&lt;V&gt; criterio);
+
+    /**
+     * Agrega una arista al grafo, indicando con un booleano si la agregó
+     */
+    boolean agregarArista(V source, V target, D dato);
+
+    /**
+     * Elimina una arista del grafo
+     */
+    boolean eliminarArista(Comparable&lt;V&gt; source, Comparable&lt;V&gt; target);
+
+    /**
+     * remueve un vértice del grafo, retorna true si el vértice fue efectivamente removido
+     */
+    boolean removerVertice(Comparable&lt;V&gt; criteria);
+
+    /**
+     * Conjunto de vértices (preferible devolver vista inmodificable).
+     */
+    Set&lt;V&gt; vertices();
+
+    /**
+     * Conjunto de aristas (preferible vista inmodificable).
+     */
+    Set&lt;Edge&lt;V, D&gt;&gt; aristas();
+
+    /**
+     * ¿Existe el vértice v?
+     */
+    default boolean existeVertice(Comparable&lt;V&gt; criterio) {
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        return vertices().stream().anyMatch(x -&gt; criterio.compareTo(x) == 0);</span>
+    }
+
+    /**
+     * ¿Existe la arista (u -&gt; v) en un grafo dirigido o (u,v) en uno no dirigido?
+     */
+    boolean existeArista(Comparable&lt;V&gt; sourceCriteria, Comparable&lt;V&gt; targetCriteria);
+
+    /**
+     * Retorna una arista que tiene un origen y destino source y target respectivamente
+     */
+    Edge&lt;V, D&gt; obtenerArista(Comparable&lt;V&gt; sourceCriteria, Comparable&lt;V&gt; targetCriteria);
+
+    default Edge&lt;V, D&gt; obtenerArista(V sourceCriteria, V targetCriteria) {
+<span class="nc" id="L72">        return obtenerArista(construirComparable(sourceCriteria), construirComparable(targetCriteria));</span>
+    }
+
+    /**
+     * Retorna todas las aristas que el vertex tiene como adyacentes.
+     * En caso de que sea un grafo no dirigido, el método &quot;source()&quot;
+     * referencia al vértice &quot;verticeCriteria&quot;
+     */
+    List&lt;Edge&lt;V, D&gt;&gt; adyacencias(Comparable&lt;V&gt; verticeCriteria);
+
+    /**
+     * Retorna la cantidad de vértices
+     */
+    default int cantidadDeVertices() {
+<span class="fc" id="L86">        return vertices().size();</span>
+    }
+
+    /**
+     * Retorna la cantidad de artists
+     */
+    default int cantidadDeAristas() {
+<span class="fc" id="L93">        return aristas().size();</span>
+    }
+
+    /**
+     * Retorna true si el grafo es conexo
+     */
+    boolean esConexo();
+
+    /**
+     * vacía el grafo
+     */
+    void vaciar();
+
+
+    /**
+     * retorna true si el grafo tiene ciclos
+     */
+    boolean tieneCiclos();
+
+
+    /** método utilitario para construir un comparable de un vértice cualquier utilizando equals */
+    default Comparable&lt;V&gt; construirComparable(V vertice) {
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        return x -&gt; x.equals(vertice) ? 0 : 1;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

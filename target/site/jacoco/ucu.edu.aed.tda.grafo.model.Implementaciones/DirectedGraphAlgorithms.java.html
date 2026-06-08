@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DirectedGraphAlgorithms.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aed-2026-s1</a> &gt; <a href="index.source.html" class="el_package">ucu.edu.aed.tda.grafo.model.Implementaciones</a> &gt; <span class="el_source">DirectedGraphAlgorithms.java</span></div><h1>DirectedGraphAlgorithms.java</h1><pre class="source lang-java linenums">package ucu.edu.aed.tda.grafo.model.Implementaciones;
+
+import java.util.AbstractMap;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Set;
+import java.util.function.Consumer;
+
+import ucu.edu.aed.tda.grafo.IDirectedGraphAlgorithms;
+import ucu.edu.aed.tda.grafo.IDirectedIGraph;
+import ucu.edu.aed.tda.grafo.model.IGraph;
+import ucu.edu.aed.tda.grafo.model.edge.Edge;
+import ucu.edu.aed.tda.grafo.model.edge.WeightedEdge;
+import ucu.edu.aed.tda.grafo.model.result.CriticalPathResult;
+import ucu.edu.aed.tda.grafo.model.result.ICriticalPathResult;
+import ucu.edu.aed.tda.grafo.model.result.IDijkstraResult;
+import ucu.edu.aed.tda.grafo.model.result.IFloydWarshallResult;
+import ucu.edu.aed.tda.grafo.model.result.Path;
+
+<span class="fc" id="L26">public class DirectedGraphAlgorithms implements IDirectedGraphAlgorithms {</span>
+
+    @Override
+    public &lt;V, D extends WeightedEdge&gt; IDijkstraResult&lt;V&gt; dijkstra(
+            Comparable&lt;V&gt; source,
+            IDirectedIGraph&lt;V, D&gt; grafo) {
+
+<span class="fc" id="L33">        V origen = grafo.buscarVertice(source);</span>
+
+<span class="fc" id="L35">        Map&lt;V, Double&gt; distancias = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L36">        Map&lt;V, V&gt; anteriores = new HashMap&lt;&gt;();</span>
+
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (V vertice : grafo.vertices()) {</span>
+<span class="fc" id="L39">            distancias.put(vertice, Double.POSITIVE_INFINITY);</span>
+<span class="fc" id="L40">            anteriores.put(vertice, null);</span>
+<span class="fc" id="L41">        }</span>
+
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (origen == null) {</span>
+<span class="fc" id="L44">            return new DijkstraResult&lt;&gt;(null, distancias, anteriores);</span>
+        }
+
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        for (Edge&lt;V, D&gt; arista : grafo.aristas()) {</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">            if (arista.dato().getWeight() &lt; 0) {</span>
+<span class="fc" id="L49">                throw new IllegalArgumentException(&quot;Dijkstra no admite pesos negativos.&quot;);</span>
+            }
+<span class="fc" id="L51">        }</span>
+
+<span class="fc" id="L53">        distancias.put(origen, 0.0);</span>
+
+<span class="fc" id="L55">        PriorityQueue&lt;Map.Entry&lt;V, Double&gt;&gt; cola = new PriorityQueue&lt;&gt;(</span>
+<span class="fc" id="L56">                (a, b) -&gt; Double.compare(a.getValue(), b.getValue())</span>
+        );
+
+<span class="fc" id="L59">        cola.add(new AbstractMap.SimpleEntry&lt;&gt;(origen, 0.0));</span>
+
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        while (!cola.isEmpty()) {</span>
+<span class="fc" id="L62">            Map.Entry&lt;V, Double&gt; entrada = cola.poll();</span>
+
+<span class="fc" id="L64">            V actual = entrada.getKey();</span>
+<span class="fc" id="L65">            double costoActual = entrada.getValue();</span>
+
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            if (costoActual &gt; distancias.get(actual)) {</span>
+<span class="fc" id="L68">                continue;</span>
+            }
+
+<span class="fc bfc" id="L71" title="All 2 branches covered.">            for (Edge&lt;V, D&gt; arista : grafo.adyacencias(grafo.construirComparable(actual))) {</span>
+<span class="fc" id="L72">                V vecino = arista.target();</span>
+<span class="fc" id="L73">                double nuevoCosto = distancias.get(actual) + arista.dato().getWeight();</span>
+
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">                if (nuevoCosto &lt; distancias.getOrDefault(vecino, Double.POSITIVE_INFINITY)) {</span>
+<span class="fc" id="L76">                    distancias.put(vecino, nuevoCosto);</span>
+<span class="fc" id="L77">                    anteriores.put(vecino, actual);</span>
+<span class="fc" id="L78">                    cola.add(new AbstractMap.SimpleEntry&lt;&gt;(vecino, nuevoCosto));</span>
+                }
+<span class="fc" id="L80">            }</span>
+<span class="fc" id="L81">        }</span>
+
+<span class="fc" id="L83">        return new DijkstraResult&lt;&gt;(origen, distancias, anteriores);</span>
+    }
+
+    @Override
+    public &lt;V, D extends WeightedEdge&gt; IFloydWarshallResult&lt;V&gt; floyd(IDirectedIGraph&lt;V, D&gt; grafo) {
+<span class="fc" id="L88">        List&lt;V&gt; vertices = new ArrayList&lt;&gt;(grafo.vertices());</span>
+<span class="fc" id="L89">        Map&lt;V, Integer&gt; indices = new HashMap&lt;&gt;();</span>
+
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (int i = 0; i &lt; vertices.size(); i++) {</span>
+<span class="fc" id="L92">            indices.put(vertices.get(i), i);</span>
+        }
+
+<span class="fc" id="L95">        int n = vertices.size();</span>
+
+<span class="fc" id="L97">        double[][] costos = new double[n][n];</span>
+<span class="fc" id="L98">        Integer[][] next = new Integer[n][n];</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        for (int i = 0; i &lt; n; i++) {</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">            for (int j = 0; j &lt; n; j++) {</span>
+<span class="fc" id="L102">                costos[i][j] = Double.POSITIVE_INFINITY;</span>
+            }
+
+<span class="fc" id="L105">            costos[i][i] = 0.0;</span>
+<span class="fc" id="L106">            next[i][i] = i;</span>
+        }
+
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        for (Edge&lt;V, D&gt; arista : grafo.aristas()) {</span>
+<span class="fc" id="L110">            Integer i = indices.get(arista.source());</span>
+<span class="fc" id="L111">            Integer j = indices.get(arista.target());</span>
+
+<span class="pc bpc" id="L113" title="2 of 4 branches missed.">            if (i != null &amp;&amp; j != null) {</span>
+<span class="fc" id="L114">                double peso = arista.dato().getWeight();</span>
+
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">                if (peso &lt; costos[i][j]) {</span>
+<span class="fc" id="L117">                    costos[i][j] = peso;</span>
+<span class="fc" id="L118">                    next[i][j] = j;</span>
+                }
+            }
+<span class="fc" id="L121">        }</span>
+
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        for (int k = 0; k &lt; n; k++) {</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">            for (int i = 0; i &lt; n; i++) {</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">                if (Double.isInfinite(costos[i][k])) {</span>
+<span class="fc" id="L126">                    continue;</span>
+                }
+
+<span class="fc bfc" id="L129" title="All 2 branches covered.">                for (int j = 0; j &lt; n; j++) {</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">                    if (Double.isInfinite(costos[k][j])) {</span>
+<span class="fc" id="L131">                        continue;</span>
+                    }
+
+<span class="fc" id="L134">                    double nuevoCosto = costos[i][k] + costos[k][j];</span>
+
+<span class="fc bfc" id="L136" title="All 2 branches covered.">                    if (nuevoCosto &lt; costos[i][j]) {</span>
+<span class="fc" id="L137">                        costos[i][j] = nuevoCosto;</span>
+<span class="fc" id="L138">                        next[i][j] = next[i][k];</span>
+                    }
+                }
+            }
+        }
+
+<span class="fc" id="L144">        return new FloydWarshallResult&lt;&gt;(vertices, indices, costos, next);</span>
+    }
+
+    @Override
+    public &lt;V, D extends WeightedEdge&gt; IFloydWarshallResult&lt;V&gt; warshall(IDirectedIGraph&lt;V, D&gt; grafo) {
+<span class="fc" id="L149">        List&lt;V&gt; vertices = new ArrayList&lt;&gt;(grafo.vertices());</span>
+<span class="fc" id="L150">        Map&lt;V, Integer&gt; indices = new HashMap&lt;&gt;();</span>
+
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        for (int i = 0; i &lt; vertices.size(); i++) {</span>
+<span class="fc" id="L153">            indices.put(vertices.get(i), i);</span>
+        }
+
+<span class="fc" id="L156">        int n = vertices.size();</span>
+
+<span class="fc" id="L158">        boolean[][] alcanzable = new boolean[n][n];</span>
+<span class="fc" id="L159">        Integer[][] next = new Integer[n][n];</span>
+
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        for (int i = 0; i &lt; n; i++) {</span>
+<span class="fc" id="L162">            alcanzable[i][i] = true;</span>
+<span class="fc" id="L163">            next[i][i] = i;</span>
+        }
+
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        for (Edge&lt;V, D&gt; arista : grafo.aristas()) {</span>
+<span class="fc" id="L167">            Integer i = indices.get(arista.source());</span>
+<span class="fc" id="L168">            Integer j = indices.get(arista.target());</span>
+
+<span class="pc bpc" id="L170" title="2 of 4 branches missed.">            if (i != null &amp;&amp; j != null) {</span>
+<span class="fc" id="L171">                alcanzable[i][j] = true;</span>
+<span class="fc" id="L172">                next[i][j] = j;</span>
+            }
+<span class="fc" id="L174">        }</span>
+
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        for (int k = 0; k &lt; n; k++) {</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">            for (int i = 0; i &lt; n; i++) {</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">                if (!alcanzable[i][k]) {</span>
+<span class="fc" id="L179">                    continue;</span>
+                }
+
+<span class="fc bfc" id="L182" title="All 2 branches covered.">                for (int j = 0; j &lt; n; j++) {</span>
+<span class="fc bfc" id="L183" title="All 4 branches covered.">                    if (!alcanzable[i][j] &amp;&amp; alcanzable[k][j]) {</span>
+<span class="fc" id="L184">                        alcanzable[i][j] = true;</span>
+<span class="fc" id="L185">                        next[i][j] = next[i][k];</span>
+                    }
+                }
+            }
+        }
+
+<span class="fc" id="L191">        double[][] costos = new double[n][n];</span>
+
+<span class="fc bfc" id="L193" title="All 2 branches covered.">        for (int i = 0; i &lt; n; i++) {</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">            for (int j = 0; j &lt; n; j++) {</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">                costos[i][j] = alcanzable[i][j] ? 0.0 : Double.POSITIVE_INFINITY;</span>
+            }
+        }
+
+<span class="fc" id="L199">        return new FloydWarshallResult&lt;&gt;(vertices, indices, costos, next);</span>
+    }
+
+    @Override
+    public &lt;V, D extends WeightedEdge&gt; V obtenerCentroGrafo(IDirectedIGraph&lt;V, D&gt; grafo) {
+<span class="fc" id="L204">        IFloydWarshallResult&lt;V&gt; resultado = floyd(grafo);</span>
+
+<span class="fc" id="L206">        V centro = null;</span>
+<span class="fc" id="L207">        double menorExcentricidad = Double.POSITIVE_INFINITY;</span>
+
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        for (V origen : grafo.vertices()) {</span>
+<span class="fc" id="L210">            double excentricidad = 0.0;</span>
+
+<span class="fc bfc" id="L212" title="All 2 branches covered.">            for (V destino : grafo.vertices()) {</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">                if (!origen.equals(destino)) {</span>
+<span class="fc" id="L214">                    double costo = resultado.getCost(origen, destino);</span>
+
+<span class="fc bfc" id="L216" title="All 2 branches covered.">                    if (costo &gt; excentricidad) {</span>
+<span class="fc" id="L217">                        excentricidad = costo;</span>
+                    }
+                }
+<span class="fc" id="L220">            }</span>
+
+<span class="pc bpc" id="L222" title="1 of 4 branches missed.">            if (centro == null || excentricidad &lt; menorExcentricidad) {</span>
+<span class="fc" id="L223">                menorExcentricidad = excentricidad;</span>
+<span class="fc" id="L224">                centro = origen;</span>
+            }
+<span class="fc" id="L226">        }</span>
+
+<span class="fc" id="L228">        return centro;</span>
+    }
+
+    @Override
+    public &lt;V, D extends WeightedEdge&gt; double obtenerExcentricidad(
+            IDirectedIGraph&lt;V, D&gt; grafo,
+            Comparable&lt;V&gt; vertexCriteria) {
+
+<span class="fc" id="L236">        V origen = grafo.buscarVertice(vertexCriteria);</span>
+
+<span class="fc bfc" id="L238" title="All 2 branches covered.">        if (origen == null) {</span>
+<span class="fc" id="L239">            return Double.POSITIVE_INFINITY;</span>
+        }
+
+<span class="fc" id="L242">        IFloydWarshallResult&lt;V&gt; resultado = floyd(grafo);</span>
+
+<span class="fc" id="L244">        double excentricidad = 0.0;</span>
+
+<span class="fc bfc" id="L246" title="All 2 branches covered.">        for (V destino : grafo.vertices()) {</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">            if (!origen.equals(destino)) {</span>
+<span class="fc" id="L248">                double costo = resultado.getCost(origen, destino);</span>
+
+<span class="pc bpc" id="L250" title="1 of 2 branches missed.">                if (costo &gt; excentricidad) {</span>
+<span class="fc" id="L251">                    excentricidad = costo;</span>
+                }
+            }
+<span class="fc" id="L254">        }</span>
+
+<span class="fc" id="L256">        return excentricidad;</span>
+    }
+
+    @Override
+    public &lt;V, D extends WeightedEdge&gt; List&lt;Path&lt;V&gt;&gt; obtenerTodosLosCaminos(
+            Comparable&lt;V&gt; source,
+            Comparable&lt;V&gt; target,
+            IGraph&lt;V, D&gt; grafo) {
+
+<span class="fc" id="L265">        V origen = grafo.buscarVertice(source);</span>
+<span class="fc" id="L266">        V destino = grafo.buscarVertice(target);</span>
+
+<span class="fc" id="L268">        List&lt;Path&lt;V&gt;&gt; caminos = new ArrayList&lt;&gt;();</span>
+
+<span class="pc bpc" id="L270" title="1 of 4 branches missed.">        if (origen == null || destino == null) {</span>
+<span class="fc" id="L271">            return caminos;</span>
+        }
+
+<span class="fc" id="L274">        ArrayDeque&lt;List&lt;V&gt;&gt; pilaCaminos = new ArrayDeque&lt;&gt;();</span>
+<span class="fc" id="L275">        ArrayDeque&lt;Double&gt; pilaCostos = new ArrayDeque&lt;&gt;();</span>
+
+<span class="fc" id="L277">        List&lt;V&gt; caminoInicial = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L278">        caminoInicial.add(origen);</span>
+
+<span class="fc" id="L280">        pilaCaminos.push(caminoInicial);</span>
+<span class="fc" id="L281">        pilaCostos.push(0.0);</span>
+
+<span class="fc bfc" id="L283" title="All 2 branches covered.">        while (!pilaCaminos.isEmpty()) {</span>
+<span class="fc" id="L284">            List&lt;V&gt; caminoActual = pilaCaminos.pop();</span>
+<span class="fc" id="L285">            double costoActual = pilaCostos.pop();</span>
+
+<span class="fc" id="L287">            V ultimo = caminoActual.get(caminoActual.size() - 1);</span>
+
+<span class="fc bfc" id="L289" title="All 2 branches covered.">            if (ultimo.equals(destino)) {</span>
+<span class="fc" id="L290">                caminos.add(new Path&lt;&gt;(new ArrayList&lt;&gt;(caminoActual), costoActual));</span>
+            } else {
+<span class="fc bfc" id="L292" title="All 2 branches covered.">                for (Edge&lt;V, D&gt; arista : grafo.adyacencias(grafo.construirComparable(ultimo))) {</span>
+<span class="fc" id="L293">                    V vecino = arista.target();</span>
+
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">                    if (!caminoActual.contains(vecino)) {</span>
+<span class="fc" id="L296">                        List&lt;V&gt; nuevoCamino = new ArrayList&lt;&gt;(caminoActual);</span>
+<span class="fc" id="L297">                        nuevoCamino.add(vecino);</span>
+
+<span class="fc" id="L299">                        pilaCaminos.push(nuevoCamino);</span>
+<span class="fc" id="L300">                        pilaCostos.push(costoActual + arista.dato().getWeight());</span>
+                    }
+<span class="fc" id="L302">                }</span>
+            }
+<span class="fc" id="L304">        }</span>
+
+<span class="fc" id="L306">        return caminos;</span>
+    }
+
+    @Override
+    public &lt;V, D&gt; void recorridoEnProfundidad(
+            IGraph&lt;V, D&gt; grafo,
+            Comparable&lt;V&gt; sourceCriteria,
+            Consumer&lt;V&gt; consumer) {
+
+<span class="fc" id="L315">        V origen = grafo.buscarVertice(sourceCriteria);</span>
+
+<span class="fc bfc" id="L317" title="All 2 branches covered.">        if (origen == null) {</span>
+<span class="fc" id="L318">            return;</span>
+        }
+
+<span class="fc" id="L321">        Set&lt;V&gt; visitados = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L322">        ArrayDeque&lt;V&gt; pila = new ArrayDeque&lt;&gt;();</span>
+
+<span class="fc" id="L324">        pila.push(origen);</span>
+
+<span class="fc bfc" id="L326" title="All 2 branches covered.">        while (!pila.isEmpty()) {</span>
+<span class="fc" id="L327">            V actual = pila.pop();</span>
+
+<span class="pc bpc" id="L329" title="1 of 2 branches missed.">            if (visitados.contains(actual)) {</span>
+<span class="nc" id="L330">                continue;</span>
+            }
+
+<span class="fc" id="L333">            visitados.add(actual);</span>
+<span class="fc" id="L334">            consumer.accept(actual);</span>
+
+<span class="fc" id="L336">            List&lt;Edge&lt;V, D&gt;&gt; adyacentes = grafo.adyacencias(grafo.construirComparable(actual));</span>
+
+<span class="fc bfc" id="L338" title="All 2 branches covered.">            for (int i = adyacentes.size() - 1; i &gt;= 0; i--) {</span>
+<span class="fc" id="L339">                V vecino = adyacentes.get(i).target();</span>
+
+<span class="fc bfc" id="L341" title="All 2 branches covered.">                if (!visitados.contains(vecino)) {</span>
+<span class="fc" id="L342">                    pila.push(vecino);</span>
+                }
+            }
+<span class="fc" id="L345">        }</span>
+<span class="fc" id="L346">    }</span>
+
+    @Override
+    public &lt;V, D&gt; void recorridoEnAmplitud(
+            IGraph&lt;V, D&gt; grafo,
+            Comparable&lt;V&gt; sourceCriteria,
+            Consumer&lt;V&gt; consumer) {
+
+<span class="fc" id="L354">        V origen = grafo.buscarVertice(sourceCriteria);</span>
+
+<span class="fc bfc" id="L356" title="All 2 branches covered.">        if (origen == null) {</span>
+<span class="fc" id="L357">            return;</span>
+        }
+
+<span class="fc" id="L360">        Set&lt;V&gt; visitados = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L361">        Queue&lt;V&gt; cola = new ArrayDeque&lt;&gt;();</span>
+
+<span class="fc" id="L363">        visitados.add(origen);</span>
+<span class="fc" id="L364">        cola.add(origen);</span>
+
+<span class="fc bfc" id="L366" title="All 2 branches covered.">        while (!cola.isEmpty()) {</span>
+<span class="fc" id="L367">            V actual = cola.poll();</span>
+<span class="fc" id="L368">            consumer.accept(actual);</span>
+
+<span class="fc bfc" id="L370" title="All 2 branches covered.">            for (Edge&lt;V, D&gt; arista : grafo.adyacencias(grafo.construirComparable(actual))) {</span>
+<span class="fc" id="L371">                V vecino = arista.target();</span>
+
+<span class="fc bfc" id="L373" title="All 2 branches covered.">                if (!visitados.contains(vecino)) {</span>
+<span class="fc" id="L374">                    visitados.add(vecino);</span>
+<span class="fc" id="L375">                    cola.add(vecino);</span>
+                }
+<span class="fc" id="L377">            }</span>
+<span class="fc" id="L378">        }</span>
+<span class="fc" id="L379">    }</span>
+
+    @Override
+    public &lt;V, D&gt; List&lt;V&gt; calcularClasificacionTopologica(IDirectedIGraph&lt;V, D&gt; grafo) {
+        /**
+         * ALGORITMO DE KAHN - Clasificación Topológica
+         * 
+         * Calcula un orden topológico de los vértices de un DAG (Directed Acyclic Graph).
+         * Útil para representar:
+         * - Sistemas de previaturas (requisitos previos de asignaturas)
+         * - Órdenes de ejecución de tareas en un proyecto
+         * - Dependencias de compilación
+         * 
+         * Complejidad: O(V + E) donde V = vértices, E = aristas
+         * 
+         * Pasos:
+         * 1. Calcular el grado de entrada de cada vértice
+         * 2. Encolar vértices sin dependencias (grado entrada = 0)
+         * 3. Procesar cola: 
+         *    - Sacar vértice, agregarlo al resultado
+         *    - Disminuir grado de entrada de sucesores
+         *    - Encolar sucesores que quedan sin dependencias
+         * 4. Si no se procesaron todos los vértices → hay ciclos
+         */
+        
+        // Paso 1: Inicializar grados de entrada
+<span class="fc" id="L405">        Map&lt;V, Integer&gt; gradoEntrada = new HashMap&lt;&gt;();</span>
+
+<span class="fc bfc" id="L407" title="All 2 branches covered.">        for (V vertice : grafo.vertices()) {</span>
+<span class="fc" id="L408">            gradoEntrada.put(vertice, 0);</span>
+<span class="fc" id="L409">        }</span>
+
+<span class="fc bfc" id="L411" title="All 2 branches covered.">        for (Edge&lt;V, D&gt; arista : grafo.aristas()) {</span>
+<span class="fc" id="L412">            V destino = arista.target();</span>
+<span class="fc" id="L413">            gradoEntrada.put(destino, gradoEntrada.getOrDefault(destino, 0) + 1);</span>
+<span class="fc" id="L414">        }</span>
+
+        // Paso 2: Encolar vértices sin dependencias
+<span class="fc" id="L417">        Queue&lt;V&gt; cola = new ArrayDeque&lt;&gt;();</span>
+
+<span class="fc bfc" id="L419" title="All 2 branches covered.">        for (V vertice : gradoEntrada.keySet()) {</span>
+<span class="fc bfc" id="L420" title="All 2 branches covered.">            if (gradoEntrada.get(vertice) == 0) {</span>
+<span class="fc" id="L421">                cola.add(vertice);</span>
+            }
+<span class="fc" id="L423">        }</span>
+
+        // Paso 3: Procesar la cola
+<span class="fc" id="L426">        List&lt;V&gt; resultado = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L428" title="All 2 branches covered.">        while (!cola.isEmpty()) {</span>
+<span class="fc" id="L429">            V actual = cola.poll();</span>
+<span class="fc" id="L430">            resultado.add(actual);</span>
+
+            // Para cada sucesor del vértice actual
+<span class="fc bfc" id="L433" title="All 2 branches covered.">            for (V sucesor : grafo.successors(grafo.construirComparable(actual))) {</span>
+<span class="fc" id="L434">                int nuevoGrado = gradoEntrada.get(sucesor) - 1;</span>
+<span class="fc" id="L435">                gradoEntrada.put(sucesor, nuevoGrado);</span>
+
+                // Si el sucesor queda sin dependencias, lo encolamos
+<span class="fc bfc" id="L438" title="All 2 branches covered.">                if (nuevoGrado == 0) {</span>
+<span class="fc" id="L439">                    cola.add(sucesor);</span>
+                }
+<span class="fc" id="L441">            }</span>
+<span class="fc" id="L442">        }</span>
+
+        // Paso 4: Verificar si hay ciclos
+<span class="fc bfc" id="L445" title="All 2 branches covered.">        if (resultado.size() != grafo.vertices().size()) {</span>
+<span class="fc" id="L446">            throw new IllegalStateException(&quot;El grafo tiene ciclos, no existe clasificación topológica.&quot;);</span>
+        }
+
+<span class="fc" id="L449">        return resultado;</span>
+    }
+
+    @Override
+    public &lt;V, D extends WeightedEdge&gt; ICriticalPathResult&lt;V&gt; calcularRutaCritica(
+            Comparable&lt;V&gt; source,
+            Comparable&lt;V&gt; target,
+            IDirectedIGraph&lt;V, D&gt; grafo) {
+
+<span class="nc" id="L458">        V origen = grafo.buscarVertice(source);</span>
+<span class="nc" id="L459">        V destino = grafo.buscarVertice(target);</span>
+
+<span class="nc bnc" id="L461" title="All 4 branches missed.">        if (origen == null || destino == null) {</span>
+<span class="nc" id="L462">            throw new IllegalArgumentException(&quot;Origen o destino no encontrados en el grafo&quot;);</span>
+        }
+
+        // Obtener todos los caminos posibles
+<span class="nc" id="L466">        List&lt;Path&lt;V&gt;&gt; todosCaminos = obtenerTodosLosCaminos(source, target, grafo);</span>
+
+<span class="nc bnc" id="L468" title="All 2 branches missed.">        if (todosCaminos.isEmpty()) {</span>
+<span class="nc" id="L469">            throw new IllegalStateException(&quot;No hay caminos entre &quot; + origen + &quot; y &quot; + destino);</span>
+        }
+
+        // Encontrar el camino crítico (el de mayor costo)
+<span class="nc" id="L473">        Path&lt;V&gt; caminoCritico = todosCaminos.get(0);</span>
+<span class="nc bnc" id="L474" title="All 2 branches missed.">        for (Path&lt;V&gt; camino : todosCaminos) {</span>
+<span class="nc bnc" id="L475" title="All 2 branches missed.">            if (camino.getCost() &gt; caminoCritico.getCost()) {</span>
+<span class="nc" id="L476">                caminoCritico = camino;</span>
+            }
+<span class="nc" id="L478">        }</span>
+
+        // Retornar resultado con todos los caminos y el crítico
+<span class="nc" id="L481">        return new CriticalPathResult&lt;&gt;(caminoCritico, todosCaminos, origen, destino);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

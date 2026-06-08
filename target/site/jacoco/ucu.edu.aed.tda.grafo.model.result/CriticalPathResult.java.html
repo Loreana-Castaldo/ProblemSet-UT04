@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CriticalPathResult.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aed-2026-s1</a> &gt; <a href="index.source.html" class="el_package">ucu.edu.aed.tda.grafo.model.result</a> &gt; <span class="el_source">CriticalPathResult.java</span></div><h1>CriticalPathResult.java</h1><pre class="source lang-java linenums">package ucu.edu.aed.tda.grafo.model.result;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Implementación de ICriticalPathResult que almacena el análisis del camino crítico.
+ */
+public class CriticalPathResult&lt;V&gt; implements ICriticalPathResult&lt;V&gt; {
+    
+    private final Path&lt;V&gt; criticalPath;
+    private final List&lt;Path&lt;V&gt;&gt; allPaths;
+    private final V source;
+    private final V target;
+
+<span class="nc" id="L16">    public CriticalPathResult(Path&lt;V&gt; criticalPath, List&lt;Path&lt;V&gt;&gt; allPaths, V source, V target) {</span>
+<span class="nc" id="L17">        this.criticalPath = criticalPath;</span>
+<span class="nc" id="L18">        this.allPaths = allPaths;</span>
+<span class="nc" id="L19">        this.source = source;</span>
+<span class="nc" id="L20">        this.target = target;</span>
+<span class="nc" id="L21">    }</span>
+
+    @Override
+    public Path&lt;V&gt; getCriticalPath() {
+<span class="nc" id="L25">        return criticalPath;</span>
+    }
+
+    @Override
+    public double getCriticalCost() {
+<span class="nc" id="L30">        return criticalPath.getCost();</span>
+    }
+
+    @Override
+    public List&lt;Path&lt;V&gt;&gt; getAllPaths() {
+<span class="nc" id="L35">        return new ArrayList&lt;&gt;(allPaths);</span>
+    }
+
+    @Override
+    public List&lt;PathWithSlack&lt;V&gt;&gt; getPathsWithSlack() {
+<span class="nc" id="L40">        List&lt;PathWithSlack&lt;V&gt;&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L41">        double criticalCost = getCriticalCost();</span>
+        
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        for (Path&lt;V&gt; path : allPaths) {</span>
+<span class="nc" id="L44">            double slack = criticalCost - path.getCost();</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">            boolean isCritical = slack == 0;</span>
+<span class="nc" id="L46">            result.add(new PathWithSlack&lt;&gt;(</span>
+<span class="nc" id="L47">                path.getPath(),</span>
+<span class="nc" id="L48">                path.getCost(),</span>
+                slack,
+                isCritical
+            ));
+<span class="nc" id="L52">        }</span>
+        
+<span class="nc" id="L54">        return result;</span>
+    }
+
+    @Override
+    public double getSlack(Path&lt;V&gt; path) {
+<span class="nc" id="L59">        return getCriticalCost() - path.getCost();</span>
+    }
+
+    @Override
+    public V getSource() {
+<span class="nc" id="L64">        return source;</span>
+    }
+
+    @Override
+    public V getTarget() {
+<span class="nc" id="L69">        return target;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
