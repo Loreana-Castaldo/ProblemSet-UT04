@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -133,6 +135,179 @@ public class UndirectedGraphAlgorithmTest extends TestCase {
         int cantidadAristasAntes = grafo.cantidadDeAristas();
 
         algoritmos.puntosDeArticulacion(grafo);
+
+        assertEquals(cantidadVerticesAntes, grafo.cantidadDeVertices());
+        assertEquals(cantidadAristasAntes, grafo.cantidadDeAristas());
+    }
+
+    public void testBeaConGrafoNullNoHaceNada() {
+        List<String> visitados = new ArrayList<>();
+
+        try {
+            algoritmos.bea(null, x -> visitados.add((String) x));
+        } catch (Exception e) {
+            fail("bea no debería lanzar excepción si el grafo es null");
+        }
+
+        assertTrue(visitados.isEmpty());
+    }
+
+    public void testBeaConConsumerNullNoHaceNada() {
+        UndirectedGraph<String, WeightedEdge> grafo = crearGrafoVacio();
+
+        agregarVertices(grafo, "A", "B");
+        grafo.agregarArista("A", "B", new WeightedEdge(1));
+
+        try {
+            algoritmos.bea(grafo, null);
+        } catch (Exception e) {
+            fail("bea no debería lanzar excepción si el consumer es null");
+        }
+    }
+
+    public void testBeaConGrafoVacioNoVisitaNada() {
+        UndirectedGraph<String, WeightedEdge> grafo = crearGrafoVacio();
+
+        List<String> visitados = new ArrayList<>();
+
+        algoritmos.bea(grafo, visitados::add);
+
+        assertTrue(visitados.isEmpty());
+    }
+
+    public void testBeaConUnSoloVerticeLoVisita() {
+        UndirectedGraph<String, WeightedEdge> grafo = crearGrafoVacio();
+
+        grafo.agregarVertice("A");
+
+        List<String> visitados = new ArrayList<>();
+
+        algoritmos.bea(grafo, visitados::add);
+
+        assertEquals(1, visitados.size());
+        assertEquals("A", visitados.get(0));
+    }
+
+    public void testBeaRecorreGrafoConexoEnAnchura() {
+        UndirectedGraph<String, WeightedEdge> grafo = crearGrafoVacio();
+
+        agregarVertices(grafo, "A", "B", "C", "D");
+
+        /*
+              A
+             / \
+            B   C
+            |
+            D
+
+            BEA esperado desde A:
+            A, B, C, D
+        */
+
+        grafo.agregarArista("A", "B", new WeightedEdge(1));
+        grafo.agregarArista("A", "C", new WeightedEdge(1));
+        grafo.agregarArista("B", "D", new WeightedEdge(1));
+
+        List<String> visitados = new ArrayList<>();
+
+        algoritmos.bea(grafo, visitados::add);
+
+        assertEquals(4, visitados.size());
+        assertEquals("A", visitados.get(0));
+        assertEquals("B", visitados.get(1));
+        assertEquals("C", visitados.get(2));
+        assertEquals("D", visitados.get(3));
+    }
+
+    public void testBeaNoRepiteVerticesEnGrafoConCiclo() {
+        UndirectedGraph<String, WeightedEdge> grafo = crearGrafoVacio();
+
+        agregarVertices(grafo, "A", "B", "C");
+
+        /*
+            A -- B
+             \  /
+              C
+        */
+
+        grafo.agregarArista("A", "B", new WeightedEdge(1));
+        grafo.agregarArista("B", "C", new WeightedEdge(1));
+        grafo.agregarArista("A", "C", new WeightedEdge(1));
+
+        List<String> visitados = new ArrayList<>();
+
+        algoritmos.bea(grafo, visitados::add);
+
+        assertEquals(3, visitados.size());
+        assertTrue(visitados.contains("A"));
+        assertTrue(visitados.contains("B"));
+        assertTrue(visitados.contains("C"));
+
+        assertEquals(visitados.size(), new HashSet<>(visitados).size());
+    }
+
+    public void testBeaRecorreTodasLasComponentesConexas() {
+        UndirectedGraph<String, WeightedEdge> grafo = crearGrafoVacio();
+
+        agregarVertices(grafo, "A", "B", "C", "D", "E");
+
+        /*
+            Componente 1:
+            A -- B -- C
+
+            Componente 2:
+            D -- E
+        */
+
+        grafo.agregarArista("A", "B", new WeightedEdge(1));
+        grafo.agregarArista("B", "C", new WeightedEdge(1));
+        grafo.agregarArista("D", "E", new WeightedEdge(1));
+
+        List<String> visitados = new ArrayList<>();
+
+        algoritmos.bea(grafo, visitados::add);
+
+        assertEquals(5, visitados.size());
+
+        assertTrue(visitados.contains("A"));
+        assertTrue(visitados.contains("B"));
+        assertTrue(visitados.contains("C"));
+        assertTrue(visitados.contains("D"));
+        assertTrue(visitados.contains("E"));
+
+        assertEquals(visitados.size(), new HashSet<>(visitados).size());
+    }
+
+    public void testBeaConVerticesAisladosLosVisitaTodos() {
+        UndirectedGraph<String, WeightedEdge> grafo = crearGrafoVacio();
+
+        agregarVertices(grafo, "A", "B", "C");
+
+        List<String> visitados = new ArrayList<>();
+
+        algoritmos.bea(grafo, visitados::add);
+
+        assertEquals(3, visitados.size());
+
+        assertTrue(visitados.contains("A"));
+        assertTrue(visitados.contains("B"));
+        assertTrue(visitados.contains("C"));
+
+        assertEquals(visitados.size(), new HashSet<>(visitados).size());
+    }
+
+    public void testBeaNoModificaCantidadDeVerticesNiAristas() {
+        UndirectedGraph<String, WeightedEdge> grafo = crearGrafoVacio();
+
+        agregarVertices(grafo, "A", "B", "C");
+
+        grafo.agregarArista("A", "B", new WeightedEdge(1));
+        grafo.agregarArista("B", "C", new WeightedEdge(1));
+
+        int cantidadVerticesAntes = grafo.cantidadDeVertices();
+        int cantidadAristasAntes = grafo.cantidadDeAristas();
+
+        algoritmos.bea(grafo, vertice -> { });
 
         assertEquals(cantidadVerticesAntes, grafo.cantidadDeVertices());
         assertEquals(cantidadAristasAntes, grafo.cantidadDeAristas());

@@ -6,30 +6,30 @@ public class UndirectedEdge&lt;V, D&gt; implements Edge&lt;V, D&gt; {
     private final V a, b;
     private final D dato;
 
-<span class="nc" id="L9">    public UndirectedEdge(V u, V v, D dato) {</span>
-<span class="nc" id="L10">        this.a = Objects.requireNonNull(u);</span>
-<span class="nc" id="L11">        this.b = Objects.requireNonNull(v);</span>
-<span class="nc" id="L12">        this.dato = dato;</span>
-<span class="nc" id="L13">    }</span>
-<span class="nc" id="L14">    public V source() { return a; }    // nombres “source/target” son nominales acá</span>
-<span class="nc" id="L15">    public V target() { return b; }</span>
-<span class="nc" id="L16">    public D dato()   { return dato; }</span>
+<span class="fc" id="L9">    public UndirectedEdge(V u, V v, D dato) {</span>
+<span class="fc" id="L10">        this.a = Objects.requireNonNull(u);</span>
+<span class="fc" id="L11">        this.b = Objects.requireNonNull(v);</span>
+<span class="fc" id="L12">        this.dato = dato;</span>
+<span class="fc" id="L13">    }</span>
+<span class="fc" id="L14">    public V source() { return a; }    // nombres “source/target” son nominales acá</span>
+<span class="fc" id="L15">    public V target() { return b; }</span>
+<span class="fc" id="L16">    public D dato()   { return dato; }</span>
 <span class="nc" id="L17">    public boolean directed() { return false; }</span>
 
     @Override public boolean equals(Object o) {
-<span class="nc bnc" id="L20" title="All 2 branches missed.">        if (this == o) return true;</span>
-<span class="nc bnc" id="L21" title="All 2 branches missed.">        if (!(o instanceof UndirectedEdge&lt;?, ?&gt; e)) return false;</span>
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L21" title="1 of 2 branches missed.">        if (!(o instanceof UndirectedEdge&lt;?, ?&gt; e)) return false;</span>
         // Simétrico: (a,b) == (b,a)
-<span class="nc bnc" id="L23" title="All 4 branches missed.">        return (Objects.equals(a, e.a) &amp;&amp; Objects.equals(b, e.b))</span>
-<span class="nc bnc" id="L24" title="All 4 branches missed.">            || (Objects.equals(a, e.b) &amp;&amp; Objects.equals(b, e.a));</span>
+<span class="pc bpc" id="L23" title="1 of 4 branches missed.">        return (Objects.equals(a, e.a) &amp;&amp; Objects.equals(b, e.b))</span>
+<span class="pc bpc" id="L24" title="1 of 4 branches missed.">            || (Objects.equals(a, e.b) &amp;&amp; Objects.equals(b, e.a));</span>
     }
 
     @Override public int hashCode() {
         // Orden-insensible: combinar sin dirección
-<span class="nc" id="L29">        int h1 = Objects.hashCode(a);</span>
-<span class="nc" id="L30">        int h2 = Objects.hashCode(b);</span>
+<span class="fc" id="L29">        int h1 = Objects.hashCode(a);</span>
+<span class="fc" id="L30">        int h2 = Objects.hashCode(b);</span>
         // Suma + XOR es una combinación clásica para pares no ordenados
-<span class="nc" id="L32">        return (h1 ^ h2) + (h1 + h2);</span>
+<span class="fc" id="L32">        return (h1 ^ h2) + (h1 + h2);</span>
     }
 
     @Override public String toString() {

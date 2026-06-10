@@ -10,8 +10,12 @@ import java.util.Map;
 import java.util.Set;
 
 import ucu.edu.aed.tda.grafo.IDirectedGraphAlgorithms;
+import ucu.edu.aed.tda.grafo.IUndirectedGraphAlgorithm;
 import ucu.edu.aed.tda.grafo.model.Implementaciones.DirectedGraph;
 import ucu.edu.aed.tda.grafo.model.Implementaciones.DirectedGraphAlgorithms;
+import ucu.edu.aed.tda.grafo.model.Implementaciones.UndirectedGraph;
+import ucu.edu.aed.tda.grafo.model.Implementaciones.UndirectedGraphAlgorithm;
+import ucu.edu.aed.tda.grafo.model.edge.DirectedEdge;
 import ucu.edu.aed.tda.grafo.model.edge.Edge;
 import ucu.edu.aed.tda.grafo.model.edge.WeightedEdge;
 import ucu.edu.aed.tda.grafo.model.result.ICriticalPathResult;
@@ -20,440 +24,475 @@ import ucu.edu.aed.tda.grafo.model.result.IFloydWarshallResult;
 import ucu.edu.aed.tda.grafo.model.result.Path;
 import ucu.edu.aed.tda.grafo.model.result.PathWithSlack;
 
-<span class="nc" id="L23">public class Main  {</span>
+<span class="nc" id="L27">public class Main {</span>
 
     public static void main(String[] args) {
 
-<span class="nc" id="L27">        System.out.println(&quot;=== VERIFICACION DE CICLOS CON ARCHIVOS ===\n&quot;);</span>
-        
+<span class="nc" id="L31">        System.out.println(&quot;=== VERIFICACION DE CICLOS CON ARCHIVOS ===\n&quot;);</span>
+
         // Cargar datos desde archivos
-<span class="nc" id="L30">        DirectedGraph&lt;String, WeightedEdge&gt; grafo = cargarGrafoDesdeArchivos(</span>
-            &quot;aeropuertos_2.txt&quot;,
-            &quot;conexiones_2.txt&quot;
-        );
-        
-<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (grafo != null) {</span>
-<span class="nc" id="L36">            System.out.println(&quot;Vertices cargados:&quot;);</span>
-<span class="nc" id="L37">            System.out.println(grafo.vertices());</span>
-            
-<span class="nc" id="L39">            System.out.println(&quot;\nAristas cargadas:&quot;);</span>
-<span class="nc bnc" id="L40" title="All 2 branches missed.">            for (Edge&lt;String, WeightedEdge&gt; arista : grafo.aristas()) {</span>
-<span class="nc" id="L41">                System.out.println(arista);</span>
-<span class="nc" id="L42">            }</span>
-            
-<span class="nc" id="L44">            System.out.println(&quot;\n¿El grafo tiene ciclos? &quot; + grafo.tieneCiclos());</span>
-<span class="nc" id="L45">            System.out.println();</span>
-            
+<span class="nc" id="L34">        DirectedGraph&lt;String, WeightedEdge&gt; grafo = cargarGrafoDesdeArchivos(</span>
+                &quot;aeropuertos_2.txt&quot;,
+                &quot;conexiones_2.txt&quot;);
+
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (grafo != null) {</span>
+<span class="nc" id="L39">            System.out.println(&quot;Vertices cargados:&quot;);</span>
+<span class="nc" id="L40">            System.out.println(grafo.vertices());</span>
+
+<span class="nc" id="L42">            System.out.println(&quot;\nAristas cargadas:&quot;);</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">            for (Edge&lt;String, WeightedEdge&gt; arista : grafo.aristas()) {</span>
+<span class="nc" id="L44">                System.out.println(arista);</span>
+<span class="nc" id="L45">            }</span>
+
+<span class="nc" id="L47">            System.out.println(&quot;\n¿El grafo tiene ciclos? &quot; + grafo.tieneCiclos());</span>
+<span class="nc" id="L48">            System.out.println();</span>
+
             // Demostración de ruta crítica
-<span class="nc" id="L48">            demostrarRutaCritica(grafo);</span>
-            
+<span class="nc" id="L51">            demostrarRutaCritica(grafo);</span>
+
             // Demostración de clasificación topológica
-<span class="nc" id="L51">            demostrarClasificacionTopologica();</span>
+<span class="nc" id="L54">            demostrarClasificacionTopologica();</span>
         }
 
-<span class="nc" id="L54">        System.out.println(&quot;\n\nCREAR GRAFO Y PROBAR OPERACIONES BASICAS&quot;);</span>
+<span class="nc" id="L57">        System.out.println(&quot;\n\nCREAR GRAFO Y PROBAR OPERACIONES BASICAS&quot;);</span>
 
+<span class="nc" id="L59">        Map&lt;String, Set&lt;Edge&lt;String, WeightedEdge&gt;&gt;&gt; adyacencias = new HashMap&lt;&gt;();</span>
 
-<span class="nc" id="L57">        Map&lt;String, Set&lt;Edge&lt;String, WeightedEdge&gt;&gt;&gt; adyacencias = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L61">        DirectedGraph&lt;String, WeightedEdge&gt; grafo2 = new DirectedGraph&lt;&gt;(</span>
+                new LinkedHashSet&lt;&gt;(),
+                new LinkedHashSet&lt;&gt;(),
+                adyacencias);
 
-<span class="nc" id="L59">        DirectedGraph&lt;String, WeightedEdge&gt; grafo2 = new DirectedGraph&lt;&gt;(</span>
-            new LinkedHashSet&lt;&gt;(),
-            new LinkedHashSet&lt;&gt;(),
-            adyacencias 
-        );
+<span class="nc" id="L66">        grafo2.agregarVertice(&quot;Montevideo&quot;);</span>
+<span class="nc" id="L67">        grafo2.agregarVertice(&quot;Canelones&quot;);</span>
+<span class="nc" id="L68">        grafo2.agregarVertice(&quot;Punta del Este&quot;);</span>
+<span class="nc" id="L69">        grafo2.agregarVertice(&quot;Durazno&quot;);</span>
+<span class="nc" id="L70">        grafo2.agregarVertice(&quot;Rocha&quot;);</span>
+<span class="nc" id="L71">        grafo2.agregarVertice(&quot;Colonia&quot;);</span>
+<span class="nc" id="L72">        grafo2.agregarVertice(&quot;Artigas&quot;);</span>
+<span class="nc" id="L73">        grafo2.agregarVertice(&quot;Florida&quot;);</span>
 
-<span class="nc" id="L65">        grafo2.agregarVertice(&quot;Montevideo&quot;);</span>
-<span class="nc" id="L66">        grafo2.agregarVertice(&quot;Canelones&quot;);</span>
-<span class="nc" id="L67">        grafo2.agregarVertice(&quot;Punta del Este&quot;);</span>
-<span class="nc" id="L68">        grafo2.agregarVertice(&quot;Durazno&quot;);</span>
-<span class="nc" id="L69">        grafo2.agregarVertice(&quot;Rocha&quot;);</span>
-<span class="nc" id="L70">        grafo2.agregarVertice(&quot;Colonia&quot;);</span>
-<span class="nc" id="L71">        grafo2.agregarVertice(&quot;Artigas&quot;);</span>
-<span class="nc" id="L72">        grafo2.agregarVertice(&quot;Florida&quot;);</span>
+<span class="nc" id="L75">        grafo2.agregarArista(&quot;Montevideo&quot;, &quot;Canelones&quot;, new WeightedEdge(30));</span>
+<span class="nc" id="L76">        grafo2.agregarArista(&quot;Montevideo&quot;, &quot;Punta del Este&quot;, new WeightedEdge(130));</span>
+<span class="nc" id="L77">        grafo2.agregarArista(&quot;Montevideo&quot;, &quot;Artigas&quot;, new WeightedEdge(700));</span>
 
-<span class="nc" id="L74">        grafo2.agregarArista(&quot;Montevideo&quot;, &quot;Canelones&quot;, new WeightedEdge(30));</span>
-<span class="nc" id="L75">        grafo2.agregarArista(&quot;Montevideo&quot;, &quot;Punta del Este&quot;, new WeightedEdge(130));</span>
-<span class="nc" id="L76">        grafo2.agregarArista(&quot;Montevideo&quot;, &quot;Artigas&quot;, new WeightedEdge(700));</span>
+<span class="nc" id="L79">        grafo2.agregarArista(&quot;Canelones&quot;, &quot;Punta del Este&quot;, new WeightedEdge(90));</span>
+<span class="nc" id="L80">        grafo2.agregarArista(&quot;Canelones&quot;, &quot;Durazno&quot;, new WeightedEdge(170));</span>
+<span class="nc" id="L81">        grafo2.agregarArista(&quot;Canelones&quot;, &quot;Colonia&quot;, new WeightedEdge(200));</span>
+<span class="nc" id="L82">        grafo2.agregarArista(&quot;Canelones&quot;, &quot;Artigas&quot;, new WeightedEdge(500));</span>
 
-<span class="nc" id="L78">        grafo2.agregarArista(&quot;Canelones&quot;, &quot;Punta del Este&quot;, new WeightedEdge(90));</span>
-<span class="nc" id="L79">        grafo2.agregarArista(&quot;Canelones&quot;, &quot;Durazno&quot;, new WeightedEdge(170));</span>
-<span class="nc" id="L80">        grafo2.agregarArista(&quot;Canelones&quot;, &quot;Colonia&quot;, new WeightedEdge(200));</span>
-<span class="nc" id="L81">        grafo2.agregarArista(&quot;Canelones&quot;, &quot;Artigas&quot;, new WeightedEdge(500));</span>
+<span class="nc" id="L84">        grafo2.agregarArista(&quot;Punta del Este&quot;, &quot;Rocha&quot;, new WeightedEdge(90));</span>
 
-<span class="nc" id="L83">        grafo2.agregarArista(&quot;Punta del Este&quot;, &quot;Rocha&quot;, new WeightedEdge(90));</span>
+<span class="nc" id="L86">        System.out.println(&quot;Vertices:&quot;);</span>
+<span class="nc" id="L87">        System.out.println(grafo2.vertices());</span>
 
-<span class="nc" id="L85">        System.out.println(&quot;Vertices:&quot;);</span>
-<span class="nc" id="L86">        System.out.println(grafo2.vertices());</span>
+        // Por el toString de arista de los Sets de la coleccion de java, los valores de
+        // las aristas se imprimen con un guión antes de su valor.
 
+<span class="nc" id="L92">        System.out.println(&quot;\nAristas:&quot;);</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        for (Edge&lt;String, WeightedEdge&gt; arista : grafo2.aristas()) {</span>
+<span class="nc" id="L94">            System.out.println(arista);</span>
+<span class="nc" id="L95">        }</span>
 
-        //Por el toString de arista de los Sets de la coleccion de java, los valores de las aristas se imprimen con un guión antes de su valor.
+<span class="nc" id="L97">        System.out.println(&quot;\nSucesores de Montevideo:&quot;);</span>
+<span class="nc" id="L98">        System.out.println(grafo2.successors(grafo2.construirComparable(&quot;Montevideo&quot;)));</span>
 
-<span class="nc" id="L91">        System.out.println(&quot;\nAristas:&quot;);</span>
-<span class="nc bnc" id="L92" title="All 2 branches missed.">        for (Edge&lt;String, WeightedEdge&gt; arista : grafo2.aristas()) {</span>
-<span class="nc" id="L93">            System.out.println(arista);</span>
-<span class="nc" id="L94">        }</span>
+<span class="nc" id="L100">        System.out.println(&quot;\nPredecesores de Punta del Este:&quot;);</span>
+<span class="nc" id="L101">        System.out.println(grafo2.predecessors(grafo2.construirComparable(&quot;Punta del Este&quot;)));</span>
 
-<span class="nc" id="L96">        System.out.println(&quot;\nSucesores de Montevideo:&quot;);</span>
-<span class="nc" id="L97">        System.out.println(grafo2.successors(grafo2.construirComparable(&quot;Montevideo&quot;)));</span>
+<span class="nc" id="L103">        System.out.println(&quot;\nGrado de salida de Canelones:&quot;);</span>
+<span class="nc" id="L104">        System.out.println(grafo2.gradoDeSalida(grafo2.construirComparable(&quot;Canelones&quot;)));</span>
 
-<span class="nc" id="L99">        System.out.println(&quot;\nPredecesores de Punta del Este:&quot;);</span>
-<span class="nc" id="L100">        System.out.println(grafo2.predecessors(grafo2.construirComparable(&quot;Punta del Este&quot;)));</span>
+<span class="nc" id="L106">        System.out.println(&quot;\nGrado de entrada de Punta del Este:&quot;);</span>
+<span class="nc" id="L107">        System.out.println(grafo2.gradoDeEntrada(grafo2.construirComparable(&quot;Punta del Este&quot;)));</span>
 
-<span class="nc" id="L102">        System.out.println(&quot;\nGrado de salida de Canelones:&quot;);</span>
-<span class="nc" id="L103">        System.out.println(grafo2.gradoDeSalida(grafo2.construirComparable(&quot;Canelones&quot;)));</span>
-
-<span class="nc" id="L105">        System.out.println(&quot;\nGrado de entrada de Punta del Este:&quot;);</span>
-<span class="nc" id="L106">        System.out.println(grafo2.gradoDeEntrada(grafo2.construirComparable(&quot;Punta del Este&quot;)));</span>
-
-<span class="nc" id="L108">        System.out.println(&quot;\nExiste arista Montevideo -&gt; Canelones:&quot;);</span>
-<span class="nc" id="L109">        System.out.println(grafo2.existeArista(</span>
-<span class="nc" id="L110">                grafo2.construirComparable(&quot;Montevideo&quot;),</span>
-<span class="nc" id="L111">                grafo2.construirComparable(&quot;Canelones&quot;)</span>
-        ));
+<span class="nc" id="L109">        System.out.println(&quot;\nExiste arista Montevideo -&gt; Canelones:&quot;);</span>
+<span class="nc" id="L110">        System.out.println(grafo2.existeArista(</span>
+<span class="nc" id="L111">                grafo2.construirComparable(&quot;Montevideo&quot;),</span>
+<span class="nc" id="L112">                grafo2.construirComparable(&quot;Canelones&quot;)));</span>
 
 <span class="nc" id="L114">        System.out.println(&quot;\nExiste arista Canelones -&gt; Montevideo:&quot;);</span>
 <span class="nc" id="L115">        System.out.println(grafo2.existeArista(</span>
 <span class="nc" id="L116">                grafo2.construirComparable(&quot;Canelones&quot;),</span>
-<span class="nc" id="L117">                grafo2.construirComparable(&quot;Montevideo&quot;)</span>
-        ));
+<span class="nc" id="L117">                grafo2.construirComparable(&quot;Montevideo&quot;)));</span>
 
-<span class="nc" id="L120">        System.out.println(&quot;\nDIJKSTRA DESDE MONTEVIDEO&quot;);</span>
+<span class="nc" id="L119">        System.out.println(&quot;\nDIJKSTRA DESDE MONTEVIDEO&quot;);</span>
 
-<span class="nc" id="L122">        IDirectedGraphAlgorithms algoritmos = new DirectedGraphAlgorithms();</span>
+<span class="nc" id="L121">        IDirectedGraphAlgorithms algoritmos = new DirectedGraphAlgorithms();</span>
 
-<span class="nc" id="L124">        IDijkstraResult&lt;String&gt; dijkstra = algoritmos.dijkstra(</span>
-<span class="nc" id="L125">                grafo2.construirComparable(&quot;Montevideo&quot;),</span>
-                grafo2
-        );
+<span class="nc" id="L123">        IDijkstraResult&lt;String&gt; dijkstra = algoritmos.dijkstra(</span>
+<span class="nc" id="L124">                grafo2.construirComparable(&quot;Montevideo&quot;),</span>
+                grafo2);
 
-<span class="nc bnc" id="L129" title="All 2 branches missed.">        for (String destino : grafo2.vertices()) {</span>
-<span class="nc" id="L130">            double costo = dijkstra.getCost(destino);</span>
-<span class="nc" id="L131">            List&lt;String&gt; camino = dijkstra.getPath(destino);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">        for (String destino : grafo2.vertices()) {</span>
+<span class="nc" id="L128">            double costo = dijkstra.getCost(destino);</span>
+<span class="nc" id="L129">            List&lt;String&gt; camino = dijkstra.getPath(destino);</span>
 
-<span class="nc" id="L133">            System.out.println(&quot;Destino: &quot; + destino);</span>
-<span class="nc" id="L134">            System.out.println(&quot;Costo: &quot; + costo);</span>
-<span class="nc" id="L135">            System.out.println(&quot;Camino: &quot; + camino);</span>
-<span class="nc" id="L136">            System.out.println();</span>
-<span class="nc" id="L137">        }</span>
+<span class="nc" id="L131">            System.out.println(&quot;Destino: &quot; + destino);</span>
+<span class="nc" id="L132">            System.out.println(&quot;Costo: &quot; + costo);</span>
+<span class="nc" id="L133">            System.out.println(&quot;Camino: &quot; + camino);</span>
+<span class="nc" id="L134">            System.out.println();</span>
+<span class="nc" id="L135">        }</span>
 
-<span class="nc" id="L139">        System.out.println(&quot;RECORRIDOS&quot;);</span>
+<span class="nc" id="L137">        System.out.println(&quot;RECORRIDOS&quot;);</span>
 
-<span class="nc" id="L141">        System.out.println(&quot;Recorrido en profundidad desde Montevideo:&quot;);</span>
-<span class="nc" id="L142">        algoritmos.recorridoEnProfundidad(</span>
+<span class="nc" id="L139">        System.out.println(&quot;Recorrido en profundidad desde Montevideo:&quot;);</span>
+<span class="nc" id="L140">        algoritmos.recorridoEnProfundidad(</span>
                 grafo2,
-<span class="nc" id="L144">                grafo2.construirComparable(&quot;Montevideo&quot;),</span>
-<span class="nc" id="L145">                v -&gt; System.out.print(v + &quot; &quot;)</span>
-        );
+<span class="nc" id="L142">                grafo2.construirComparable(&quot;Montevideo&quot;),</span>
+<span class="nc" id="L143">                v -&gt; System.out.print(v + &quot; &quot;));</span>
 
-<span class="nc" id="L148">        System.out.println(&quot;\n\nRecorrido en amplitud desde Montevideo:&quot;);</span>
-<span class="nc" id="L149">        algoritmos.recorridoEnAmplitud(</span>
+<span class="nc" id="L145">        System.out.println(&quot;\n\nRecorrido en amplitud desde Montevideo:&quot;);</span>
+<span class="nc" id="L146">        algoritmos.recorridoEnAmplitud(</span>
                 grafo2,
-<span class="nc" id="L151">                grafo2.construirComparable(&quot;Montevideo&quot;),</span>
-<span class="nc" id="L152">                v -&gt; System.out.print(v + &quot; &quot;)</span>
-        );
+<span class="nc" id="L148">                grafo2.construirComparable(&quot;Montevideo&quot;),</span>
+<span class="nc" id="L149">                v -&gt; System.out.print(v + &quot; &quot;));</span>
 
-<span class="nc" id="L155">        System.out.println(&quot;\n\nClasificacion topologica:&quot;);</span>
-<span class="nc" id="L156">        System.out.println(algoritmos.calcularClasificacionTopologica(grafo2));</span>
+<span class="nc" id="L151">        System.out.println(&quot;\n\nClasificacion topologica:&quot;);</span>
+<span class="nc" id="L152">        System.out.println(algoritmos.calcularClasificacionTopologica(grafo2));</span>
 
-<span class="nc" id="L158">        System.out.println(&quot;\nTodos los caminos de Montevideo a Rocha:&quot;);</span>
-<span class="nc" id="L159">        List&lt;Path&lt;String&gt;&gt; caminos = algoritmos.obtenerTodosLosCaminos(</span>
-<span class="nc" id="L160">                grafo2.construirComparable(&quot;Montevideo&quot;),</span>
-<span class="nc" id="L161">                grafo2.construirComparable(&quot;Rocha&quot;),</span>
-                grafo2
-        );
+<span class="nc" id="L154">        System.out.println(&quot;\nTodos los caminos de Montevideo a Rocha:&quot;);</span>
+<span class="nc" id="L155">        List&lt;Path&lt;String&gt;&gt; caminos = algoritmos.obtenerTodosLosCaminos(</span>
+<span class="nc" id="L156">                grafo2.construirComparable(&quot;Montevideo&quot;),</span>
+<span class="nc" id="L157">                grafo2.construirComparable(&quot;Rocha&quot;),</span>
+                grafo2);
 
-<span class="nc bnc" id="L165" title="All 2 branches missed.">        for (Path&lt;String&gt; path : caminos) {</span>
-<span class="nc" id="L166">            System.out.println(&quot;Camino: &quot; + path.getPath() + &quot; | Costo: &quot; + path.getCost());</span>
-<span class="nc" id="L167">        }</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        for (Path&lt;String&gt; path : caminos) {</span>
+<span class="nc" id="L161">            System.out.println(&quot;Camino: &quot; + path.getPath() + &quot; | Costo: &quot; + path.getCost());</span>
+<span class="nc" id="L162">        }</span>
 
-<span class="nc" id="L169">        System.out.println(&quot;\nFLOYD, WARSHALL Y CENTRO DEL GRAFO&quot;);</span>
+<span class="nc" id="L164">        System.out.println(&quot;\nFLOYD, WARSHALL Y CENTRO DEL GRAFO&quot;);</span>
 
-<span class="nc" id="L171">        Map&lt;String, Set&lt;Edge&lt;String, WeightedEdge&gt;&gt;&gt; adyacenciasPuertos = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L172">        DirectedGraph&lt;String, WeightedEdge&gt; grafoPuertos = new DirectedGraph&lt;&gt;(</span>
-        new LinkedHashSet&lt;&gt;(),
-        new LinkedHashSet&lt;&gt;(),
-        adyacenciasPuertos
-        );
+<span class="nc" id="L166">        Map&lt;String, Set&lt;Edge&lt;String, WeightedEdge&gt;&gt;&gt; adyacenciasPuertos = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L167">        DirectedGraph&lt;String, WeightedEdge&gt; grafoPuertos = new DirectedGraph&lt;&gt;(</span>
+                new LinkedHashSet&lt;&gt;(),
+                new LinkedHashSet&lt;&gt;(),
+                adyacenciasPuertos);
 
-<span class="nc" id="L178">        grafoPuertos.agregarVertice(&quot;Montevideo&quot;);</span>
-<span class="nc" id="L179">        grafoPuertos.agregarVertice(&quot;Colonia&quot;);</span>
-<span class="nc" id="L180">        grafoPuertos.agregarVertice(&quot;Buenos Aires&quot;);</span>
-<span class="nc" id="L181">        grafoPuertos.agregarVertice(&quot;Punta del Este&quot;);</span>
+<span class="nc" id="L172">        grafoPuertos.agregarVertice(&quot;Montevideo&quot;);</span>
+<span class="nc" id="L173">        grafoPuertos.agregarVertice(&quot;Colonia&quot;);</span>
+<span class="nc" id="L174">        grafoPuertos.agregarVertice(&quot;Buenos Aires&quot;);</span>
+<span class="nc" id="L175">        grafoPuertos.agregarVertice(&quot;Punta del Este&quot;);</span>
 
-<span class="nc" id="L183">        grafoPuertos.agregarArista(&quot;Montevideo&quot;, &quot;Punta del Este&quot;, new WeightedEdge(150));</span>
+<span class="nc" id="L177">        grafoPuertos.agregarArista(&quot;Montevideo&quot;, &quot;Punta del Este&quot;, new WeightedEdge(150));</span>
 
-<span class="nc" id="L185">        grafoPuertos.agregarArista(&quot;Colonia&quot;, &quot;Montevideo&quot;, new WeightedEdge(300));</span>
-<span class="nc" id="L186">        grafoPuertos.agregarArista(&quot;Colonia&quot;, &quot;Punta del Este&quot;, new WeightedEdge(390));</span>
+<span class="nc" id="L179">        grafoPuertos.agregarArista(&quot;Colonia&quot;, &quot;Montevideo&quot;, new WeightedEdge(300));</span>
+<span class="nc" id="L180">        grafoPuertos.agregarArista(&quot;Colonia&quot;, &quot;Punta del Este&quot;, new WeightedEdge(390));</span>
 
-<span class="nc" id="L188">        grafoPuertos.agregarArista(&quot;Buenos Aires&quot;, &quot;Montevideo&quot;, new WeightedEdge(400));</span>
-<span class="nc" id="L189">        grafoPuertos.agregarArista(&quot;Buenos Aires&quot;, &quot;Colonia&quot;, new WeightedEdge(200));</span>
+<span class="nc" id="L182">        grafoPuertos.agregarArista(&quot;Buenos Aires&quot;, &quot;Montevideo&quot;, new WeightedEdge(400));</span>
+<span class="nc" id="L183">        grafoPuertos.agregarArista(&quot;Buenos Aires&quot;, &quot;Colonia&quot;, new WeightedEdge(200));</span>
 
-<span class="nc" id="L191">        grafoPuertos.agregarArista(&quot;Punta del Este&quot;, &quot;Buenos Aires&quot;, new WeightedEdge(410));</span>
+<span class="nc" id="L185">        grafoPuertos.agregarArista(&quot;Punta del Este&quot;, &quot;Buenos Aires&quot;, new WeightedEdge(410));</span>
 
-<span class="nc" id="L193">        IFloydWarshallResult&lt;String&gt; floyd = algoritmos.floyd(grafoPuertos);</span>
+<span class="nc" id="L187">        IFloydWarshallResult&lt;String&gt; floyd = algoritmos.floyd(grafoPuertos);</span>
 
-<span class="nc" id="L195">        System.out.println(&quot;Costo minimo Montevideo -&gt; Colonia:&quot;);</span>
-<span class="nc" id="L196">        System.out.println(floyd.getCost(&quot;Montevideo&quot;, &quot;Colonia&quot;));</span>
+<span class="nc" id="L189">        System.out.println(&quot;Costo minimo Montevideo -&gt; Colonia:&quot;);</span>
+<span class="nc" id="L190">        System.out.println(floyd.getCost(&quot;Montevideo&quot;, &quot;Colonia&quot;));</span>
 
-<span class="nc" id="L198">        System.out.println(&quot;Camino minimo Montevideo -&gt; Colonia:&quot;);</span>
-<span class="nc" id="L199">        System.out.println(floyd.getPath(&quot;Montevideo&quot;, &quot;Colonia&quot;));</span>
+<span class="nc" id="L192">        System.out.println(&quot;Camino minimo Montevideo -&gt; Colonia:&quot;);</span>
+<span class="nc" id="L193">        System.out.println(floyd.getPath(&quot;Montevideo&quot;, &quot;Colonia&quot;));</span>
 
-<span class="nc" id="L201">        System.out.println(&quot;\nCosto minimo Buenos Aires -&gt; Punta del Este:&quot;);</span>
-<span class="nc" id="L202">        System.out.println(floyd.getCost(&quot;Buenos Aires&quot;, &quot;Punta del Este&quot;));</span>
+<span class="nc" id="L195">        System.out.println(&quot;\nCosto minimo Buenos Aires -&gt; Punta del Este:&quot;);</span>
+<span class="nc" id="L196">        System.out.println(floyd.getCost(&quot;Buenos Aires&quot;, &quot;Punta del Este&quot;));</span>
 
-<span class="nc" id="L204">        System.out.println(&quot;Camino minimo Buenos Aires -&gt; Punta del Este:&quot;);</span>
-<span class="nc" id="L205">        System.out.println(floyd.getPath(&quot;Buenos Aires&quot;, &quot;Punta del Este&quot;));</span>
+<span class="nc" id="L198">        System.out.println(&quot;Camino minimo Buenos Aires -&gt; Punta del Este:&quot;);</span>
+<span class="nc" id="L199">        System.out.println(floyd.getPath(&quot;Buenos Aires&quot;, &quot;Punta del Este&quot;));</span>
 
-<span class="nc" id="L207">        IFloydWarshallResult&lt;String&gt; warshall = algoritmos.warshall(grafoPuertos);</span>
+<span class="nc" id="L201">        IFloydWarshallResult&lt;String&gt; warshall = algoritmos.warshall(grafoPuertos);</span>
 
-<span class="nc" id="L209">        System.out.println(&quot;\nWarshall: existe camino Montevideo -&gt; Colonia:&quot;);</span>
-<span class="nc" id="L210">        System.out.println(warshall.connected(&quot;Montevideo&quot;, &quot;Colonia&quot;));</span>
+<span class="nc" id="L203">        System.out.println(&quot;\nWarshall: existe camino Montevideo -&gt; Colonia:&quot;);</span>
+<span class="nc" id="L204">        System.out.println(warshall.connected(&quot;Montevideo&quot;, &quot;Colonia&quot;));</span>
 
-<span class="nc" id="L212">        System.out.println(&quot;Warshall: existe camino Colonia -&gt; Buenos Aires:&quot;);</span>
-<span class="nc" id="L213">        System.out.println(warshall.connected(&quot;Colonia&quot;, &quot;Buenos Aires&quot;));</span>
+<span class="nc" id="L206">        System.out.println(&quot;Warshall: existe camino Colonia -&gt; Buenos Aires:&quot;);</span>
+<span class="nc" id="L207">        System.out.println(warshall.connected(&quot;Colonia&quot;, &quot;Buenos Aires&quot;));</span>
 
-<span class="nc" id="L215">        System.out.println(&quot;\nExcentricidad de Buenos Aires:&quot;);</span>
-<span class="nc" id="L216">        System.out.println(algoritmos.obtenerExcentricidad(</span>
+<span class="nc" id="L209">        System.out.println(&quot;\nExcentricidad de Buenos Aires:&quot;);</span>
+<span class="nc" id="L210">        System.out.println(algoritmos.obtenerExcentricidad(</span>
                 grafoPuertos,
-<span class="nc" id="L218">                grafoPuertos.construirComparable(&quot;Buenos Aires&quot;)</span>
-        ));
+<span class="nc" id="L212">                grafoPuertos.construirComparable(&quot;Buenos Aires&quot;)));</span>
 
-<span class="nc" id="L221">        System.out.println(&quot;\nCentro del grafo:&quot;);</span>
-<span class="nc" id="L222">        System.out.println(algoritmos.obtenerCentroGrafo(grafoPuertos));</span>
-<span class="nc" id="L223">    }</span>
+<span class="nc" id="L214">        System.out.println(&quot;\nCentro del grafo:&quot;);</span>
+<span class="nc" id="L215">        System.out.println(algoritmos.obtenerCentroGrafo(grafoPuertos));</span>
+
+<span class="nc" id="L217">        DirectedGraph&lt;String, WeightedEdge&gt; grafoEj3 = cargarGrafoDesdeArchivos(</span>
+                &quot;aeropuertos.txt&quot;,
+                &quot;conexiones.txt&quot;);
+
+<span class="nc bnc" id="L221" title="All 2 branches missed.">        if (grafoEj3 == null) {</span>
+<span class="nc" id="L222">            System.out.println(&quot;No fue posible cargar el grafo.&quot;);</span>
+<span class="nc" id="L223">            return;</span>
+        }
+
+<span class="nc" id="L226">        System.out.println(&quot;Grafo cargado correctamente.&quot;);</span>
+
+<span class="nc" id="L228">        System.out.println(&quot;Cantidad de aeropuertos: &quot; + grafoEj3.vertices().size());</span>
+
+<span class="nc" id="L230">        System.out.println(&quot;Cantidad de conexiones: &quot; + grafoEj3.aristas().size());</span>
+
+<span class="nc bnc" id="L232" title="All 2 branches missed.">        for (Edge&lt;String, WeightedEdge&gt; arista : grafoEj3.aristas()) {</span>
+
+<span class="nc" id="L234">            DirectedEdge&lt;String, WeightedEdge&gt; a = (DirectedEdge&lt;String, WeightedEdge&gt;) arista;</span>
+
+<span class="nc" id="L236">            System.out.println(a.source() + &quot; -&gt; &quot; + a.target() + &quot; : &quot; + a.dato().getWeight());</span>
+<span class="nc" id="L237">        }</span>
+
+<span class="nc" id="L239">        System.out.println(&quot;\nPrueba de Flujo de Grafo no Dirijido&quot;);</span>
+
+<span class="nc" id="L241">        UndirectedGraph&lt;String, WeightedEdge&gt; grafoNoDirigido = new UndirectedGraph&lt;&gt;(</span>
+            new LinkedHashSet&lt;&gt;(),
+            new LinkedHashSet&lt;&gt;(),
+            new HashMap&lt;&gt;()
+        );
+
+<span class="nc" id="L247">    grafoNoDirigido.agregarVertice(&quot;Nairobi&quot;);</span>
+<span class="nc" id="L248">    grafoNoDirigido.agregarVertice(&quot;Cairo&quot;);</span>
+<span class="nc" id="L249">    grafoNoDirigido.agregarVertice(&quot;Monrovia&quot;);</span>
+<span class="nc" id="L250">    grafoNoDirigido.agregarVertice(&quot;Garoua&quot;);</span>
+<span class="nc" id="L251">    grafoNoDirigido.agregarVertice(&quot;Mekele&quot;);</span>
+<span class="nc" id="L252">    grafoNoDirigido.agregarVertice(&quot;Praia&quot;);</span>
+
+<span class="nc" id="L254">    grafoNoDirigido.agregarArista(&quot;Nairobi&quot;, &quot;Cairo&quot;, new WeightedEdge(1));</span>
+<span class="nc" id="L255">    grafoNoDirigido.agregarArista(&quot;Nairobi&quot;, &quot;Monrovia&quot;, new WeightedEdge(1));</span>
+<span class="nc" id="L256">    grafoNoDirigido.agregarArista(&quot;Nairobi&quot;, &quot;Garoua&quot;, new WeightedEdge(1));</span>
+<span class="nc" id="L257">    grafoNoDirigido.agregarArista(&quot;Monrovia&quot;, &quot;Garoua&quot;, new WeightedEdge(1));</span>
+<span class="nc" id="L258">    grafoNoDirigido.agregarArista(&quot;Monrovia&quot;, &quot;Mekele&quot;, new WeightedEdge(1));</span>
+<span class="nc" id="L259">    grafoNoDirigido.agregarArista(&quot;Garoua&quot;, &quot;Mekele&quot;, new WeightedEdge(1));</span>
+<span class="nc" id="L260">    grafoNoDirigido.agregarArista(&quot;Mekele&quot;, &quot;Praia&quot;, new WeightedEdge(1));</span>
+
+<span class="nc" id="L262">    IUndirectedGraphAlgorithm algoritmosNoDirigidos = new UndirectedGraphAlgorithm();</span>
+
+<span class="nc" id="L264">    System.out.println(&quot;Puntos de articulacion:&quot;);</span>
+<span class="nc" id="L265">    System.out.println(algoritmosNoDirigidos.puntosDeArticulacion(grafoNoDirigido));</span>
+
+<span class="nc" id="L267">    }</span>
 
     private static DirectedGraph&lt;String, WeightedEdge&gt; cargarGrafoDesdeArchivos(
             String archivoAeropuertos, String archivoConexiones) {
-        
-<span class="nc" id="L228">        Map&lt;String, Set&lt;Edge&lt;String, WeightedEdge&gt;&gt;&gt; adyacencias = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L229">        DirectedGraph&lt;String, WeightedEdge&gt; grafo = new DirectedGraph&lt;&gt;(</span>
-            new LinkedHashSet&lt;&gt;(),
-            new LinkedHashSet&lt;&gt;(),
-            adyacencias
-        );
+
+<span class="nc" id="L272">        Map&lt;String, Set&lt;Edge&lt;String, WeightedEdge&gt;&gt;&gt; adyacencias = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L273">        DirectedGraph&lt;String, WeightedEdge&gt; grafo = new DirectedGraph&lt;&gt;(</span>
+                new LinkedHashSet&lt;&gt;(),
+                new LinkedHashSet&lt;&gt;(),
+                adyacencias);
 
         // Cargar vértices (aeropuertos)
-<span class="nc" id="L236">        try (BufferedReader br = new BufferedReader(new FileReader(archivoAeropuertos))) {</span>
+<span class="nc" id="L279">        try (BufferedReader br = new BufferedReader(new FileReader(archivoAeropuertos))) {</span>
             String linea;
-<span class="nc bnc" id="L238" title="All 2 branches missed.">            while ((linea = br.readLine()) != null) {</span>
-<span class="nc" id="L239">                linea = linea.trim();</span>
-<span class="nc bnc" id="L240" title="All 2 branches missed.">                if (!linea.isEmpty()) {</span>
-<span class="nc" id="L241">                    grafo.agregarVertice(linea);</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">            while ((linea = br.readLine()) != null) {</span>
+<span class="nc" id="L282">                linea = linea.trim();</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">                if (!linea.isEmpty()) {</span>
+<span class="nc" id="L284">                    grafo.agregarVertice(linea);</span>
                 }
             }
-<span class="nc" id="L244">            System.out.println(&quot;✓ Aeropuertos cargados desde &quot; + archivoAeropuertos);</span>
-<span class="nc" id="L245">        } catch (IOException e) {</span>
-<span class="nc" id="L246">            System.err.println(&quot;✗ Error al leer &quot; + archivoAeropuertos + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L247">            return null;</span>
-<span class="nc" id="L248">        }</span>
+<span class="nc" id="L287">            System.out.println(&quot;✓ Aeropuertos cargados desde &quot; + archivoAeropuertos);</span>
+<span class="nc" id="L288">        } catch (IOException e) {</span>
+<span class="nc" id="L289">            System.err.println(&quot;✗ Error al leer &quot; + archivoAeropuertos + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L290">            return null;</span>
+<span class="nc" id="L291">        }</span>
 
         // Cargar aristas (conexiones)
-<span class="nc" id="L251">        try (BufferedReader br = new BufferedReader(new FileReader(archivoConexiones))) {</span>
+<span class="nc" id="L294">        try (BufferedReader br = new BufferedReader(new FileReader(archivoConexiones))) {</span>
             String linea;
-<span class="nc bnc" id="L253" title="All 2 branches missed.">            while ((linea = br.readLine()) != null) {</span>
-<span class="nc" id="L254">                linea = linea.trim();</span>
-<span class="nc bnc" id="L255" title="All 2 branches missed.">                if (!linea.isEmpty()) {</span>
-<span class="nc" id="L256">                    String[] partes = linea.split(&quot;,&quot;);</span>
-<span class="nc bnc" id="L257" title="All 2 branches missed.">                    if (partes.length == 3) {</span>
-<span class="nc" id="L258">                        String origen = partes[0].trim();</span>
-<span class="nc" id="L259">                        String destino = partes[1].trim();</span>
-<span class="nc" id="L260">                        double peso = Double.parseDouble(partes[2].trim());</span>
-                        
-<span class="nc" id="L262">                        grafo.agregarArista(origen, destino, new WeightedEdge(peso));</span>
-                    }
-<span class="nc" id="L264">                }</span>
-            }
-<span class="nc" id="L266">            System.out.println(&quot;✓ Conexiones cargadas desde &quot; + archivoConexiones);</span>
-<span class="nc" id="L267">        } catch (IOException e) {</span>
-<span class="nc" id="L268">            System.err.println(&quot;✗ Error al leer &quot; + archivoConexiones + &quot;: &quot; + e.getMessage());</span>
-<span class="nc" id="L269">            return null;</span>
-<span class="nc" id="L270">        }</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">            while ((linea = br.readLine()) != null) {</span>
+<span class="nc" id="L297">                linea = linea.trim();</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">                if (!linea.isEmpty()) {</span>
+<span class="nc" id="L299">                    String[] partes = linea.split(&quot;,&quot;);</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">                    if (partes.length == 3) {</span>
+<span class="nc" id="L301">                        String origen = partes[0].trim();</span>
+<span class="nc" id="L302">                        String destino = partes[1].trim();</span>
+<span class="nc" id="L303">                        double peso = Double.parseDouble(partes[2].trim());</span>
 
-<span class="nc" id="L272">        return grafo;</span>
+<span class="nc" id="L305">                        grafo.agregarArista(origen, destino, new WeightedEdge(peso));</span>
+                    }
+<span class="nc" id="L307">                }</span>
+            }
+<span class="nc" id="L309">            System.out.println(&quot;✓ Conexiones cargadas desde &quot; + archivoConexiones);</span>
+<span class="nc" id="L310">        } catch (IOException e) {</span>
+<span class="nc" id="L311">            System.err.println(&quot;✗ Error al leer &quot; + archivoConexiones + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L312">            return null;</span>
+<span class="nc" id="L313">        }</span>
+
+<span class="nc" id="L315">        return grafo;</span>
     }
 
     private static void demostrarRutaCritica(DirectedGraph&lt;String, WeightedEdge&gt; grafo) {
-<span class="nc" id="L276">        System.out.println(&quot;=== ANALISIS DE RUTA CRITICA (CPM) ===\n&quot;);</span>
-        
-<span class="nc" id="L278">        IDirectedGraphAlgorithms algoritmos = new DirectedGraphAlgorithms();</span>
-        
+<span class="nc" id="L319">        System.out.println(&quot;=== ANALISIS DE RUTA CRITICA (CPM) ===\n&quot;);</span>
+
+<span class="nc" id="L321">        IDirectedGraphAlgorithms algoritmos = new DirectedGraphAlgorithms();</span>
+
         // Encontrar vértices origen (sin entrada) y destino (sin salida)
-<span class="nc" id="L281">        String origen = null;</span>
-<span class="nc" id="L282">        String destino = null;</span>
-        
-<span class="nc bnc" id="L284" title="All 2 branches missed.">        for (String v : grafo.vertices()) {</span>
-<span class="nc" id="L285">            int gradoEntrada = grafo.predecessors(grafo.construirComparable(v)).size();</span>
-<span class="nc" id="L286">            int gradoSalida = grafo.successors(grafo.construirComparable(v)).size();</span>
-            
-<span class="nc bnc" id="L288" title="All 4 branches missed.">            if (gradoEntrada == 0 &amp;&amp; origen == null) {</span>
-<span class="nc" id="L289">                origen = v;</span>
+<span class="nc" id="L324">        String origen = null;</span>
+<span class="nc" id="L325">        String destino = null;</span>
+
+<span class="nc bnc" id="L327" title="All 2 branches missed.">        for (String v : grafo.vertices()) {</span>
+<span class="nc" id="L328">            int gradoEntrada = grafo.predecessors(grafo.construirComparable(v)).size();</span>
+<span class="nc" id="L329">            int gradoSalida = grafo.successors(grafo.construirComparable(v)).size();</span>
+
+<span class="nc bnc" id="L331" title="All 4 branches missed.">            if (gradoEntrada == 0 &amp;&amp; origen == null) {</span>
+<span class="nc" id="L332">                origen = v;</span>
             }
-<span class="nc bnc" id="L291" title="All 4 branches missed.">            if (gradoSalida == 0 &amp;&amp; destino == null) {</span>
-<span class="nc" id="L292">                destino = v;</span>
+<span class="nc bnc" id="L334" title="All 4 branches missed.">            if (gradoSalida == 0 &amp;&amp; destino == null) {</span>
+<span class="nc" id="L335">                destino = v;</span>
             }
-<span class="nc" id="L294">        }</span>
-        
-<span class="nc bnc" id="L296" title="All 4 branches missed.">        if (origen == null || destino == null) {</span>
-<span class="nc" id="L297">            System.out.println(&quot;No se encontraron vértices de origen o destino apropiados para la ruta crítica.&quot;);</span>
-<span class="nc" id="L298">            return;</span>
+<span class="nc" id="L337">        }</span>
+
+<span class="nc bnc" id="L339" title="All 4 branches missed.">        if (origen == null || destino == null) {</span>
+<span class="nc" id="L340">            System.out.println(&quot;No se encontraron vértices de origen o destino apropiados para la ruta crítica.&quot;);</span>
+<span class="nc" id="L341">            return;</span>
         }
-        
-<span class="nc" id="L301">        System.out.println(&quot;Analizando ruta crítica desde: &quot; + origen + &quot; → &quot; + destino);</span>
-        
+
+<span class="nc" id="L344">        System.out.println(&quot;Analizando ruta crítica desde: &quot; + origen + &quot; → &quot; + destino);</span>
+
         try {
-<span class="nc" id="L304">            ICriticalPathResult&lt;String&gt; resultado = algoritmos.calcularRutaCritica(</span>
-<span class="nc" id="L305">                grafo.construirComparable(origen),</span>
-<span class="nc" id="L306">                grafo.construirComparable(destino),</span>
-                grafo
-            );
-            
-<span class="nc" id="L310">            System.out.println(&quot;\n📊 CAMINO CRITICO:&quot;);</span>
-<span class="nc" id="L311">            System.out.println(&quot;Ruta: &quot; + resultado.getCriticalPath().getPath());</span>
-<span class="nc" id="L312">            System.out.println(&quot;Costo Total: &quot; + resultado.getCriticalCost() + &quot; (MÁXIMO - Proyecto se atrasará)&quot;);</span>
-            
-<span class="nc" id="L314">            System.out.println(&quot;\n📋 TODOS LOS CAMINOS POSIBLES:&quot;);</span>
-<span class="nc" id="L315">            System.out.println(&quot;(Ordenados por holgura)&quot;);</span>
-<span class="nc" id="L316">            System.out.println(&quot;-&quot;.repeat(120));</span>
-            
-<span class="nc" id="L318">            List&lt;PathWithSlack&lt;String&gt;&gt; pathsWithSlack = resultado.getPathsWithSlack();</span>
-            
+<span class="nc" id="L347">            ICriticalPathResult&lt;String&gt; resultado = algoritmos.calcularRutaCritica(</span>
+<span class="nc" id="L348">                    grafo.construirComparable(origen),</span>
+<span class="nc" id="L349">                    grafo.construirComparable(destino),</span>
+                    grafo);
+
+<span class="nc" id="L352">            System.out.println(&quot;\n CAMINO CRITICO:&quot;);</span>
+<span class="nc" id="L353">            System.out.println(&quot;Ruta: &quot; + resultado.getCriticalPath().getPath());</span>
+<span class="nc" id="L354">            System.out.println(&quot;Costo Total: &quot; + resultado.getCriticalCost() + &quot; (MÁXIMO - Proyecto se atrasará)&quot;);</span>
+
+<span class="nc" id="L356">            System.out.println(&quot;\n TODOS LOS CAMINOS POSIBLES:&quot;);</span>
+<span class="nc" id="L357">            System.out.println(&quot;(Ordenados por holgura)&quot;);</span>
+<span class="nc" id="L358">            System.out.println(&quot;-&quot;.repeat(120));</span>
+
+<span class="nc" id="L360">            List&lt;PathWithSlack&lt;String&gt;&gt; pathsWithSlack = resultado.getPathsWithSlack();</span>
+
             // Ordenar por holgura
-<span class="nc" id="L321">            pathsWithSlack.sort((a, b) -&gt; Double.compare(a.getSlack(), b.getSlack()));</span>
-            
-<span class="nc bnc" id="L323" title="All 2 branches missed.">            for (PathWithSlack&lt;String&gt; path : pathsWithSlack) {</span>
-<span class="nc bnc" id="L324" title="All 2 branches missed.">                String marker = path.isCritical() ? &quot;⚠️ CRITICO&quot; : &quot;✓ Normal&quot;;</span>
-<span class="nc" id="L325">                System.out.printf(</span>
-                    &quot;%s | %s | Costo: %.1f | Holgura: %.1f días%n&quot;,
-                    marker,
-<span class="nc" id="L328">                    path.getPath(),</span>
-<span class="nc" id="L329">                    path.getCost(),</span>
-<span class="nc" id="L330">                    path.getSlack()</span>
-                );
-<span class="nc" id="L332">            }</span>
-            
-<span class="nc" id="L334">            System.out.println(&quot;-&quot;.repeat(120));</span>
-<span class="nc" id="L335">            System.out.println(&quot;\n💡 INTERPRETACION:&quot;);</span>
-<span class="nc" id="L336">            System.out.println(&quot;• Camino Crítico: Cualquier retraso causa retraso en el proyecto&quot;);</span>
-<span class="nc" id="L337">            System.out.println(&quot;• Holgura: Días de tolerancia sin afectar la fecha de entrega&quot;);</span>
-<span class="nc" id="L338">            System.out.println(&quot;• Mayor holgura = Mayor flexibilidad en el cronograma&quot;);</span>
-            
-<span class="nc" id="L340">        } catch (Exception e) {</span>
-<span class="nc" id="L341">            System.out.println(&quot;Error en análisis de ruta crítica: &quot; + e.getMessage());</span>
-<span class="nc" id="L342">        }</span>
-<span class="nc" id="L343">    }</span>
+<span class="nc" id="L363">            pathsWithSlack.sort((a, b) -&gt; Double.compare(a.getSlack(), b.getSlack()));</span>
+
+<span class="nc bnc" id="L365" title="All 2 branches missed.">            for (PathWithSlack&lt;String&gt; path : pathsWithSlack) {</span>
+<span class="nc bnc" id="L366" title="All 2 branches missed.">                String marker = path.isCritical() ? &quot; CRITICO&quot; : &quot;✓ Normal&quot;;</span>
+<span class="nc" id="L367">                System.out.printf(</span>
+                        &quot;%s | %s | Costo: %.1f | Holgura: %.1f días%n&quot;,
+                        marker,
+<span class="nc" id="L370">                        path.getPath(),</span>
+<span class="nc" id="L371">                        path.getCost(),</span>
+<span class="nc" id="L372">                        path.getSlack());</span>
+<span class="nc" id="L373">            }</span>
+
+<span class="nc" id="L375">            System.out.println(&quot;-&quot;.repeat(120));</span>
+<span class="nc" id="L376">            System.out.println(&quot;\n INTERPRETACION:&quot;);</span>
+<span class="nc" id="L377">            System.out.println(&quot;• Camino Crítico: Cualquier retraso causa retraso en el proyecto&quot;);</span>
+<span class="nc" id="L378">            System.out.println(&quot;• Holgura: Días de tolerancia sin afectar la fecha de entrega&quot;);</span>
+<span class="nc" id="L379">            System.out.println(&quot;• Mayor holgura = Mayor flexibilidad en el cronograma&quot;);</span>
+
+<span class="nc" id="L381">        } catch (Exception e) {</span>
+<span class="nc" id="L382">            System.out.println(&quot;Error en análisis de ruta crítica: &quot; + e.getMessage());</span>
+<span class="nc" id="L383">        }</span>
+<span class="nc" id="L384">    }</span>
 
     private static void demostrarClasificacionTopologica() {
-<span class="nc" id="L346">        System.out.println(&quot;\n\n=== CLASIFICACION TOPOLOGICA ===\n&quot;);</span>
-<span class="nc" id="L347">        System.out.println(&quot;La clasificación topológica es útil para:&quot;);</span>
-<span class="nc" id="L348">        System.out.println(&quot;1. SISTEMA DE PREVIATURAS: Requisitos previos de asignaturas en una carrera&quot;);</span>
-<span class="nc" id="L349">        System.out.println(&quot;2. PLAN DE PROYECTO: Orden de ejecución de tareas con dependencias\n&quot;);</span>
-        
-<span class="nc" id="L351">        IDirectedGraphAlgorithms algoritmos = new DirectedGraphAlgorithms();</span>
-        
+<span class="nc" id="L387">        System.out.println(&quot;\n\n=== CLASIFICACION TOPOLOGICA ===\n&quot;);</span>
+<span class="nc" id="L388">        System.out.println(&quot;La clasificación topológica es útil para:&quot;);</span>
+<span class="nc" id="L389">        System.out.println(&quot;1. SISTEMA DE PREVIATURAS: Requisitos previos de asignaturas en una carrera&quot;);</span>
+<span class="nc" id="L390">        System.out.println(&quot;2. PLAN DE PROYECTO: Orden de ejecución de tareas con dependencias\n&quot;);</span>
+
+<span class="nc" id="L392">        IDirectedGraphAlgorithms algoritmos = new DirectedGraphAlgorithms();</span>
+
         // EJEMPLO 1: SISTEMA DE PREVIATURAS
-<span class="nc" id="L354">        demostrarSistemaPreviaturas(algoritmos);</span>
-        
+<span class="nc" id="L395">        demostrarSistemaPreviaturas(algoritmos);</span>
+
         // EJEMPLO 2: PLAN DE PROYECTO
-<span class="nc" id="L357">        demostrarPlanProyecto(algoritmos);</span>
-<span class="nc" id="L358">    }</span>
+<span class="nc" id="L398">        demostrarPlanProyecto(algoritmos);</span>
+<span class="nc" id="L399">    }</span>
 
     private static void demostrarSistemaPreviaturas(IDirectedGraphAlgorithms algoritmos) {
-<span class="nc" id="L361">        System.out.println(&quot;\n📚 EJEMPLO 1: SISTEMA DE PREVIATURAS DE CARRERA&quot;);</span>
-<span class="nc" id="L362">        System.out.println(&quot;Arista A → B significa: B requiere haber cursado A\n&quot;);</span>
-        
-<span class="nc" id="L364">        Map&lt;String, Set&lt;Edge&lt;String, WeightedEdge&gt;&gt;&gt; adyacencias = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L365">        DirectedGraph&lt;String, WeightedEdge&gt; grafoAsignaturas = new DirectedGraph&lt;&gt;(</span>
-            new LinkedHashSet&lt;&gt;(),
-            new LinkedHashSet&lt;&gt;(),
-            adyacencias
-        );
-        
+<span class="nc" id="L402">        System.out.println(&quot;\n EJEMPLO 1: SISTEMA DE PREVIATURAS DE CARRERA&quot;);</span>
+<span class="nc" id="L403">        System.out.println(&quot;Arista A → B significa: B requiere haber cursado A\n&quot;);</span>
+
+<span class="nc" id="L405">        Map&lt;String, Set&lt;Edge&lt;String, WeightedEdge&gt;&gt;&gt; adyacencias = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L406">        DirectedGraph&lt;String, WeightedEdge&gt; grafoAsignaturas = new DirectedGraph&lt;&gt;(</span>
+                new LinkedHashSet&lt;&gt;(),
+                new LinkedHashSet&lt;&gt;(),
+                adyacencias);
+
         // Agregar asignaturas
-<span class="nc" id="L372">        String[] asignaturas = {</span>
-            &quot;Programación I&quot;, &quot;Programación II&quot;, &quot;Estructuras de Datos&quot;,
-            &quot;Algoritmos&quot;, &quot;Base de Datos&quot;, &quot;Ingeniería de Software&quot;
+<span class="nc" id="L412">        String[] asignaturas = {</span>
+                &quot;Programación I&quot;, &quot;Programación II&quot;, &quot;Estructuras de Datos&quot;,
+                &quot;Algoritmos&quot;, &quot;Base de Datos&quot;, &quot;Ingeniería de Software&quot;
         };
-        
-<span class="nc bnc" id="L377" title="All 2 branches missed.">        for (String asignatura : asignaturas) {</span>
-<span class="nc" id="L378">            grafoAsignaturas.agregarVertice(asignatura);</span>
+
+<span class="nc bnc" id="L417" title="All 2 branches missed.">        for (String asignatura : asignaturas) {</span>
+<span class="nc" id="L418">            grafoAsignaturas.agregarVertice(asignatura);</span>
         }
-        
+
         // Agregar relaciones de prerequisitos
-<span class="nc" id="L382">        grafoAsignaturas.agregarArista(&quot;Programación I&quot;, &quot;Programación II&quot;, new WeightedEdge(1));</span>
-<span class="nc" id="L383">        grafoAsignaturas.agregarArista(&quot;Programación I&quot;, &quot;Estructuras de Datos&quot;, new WeightedEdge(1));</span>
-<span class="nc" id="L384">        grafoAsignaturas.agregarArista(&quot;Programación II&quot;, &quot;Algoritmos&quot;, new WeightedEdge(1));</span>
-<span class="nc" id="L385">        grafoAsignaturas.agregarArista(&quot;Estructuras de Datos&quot;, &quot;Algoritmos&quot;, new WeightedEdge(1));</span>
-<span class="nc" id="L386">        grafoAsignaturas.agregarArista(&quot;Programación II&quot;, &quot;Base de Datos&quot;, new WeightedEdge(1));</span>
-<span class="nc" id="L387">        grafoAsignaturas.agregarArista(&quot;Base de Datos&quot;, &quot;Ingeniería de Software&quot;, new WeightedEdge(1));</span>
-<span class="nc" id="L388">        grafoAsignaturas.agregarArista(&quot;Algoritmos&quot;, &quot;Ingeniería de Software&quot;, new WeightedEdge(1));</span>
-        
+<span class="nc" id="L422">        grafoAsignaturas.agregarArista(&quot;Programación I&quot;, &quot;Programación II&quot;, new WeightedEdge(1));</span>
+<span class="nc" id="L423">        grafoAsignaturas.agregarArista(&quot;Programación I&quot;, &quot;Estructuras de Datos&quot;, new WeightedEdge(1));</span>
+<span class="nc" id="L424">        grafoAsignaturas.agregarArista(&quot;Programación II&quot;, &quot;Algoritmos&quot;, new WeightedEdge(1));</span>
+<span class="nc" id="L425">        grafoAsignaturas.agregarArista(&quot;Estructuras de Datos&quot;, &quot;Algoritmos&quot;, new WeightedEdge(1));</span>
+<span class="nc" id="L426">        grafoAsignaturas.agregarArista(&quot;Programación II&quot;, &quot;Base de Datos&quot;, new WeightedEdge(1));</span>
+<span class="nc" id="L427">        grafoAsignaturas.agregarArista(&quot;Base de Datos&quot;, &quot;Ingeniería de Software&quot;, new WeightedEdge(1));</span>
+<span class="nc" id="L428">        grafoAsignaturas.agregarArista(&quot;Algoritmos&quot;, &quot;Ingeniería de Software&quot;, new WeightedEdge(1));</span>
+
         try {
-<span class="nc" id="L391">            List&lt;String&gt; ordenTopologico = algoritmos.calcularClasificacionTopologica(grafoAsignaturas);</span>
-            
-<span class="nc" id="L393">            System.out.println(&quot;📋 Orden recomendado de cursado:\n&quot;);</span>
-<span class="nc" id="L394">            int semestre = 1;</span>
-<span class="nc bnc" id="L395" title="All 2 branches missed.">            for (int i = 0; i &lt; ordenTopologico.size(); i++) {</span>
-<span class="nc" id="L396">                System.out.printf(&quot;  %d. %s%n&quot;, i + 1, ordenTopologico.get(i));</span>
-<span class="nc bnc" id="L397" title="All 4 branches missed.">                if ((i + 1) % 2 == 0 &amp;&amp; i &lt; ordenTopologico.size() - 1) {</span>
-<span class="nc" id="L398">                    System.out.println();</span>
+<span class="nc" id="L431">            List&lt;String&gt; ordenTopologico = algoritmos.calcularClasificacionTopologica(grafoAsignaturas);</span>
+
+<span class="nc" id="L433">            System.out.println(&quot; Orden recomendado de cursado:\n&quot;);</span>
+<span class="nc" id="L434">            int semestre = 1;</span>
+<span class="nc bnc" id="L435" title="All 2 branches missed.">            for (int i = 0; i &lt; ordenTopologico.size(); i++) {</span>
+<span class="nc" id="L436">                System.out.printf(&quot;  %d. %s%n&quot;, i + 1, ordenTopologico.get(i));</span>
+<span class="nc bnc" id="L437" title="All 4 branches missed.">                if ((i + 1) % 2 == 0 &amp;&amp; i &lt; ordenTopologico.size() - 1) {</span>
+<span class="nc" id="L438">                    System.out.println();</span>
                 }
             }
-            
-<span class="nc" id="L402">        } catch (IllegalStateException e) {</span>
-<span class="nc" id="L403">            System.out.println(&quot;❌ Error: &quot; + e.getMessage());</span>
-<span class="nc" id="L404">        }</span>
-<span class="nc" id="L405">    }</span>
+
+<span class="nc" id="L442">        } catch (IllegalStateException e) {</span>
+<span class="nc" id="L443">            System.out.println(&quot; Error: &quot; + e.getMessage());</span>
+<span class="nc" id="L444">        }</span>
+<span class="nc" id="L445">    }</span>
 
     private static void demostrarPlanProyecto(IDirectedGraphAlgorithms algoritmos) {
-<span class="nc" id="L408">        System.out.println(&quot;\n\n🏗️  EJEMPLO 2: PLAN DE PROYECTO CON DEPENDENCIAS&quot;);</span>
-<span class="nc" id="L409">        System.out.println(&quot;Arista T1 → T2 significa: T2 depende de que T1 esté completada\n&quot;);</span>
-        
-<span class="nc" id="L411">        Map&lt;String, Set&lt;Edge&lt;String, WeightedEdge&gt;&gt;&gt; adyacencias = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L412">        DirectedGraph&lt;String, WeightedEdge&gt; grafoProyecto = new DirectedGraph&lt;&gt;(</span>
-            new LinkedHashSet&lt;&gt;(),
-            new LinkedHashSet&lt;&gt;(),
-            adyacencias
-        );
-        
+<span class="nc" id="L448">        System.out.println(&quot;\n\n  EJEMPLO 2: PLAN DE PROYECTO CON DEPENDENCIAS&quot;);</span>
+<span class="nc" id="L449">        System.out.println(&quot;Arista T1 → T2 significa: T2 depende de que T1 esté completada\n&quot;);</span>
+
+<span class="nc" id="L451">        Map&lt;String, Set&lt;Edge&lt;String, WeightedEdge&gt;&gt;&gt; adyacencias = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L452">        DirectedGraph&lt;String, WeightedEdge&gt; grafoProyecto = new DirectedGraph&lt;&gt;(</span>
+                new LinkedHashSet&lt;&gt;(),
+                new LinkedHashSet&lt;&gt;(),
+                adyacencias);
+
         // Agregar tareas del proyecto
-<span class="nc" id="L419">        String[] tareas = {</span>
-            &quot;Planificación&quot;,
-            &quot;Diseño UI&quot;,
-            &quot;Diseño BD&quot;,
-            &quot;Desarrollo Backend&quot;,
-            &quot;Desarrollo Frontend&quot;,
-            &quot;Testing&quot;,
-            &quot;Deployment&quot;,
-            &quot;Documentación&quot;
+<span class="nc" id="L458">        String[] tareas = {</span>
+                &quot;Planificación&quot;,
+                &quot;Diseño UI&quot;,
+                &quot;Diseño BD&quot;,
+                &quot;Desarrollo Backend&quot;,
+                &quot;Desarrollo Frontend&quot;,
+                &quot;Testing&quot;,
+                &quot;Deployment&quot;,
+                &quot;Documentación&quot;
         };
-        
-<span class="nc bnc" id="L430" title="All 2 branches missed.">        for (String tarea : tareas) {</span>
-<span class="nc" id="L431">            grafoProyecto.agregarVertice(tarea);</span>
+
+<span class="nc bnc" id="L469" title="All 2 branches missed.">        for (String tarea : tareas) {</span>
+<span class="nc" id="L470">            grafoProyecto.agregarVertice(tarea);</span>
         }
-        
+
         // Agregar dependencias del proyecto
-<span class="nc" id="L435">        grafoProyecto.agregarArista(&quot;Planificación&quot;, &quot;Diseño UI&quot;, new WeightedEdge(5));</span>
-<span class="nc" id="L436">        grafoProyecto.agregarArista(&quot;Planificación&quot;, &quot;Diseño BD&quot;, new WeightedEdge(5));</span>
-<span class="nc" id="L437">        grafoProyecto.agregarArista(&quot;Diseño UI&quot;, &quot;Desarrollo Frontend&quot;, new WeightedEdge(10));</span>
-<span class="nc" id="L438">        grafoProyecto.agregarArista(&quot;Diseño BD&quot;, &quot;Desarrollo Backend&quot;, new WeightedEdge(8));</span>
-<span class="nc" id="L439">        grafoProyecto.agregarArista(&quot;Desarrollo Frontend&quot;, &quot;Testing&quot;, new WeightedEdge(7));</span>
-<span class="nc" id="L440">        grafoProyecto.agregarArista(&quot;Desarrollo Backend&quot;, &quot;Testing&quot;, new WeightedEdge(7));</span>
-<span class="nc" id="L441">        grafoProyecto.agregarArista(&quot;Testing&quot;, &quot;Deployment&quot;, new WeightedEdge(3));</span>
-<span class="nc" id="L442">        grafoProyecto.agregarArista(&quot;Deployment&quot;, &quot;Documentación&quot;, new WeightedEdge(4));</span>
-        
+<span class="nc" id="L474">        grafoProyecto.agregarArista(&quot;Planificación&quot;, &quot;Diseño UI&quot;, new WeightedEdge(5));</span>
+<span class="nc" id="L475">        grafoProyecto.agregarArista(&quot;Planificación&quot;, &quot;Diseño BD&quot;, new WeightedEdge(5));</span>
+<span class="nc" id="L476">        grafoProyecto.agregarArista(&quot;Diseño UI&quot;, &quot;Desarrollo Frontend&quot;, new WeightedEdge(10));</span>
+<span class="nc" id="L477">        grafoProyecto.agregarArista(&quot;Diseño BD&quot;, &quot;Desarrollo Backend&quot;, new WeightedEdge(8));</span>
+<span class="nc" id="L478">        grafoProyecto.agregarArista(&quot;Desarrollo Frontend&quot;, &quot;Testing&quot;, new WeightedEdge(7));</span>
+<span class="nc" id="L479">        grafoProyecto.agregarArista(&quot;Desarrollo Backend&quot;, &quot;Testing&quot;, new WeightedEdge(7));</span>
+<span class="nc" id="L480">        grafoProyecto.agregarArista(&quot;Testing&quot;, &quot;Deployment&quot;, new WeightedEdge(3));</span>
+<span class="nc" id="L481">        grafoProyecto.agregarArista(&quot;Deployment&quot;, &quot;Documentación&quot;, new WeightedEdge(4));</span>
+
         try {
-<span class="nc" id="L445">            List&lt;String&gt; ordenTopologico = algoritmos.calcularClasificacionTopologica(grafoProyecto);</span>
-            
-<span class="nc" id="L447">            System.out.println(&quot;📋 Orden de ejecución de tareas:\n&quot;);</span>
-<span class="nc bnc" id="L448" title="All 2 branches missed.">            for (int i = 0; i &lt; ordenTopologico.size(); i++) {</span>
-<span class="nc" id="L449">                System.out.printf(&quot;  Fase %d: %s%n&quot;, i + 1, ordenTopologico.get(i));</span>
+<span class="nc" id="L484">            List&lt;String&gt; ordenTopologico = algoritmos.calcularClasificacionTopologica(grafoProyecto);</span>
+
+<span class="nc" id="L486">            System.out.println(&quot; Orden de ejecución de tareas:\n&quot;);</span>
+<span class="nc bnc" id="L487" title="All 2 branches missed.">            for (int i = 0; i &lt; ordenTopologico.size(); i++) {</span>
+<span class="nc" id="L488">                System.out.printf(&quot;  Fase %d: %s%n&quot;, i + 1, ordenTopologico.get(i));</span>
             }
-            
-<span class="nc" id="L452">            System.out.println(&quot;\n✅ Validación: El proyecto NO tiene ciclos → Es ejecutable&quot;);</span>
-            
-<span class="nc" id="L454">        } catch (IllegalStateException e) {</span>
-<span class="nc" id="L455">            System.out.println(&quot;❌ Error: &quot; + e.getMessage());</span>
-<span class="nc" id="L456">        }</span>
-<span class="nc" id="L457">    }</span>
+
+<span class="nc" id="L491">            System.out.println(&quot;\n Validación: El proyecto NO tiene ciclos → Es ejecutable&quot;);</span>
+
+<span class="nc" id="L493">        } catch (IllegalStateException e) {</span>
+<span class="nc" id="L494">            System.out.println(&quot; Error: &quot; + e.getMessage());</span>
+<span class="nc" id="L495">        }</span>
+<span class="nc" id="L496">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

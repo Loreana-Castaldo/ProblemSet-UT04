@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UndirectedGraphAlgorithm.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aed-2026-s1</a> &gt; <a href="index.source.html" class="el_package">ucu.edu.aed.tda.grafo.model.Implementaciones</a> &gt; <span class="el_source">UndirectedGraphAlgorithm.java</span></div><h1>UndirectedGraphAlgorithm.java</h1><pre class="source lang-java linenums">package ucu.edu.aed.tda.grafo.model.Implementaciones;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
+import java.util.function.Consumer;
+
+import ucu.edu.aed.tda.grafo.IUndirectedGraph;
+import ucu.edu.aed.tda.grafo.IUndirectedGraphAlgorithm;
+import ucu.edu.aed.tda.grafo.model.IGraph;
+import ucu.edu.aed.tda.grafo.model.edge.Edge;
+import ucu.edu.aed.tda.grafo.model.edge.WeightedEdge;
+
+<span class="fc" id="L22">public class UndirectedGraphAlgorithm implements IUndirectedGraphAlgorithm {</span>
+
+     @Override
+public &lt;V, D extends WeightedEdge&gt; IUndirectedGraph&lt;V, D&gt; kruskal(IUndirectedGraph&lt;V, D&gt; graph) {
+<span class="fc bfc" id="L26" title="All 2 branches covered.">    if (graph == null) {</span>
+<span class="fc" id="L27">        throw new IllegalArgumentException(&quot;El grafo no puede ser null&quot;);</span>
+    }
+
+<span class="fc" id="L30">    IUndirectedGraph&lt;V, D&gt; resultado = new UndirectedGraph&lt;&gt;(</span>
+            new LinkedHashSet&lt;&gt;(),
+            new LinkedHashSet&lt;&gt;(),
+            new HashMap&lt;&gt;()
+    );
+
+<span class="fc bfc" id="L36" title="All 2 branches covered.">    for (V vertice : graph.vertices()) {</span>
+<span class="fc" id="L37">        resultado.agregarVertice(vertice);</span>
+<span class="fc" id="L38">    }</span>
+
+<span class="fc bfc" id="L40" title="All 2 branches covered.">    if (graph.vertices().isEmpty()) {</span>
+<span class="fc" id="L41">        return resultado;</span>
+    }
+
+<span class="fc" id="L44">    Map&lt;V, V&gt; padre = new HashMap&lt;&gt;();</span>
+
+<span class="fc bfc" id="L46" title="All 2 branches covered.">    for (V vertice : graph.vertices()) {</span>
+<span class="fc" id="L47">        padre.put(vertice, vertice);</span>
+<span class="fc" id="L48">    }</span>
+
+<span class="fc" id="L50">    List&lt;Edge&lt;V, D&gt;&gt; aristasOrdenadas = new ArrayList&lt;&gt;(graph.aristas());</span>
+
+<span class="fc" id="L52">    aristasOrdenadas.sort(</span>
+<span class="fc" id="L53">            (arista1, arista2) -&gt; Double.compare(</span>
+<span class="fc" id="L54">                    arista1.dato().getWeight(),</span>
+<span class="fc" id="L55">                    arista2.dato().getWeight()</span>
+            )
+    );
+
+<span class="fc" id="L59">    int aristasNecesarias = graph.vertices().size() - 1;</span>
+<span class="fc" id="L60">    int aristasAgregadas = 0;</span>
+
+<span class="fc bfc" id="L62" title="All 2 branches covered.">    for (Edge&lt;V, D&gt; arista : aristasOrdenadas) {</span>
+<span class="fc" id="L63">        V origen = arista.source();</span>
+<span class="fc" id="L64">        V destino = arista.target();</span>
+
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if (!estanEnLaMismaComponente(origen, destino, padre)) {</span>
+<span class="fc" id="L67">            resultado.agregarArista(origen, destino, arista.dato());</span>
+<span class="fc" id="L68">            unirComponentes(origen, destino, padre);</span>
+<span class="fc" id="L69">            aristasAgregadas++;</span>
+        }
+
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (aristasAgregadas == aristasNecesarias) {</span>
+<span class="fc" id="L73">            break;</span>
+        }
+<span class="fc" id="L75">    }</span>
+
+<span class="fc bfc" id="L77" title="All 2 branches covered.">    if (aristasAgregadas != aristasNecesarias) {</span>
+<span class="fc" id="L78">        throw new IllegalArgumentException(&quot;El grafo no es conexo&quot;);</span>
+    }
+
+<span class="fc" id="L81">    return resultado;</span>
+}
+
+    private &lt;V&gt; V buscarRepresentante(V vertice, Map&lt;V, V&gt; padre) {
+<span class="fc" id="L85">    V representante = padre.get(vertice);</span>
+
+<span class="fc bfc" id="L87" title="All 2 branches covered.">    if (!representante.equals(vertice)) {</span>
+<span class="fc" id="L88">        representante = buscarRepresentante(representante, padre);</span>
+<span class="fc" id="L89">        padre.put(vertice, representante);</span>
+    }
+
+<span class="fc" id="L92">    return representante;</span>
+}
+private &lt;V&gt; boolean estanEnLaMismaComponente(V origen, V destino, Map&lt;V, V&gt; padre) {
+<span class="fc" id="L95">    return buscarRepresentante(origen, padre)</span>
+<span class="fc" id="L96">            .equals(buscarRepresentante(destino, padre));</span>
+}
+    private &lt;V&gt; void unirComponentes(V origen, V destino, Map&lt;V, V&gt; padre) {
+<span class="fc" id="L99">    V representanteOrigen = buscarRepresentante(origen, padre);</span>
+<span class="fc" id="L100">    V representanteDestino = buscarRepresentante(destino, padre);</span>
+
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">    if (!representanteOrigen.equals(representanteDestino)) {</span>
+<span class="fc" id="L103">        padre.put(representanteDestino, representanteOrigen);</span>
+    }
+<span class="fc" id="L105">}</span>
+
+    @Override
+public &lt;V, D extends WeightedEdge&gt; IUndirectedGraph&lt;V, D&gt; prim(
+        IUndirectedGraph&lt;V, D&gt; graph,
+        Comparable&lt;V&gt; source) {
+
+<span class="fc bfc" id="L112" title="All 4 branches covered.">    if (graph == null || source == null) {</span>
+<span class="fc" id="L113">        throw new IllegalArgumentException(&quot;Parámetros inválidos&quot;);</span>
+    }
+
+<span class="fc" id="L116">    V origen = graph.buscarVertice(source);</span>
+
+<span class="fc bfc" id="L118" title="All 2 branches covered.">    if (origen == null) {</span>
+<span class="fc" id="L119">        throw new IllegalArgumentException(&quot;El origen no pertenece al grafo&quot;);</span>
+    }
+
+<span class="fc" id="L122">    IUndirectedGraph&lt;V, D&gt; resultado = new UndirectedGraph&lt;&gt;(</span>
+            new LinkedHashSet&lt;&gt;(),
+            new LinkedHashSet&lt;&gt;(),
+            new HashMap&lt;&gt;()
+    );
+
+<span class="fc bfc" id="L128" title="All 2 branches covered.">    for (V vertice : graph.vertices()) {</span>
+<span class="fc" id="L129">        resultado.agregarVertice(vertice);</span>
+<span class="fc" id="L130">    }</span>
+
+<span class="fc" id="L132">    Set&lt;V&gt; visitados = new LinkedHashSet&lt;&gt;();</span>
+<span class="fc" id="L133">    Set&lt;V&gt; noVisitados = new LinkedHashSet&lt;&gt;(graph.vertices());</span>
+
+<span class="fc" id="L135">    visitados.add(origen);</span>
+<span class="fc" id="L136">    noVisitados.remove(origen);</span>
+
+<span class="fc bfc" id="L138" title="All 2 branches covered.">    while (!noVisitados.isEmpty()) {</span>
+<span class="fc" id="L139">        Edge&lt;V, D&gt; menorArista = searchMinEdge(graph, visitados, noVisitados);</span>
+
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        if (menorArista == null) {</span>
+<span class="fc" id="L142">            throw new IllegalArgumentException(&quot;El grafo no es conexo&quot;);</span>
+        }
+
+<span class="fc" id="L145">        resultado.agregarArista(</span>
+<span class="fc" id="L146">                menorArista.source(),</span>
+<span class="fc" id="L147">                menorArista.target(),</span>
+<span class="fc" id="L148">                menorArista.dato()</span>
+        );
+
+<span class="fc" id="L151">        V nuevoVertice = obtenerVerticeNoVisitado(menorArista, visitados);</span>
+
+<span class="fc" id="L153">        visitados.add(nuevoVertice);</span>
+<span class="fc" id="L154">        noVisitados.remove(nuevoVertice);</span>
+<span class="fc" id="L155">    }</span>
+
+<span class="fc" id="L157">    return resultado;</span>
+}
+
+    @Override
+public &lt;V, D extends WeightedEdge&gt; Edge&lt;V, D&gt; searchMinEdge(
+        IUndirectedGraph&lt;V, D&gt; graph,
+        Collection&lt;V&gt; U,
+        Collection&lt;V&gt; V) {
+
+<span class="pc bpc" id="L166" title="3 of 6 branches missed.">    if (graph == null || U == null || V == null) {</span>
+<span class="nc" id="L167">        throw new IllegalArgumentException(&quot;Parámetros inválidos&quot;);</span>
+    }
+
+<span class="fc" id="L170">    Edge&lt;V, D&gt; menorArista = null;</span>
+<span class="fc" id="L171">    double menorPeso = Double.POSITIVE_INFINITY;</span>
+
+<span class="fc" id="L173">    Set&lt;V&gt; visitados = new LinkedHashSet&lt;&gt;(U);</span>
+<span class="fc" id="L174">    Set&lt;V&gt; noVisitados = new LinkedHashSet&lt;&gt;(V);</span>
+
+<span class="fc bfc" id="L176" title="All 2 branches covered.">    for (V vertice : visitados) {</span>
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        for (Edge&lt;V, D&gt; arista : graph.adyacencias(graph.construirComparable(vertice))) {</span>
+
+<span class="fc" id="L179">            V vecino = obtenerOtroExtremo(arista, vertice);</span>
+
+<span class="fc bfc" id="L181" title="All 2 branches covered.">            if (noVisitados.contains(vecino)</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">                    &amp;&amp; arista.dato().getWeight() &lt; menorPeso) {</span>
+
+<span class="fc" id="L184">                menorPeso = arista.dato().getWeight();</span>
+<span class="fc" id="L185">                menorArista = arista;</span>
+            }
+<span class="fc" id="L187">        }</span>
+<span class="fc" id="L188">    }</span>
+
+<span class="fc" id="L190">    return menorArista;</span>
+}
+
+    @Override
+    public &lt;V, D&gt; void bea(IUndirectedGraph&lt;V, D&gt; graph, Consumer&lt;V&gt; consumer) {
+<span class="fc bfc" id="L195" title="All 4 branches covered.">        if (graph == null || consumer == null) {</span>
+<span class="fc" id="L196">            return;</span>
+        }
+
+<span class="fc" id="L199">        Set&lt;V&gt; visitados = new HashSet&lt;&gt;();</span>
+
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        for (V vertice : graph.vertices()) {</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">            if (!visitados.contains(vertice)) {</span>
+<span class="fc" id="L203">                bea(graph, vertice, consumer, visitados);</span>
+            }
+<span class="fc" id="L205">        }</span>
+<span class="fc" id="L206">    }</span>
+
+    private &lt;V, D&gt; void bea(IUndirectedGraph&lt;V, D&gt; graph, V origen, Consumer&lt;V&gt; consumer, Set&lt;V&gt; visitados) {
+<span class="fc" id="L209">        Queue&lt;V&gt; pendientes = new LinkedList&lt;&gt;();</span>
+
+<span class="fc" id="L211">        visitados.add(origen);</span>
+<span class="fc" id="L212">        pendientes.add(origen);</span>
+
+<span class="fc bfc" id="L214" title="All 2 branches covered.">        while (!pendientes.isEmpty()) {</span>
+<span class="fc" id="L215">            V vertice = pendientes.poll();</span>
+<span class="fc" id="L216">            consumer.accept(vertice);</span>
+
+<span class="fc bfc" id="L218" title="All 2 branches covered.">            for (Edge&lt;V, D&gt; adyacente : graph.adyacencias(graph.construirComparable(vertice))) {</span>
+<span class="fc" id="L219">                V vecino = adyacente.target();</span>
+
+<span class="fc bfc" id="L221" title="All 2 branches covered.">                if (!visitados.contains(vecino)) {</span>
+<span class="fc" id="L222">                    visitados.add(vecino);</span>
+<span class="fc" id="L223">                    pendientes.add(vecino);</span>
+                }
+<span class="fc" id="L225">            }</span>
+<span class="fc" id="L226">        }</span>
+
+<span class="fc" id="L228">    }</span>
+
+    private &lt;V, D&gt; V obtenerOtroExtremo(Edge&lt;V, D&gt; arista, V vertice) {
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">    if (arista.source().equals(vertice)) {</span>
+<span class="fc" id="L232">        return arista.target();</span>
+    }
+
+<span class="nc" id="L235">    return arista.source();</span>
+}
+
+    private &lt;V, D extends WeightedEdge&gt; V obtenerVerticeNoVisitado(
+        Edge&lt;V, D&gt; arista,
+        Set&lt;V&gt; visitados) {
+
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">    if (visitados.contains(arista.source())</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">            &amp;&amp; !visitados.contains(arista.target())) {</span>
+<span class="fc" id="L244">        return arista.target();</span>
+    }
+
+<span class="nc bnc" id="L247" title="All 2 branches missed.">    if (visitados.contains(arista.target())</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">            &amp;&amp; !visitados.contains(arista.source())) {</span>
+<span class="nc" id="L249">        return arista.source();</span>
+    }
+
+<span class="nc" id="L252">    throw new IllegalArgumentException(</span>
+            &quot;La arista no conecta un vértice visitado con uno no visitado&quot;
+    );
+}
+
+    @Override
+    public &lt;V, E&gt; List&lt;V&gt; puntosDeArticulacion(IGraph&lt;V, E&gt; grafo) {
+<span class="fc" id="L259">        List&lt;V&gt; resultado = new ArrayList&lt;&gt;();</span>
+
+<span class="pc bpc" id="L261" title="1 of 4 branches missed.">        if (grafo == null || grafo.vertices().isEmpty()) {</span>
+<span class="fc" id="L262">            return resultado;</span>
+        }
+
+<span class="fc" id="L265">        Set&lt;V&gt; puntos = new LinkedHashSet&lt;&gt;();</span>
+
+<span class="fc" id="L267">        Map&lt;V, Boolean&gt; visitado = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L268">        Map&lt;V, Integer&gt; numBp = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L269">        Map&lt;V, Integer&gt; numBajo = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L271">        int[] cont = {0};</span>
+
+<span class="fc bfc" id="L273" title="All 2 branches covered.">        for (V vertice : grafo.vertices()) {</span>
+<span class="fc" id="L274">            visitado.put(vertice, false);</span>
+<span class="fc" id="L275">            numBp.put(vertice, 0);</span>
+<span class="fc" id="L276">            numBajo.put(vertice, 0);</span>
+<span class="fc" id="L277">        }</span>
+
+<span class="fc bfc" id="L279" title="All 2 branches covered.">        for (V vertice : grafo.vertices()) {</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">            if (!visitado.get(vertice)) {</span>
+<span class="fc" id="L281">                busquedaEnProfundidadArticulacion(</span>
+                        grafo,
+                        vertice,
+                        puntos,
+                        cont,
+                        visitado,
+                        numBp,
+                        numBajo
+                );
+            }
+<span class="fc" id="L291">        }</span>
+
+<span class="fc" id="L293">        resultado.addAll(puntos);</span>
+<span class="fc" id="L294">        return resultado;</span>
+    }
+
+    private &lt;V, E&gt; void busquedaEnProfundidadArticulacion(
+            IGraph&lt;V, E&gt; grafo,
+            V actual,
+            Set&lt;V&gt; puntos,
+            int[] cont,
+            Map&lt;V, Boolean&gt; visitado,
+            Map&lt;V, Integer&gt; numBp,
+            Map&lt;V, Integer&gt; numBajo) {
+
+<span class="fc" id="L306">        visitado.put(actual, true);</span>
+
+<span class="fc" id="L308">    cont[0]++;</span>
+<span class="fc" id="L309">    numBp.put(actual, cont[0]);</span>
+<span class="fc" id="L310">    numBajo.put(actual, cont[0]);</span>
+          
+<span class="fc" id="L312">    List&lt;V&gt; hijos = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L314" title="All 2 branches covered.">    for (Edge&lt;V, E&gt; arista : grafo.adyacencias(grafo.construirComparable(actual))) {</span>
+<span class="fc" id="L315">        V adyacente = arista.target();</span>
+
+<span class="fc bfc" id="L317" title="All 2 branches covered.">        if (!visitado.get(adyacente)) {</span>
+<span class="fc" id="L318">            busquedaEnProfundidadArticulacion(</span>
+                    grafo,
+                    adyacente,
+                    puntos,
+                    cont,
+                    visitado,
+                    numBp,
+                    numBajo
+            );
+
+<span class="fc" id="L328">            hijos.add(adyacente);</span>
+
+<span class="fc" id="L330">            numBajo.put(</span>
+                    actual,
+<span class="fc" id="L332">                    Math.min(numBajo.get(actual), numBajo.get(adyacente))</span>
+            );
+        } else {
+<span class="fc" id="L335">            numBajo.put(</span>
+                    actual,
+<span class="fc" id="L337">                    Math.min(numBajo.get(actual), numBp.get(adyacente))</span>
+            );
+        }
+<span class="fc" id="L340">    }</span>
+
+<span class="fc bfc" id="L342" title="All 2 branches covered.">    if (numBp.get(actual) &gt; 1) {</span>
+<span class="fc bfc" id="L343" title="All 2 branches covered.">        for (V hijo : hijos) {</span>
+<span class="fc bfc" id="L344" title="All 2 branches covered.">            if (numBajo.get(hijo) &gt;= numBp.get(actual)) {</span>
+<span class="fc" id="L345">                puntos.add(actual);</span>
+            }
+<span class="fc" id="L347">        }</span>
+    } else {
+<span class="fc bfc" id="L349" title="All 2 branches covered.">        if (hijos.size() &gt; 1) {</span>
+<span class="fc" id="L350">            puntos.add(actual);</span>
+        }
+    }
+<span class="fc" id="L353">    }</span>
+    @Override
+    public int numBacon(IGraph&lt;String, String&gt; grafo, String actor) {
+<span class="fc" id="L356">        final String KEVIN_BACON = &quot;Kevin_Bacon&quot;;</span>
+
+<span class="pc bpc" id="L358" title="2 of 4 branches missed.">        if (grafo == null || actor == null) {</span>
+<span class="nc" id="L359">            return -1;</span>
+        }
+
+<span class="fc bfc" id="L362" title="All 2 branches covered.">        if (grafo.buscarVertice(grafo.construirComparable(actor)) == null) {</span>
+<span class="fc" id="L363">            return -1;</span>
+        }
+
+<span class="fc bfc" id="L366" title="All 2 branches covered.">        if (grafo.buscarVertice(grafo.construirComparable(KEVIN_BACON)) == null) {</span>
+<span class="fc" id="L367">            return -1;</span>
+        }
+
+<span class="fc bfc" id="L370" title="All 2 branches covered.">        if (actor.equals(KEVIN_BACON)) {</span>
+<span class="fc" id="L371">            return 0;</span>
+        }
+
+<span class="fc" id="L374">        Set&lt;String&gt; visitados = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L375">        Map&lt;String, Integer&gt; distancia = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L376">        Queue&lt;String&gt; cola = new ArrayDeque&lt;&gt;();</span>
+
+<span class="fc" id="L378">        visitados.add(actor);</span>
+<span class="fc" id="L379">        distancia.put(actor, 0);</span>
+<span class="fc" id="L380">        cola.add(actor);</span>
+
+<span class="fc bfc" id="L382" title="All 2 branches covered.">        while (!cola.isEmpty()) {</span>
+<span class="fc" id="L383">            String actual = cola.poll();</span>
+<span class="fc" id="L384">            int distanciaActual = distancia.get(actual);</span>
+
+<span class="fc bfc" id="L386" title="All 2 branches covered.">            for (Edge&lt;String, String&gt; arista : grafo.adyacencias(grafo.construirComparable(actual))) {</span>
+                String vecino;
+
+<span class="pc bpc" id="L389" title="1 of 2 branches missed.">                if (actual.equals(arista.source())) {</span>
+<span class="fc" id="L390">                    vecino = arista.target();</span>
+                } else {
+<span class="nc" id="L392">                    vecino = arista.source();</span>
+                }
+
+<span class="fc bfc" id="L395" title="All 2 branches covered.">                if (!visitados.contains(vecino)) {</span>
+<span class="fc" id="L396">                    visitados.add(vecino);</span>
+<span class="fc" id="L397">                    distancia.put(vecino, distanciaActual + 1);</span>
+
+<span class="fc bfc" id="L399" title="All 2 branches covered.">                    if (vecino.equals(KEVIN_BACON)) {</span>
+<span class="fc" id="L400">                        return distancia.get(vecino);</span>
+                    }
+
+<span class="fc" id="L403">                    cola.add(vecino);</span>
+                }
+<span class="fc" id="L405">            }</span>
+<span class="fc" id="L406">        }</span>
+
+<span class="fc" id="L408">        return -1;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

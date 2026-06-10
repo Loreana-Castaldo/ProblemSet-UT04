@@ -455,45 +455,21 @@ import ucu.edu.aed.tda.grafo.model.result.Path;
             Comparable&lt;V&gt; target,
             IDirectedIGraph&lt;V, D&gt; grafo) {
 
-<<<<<<< HEAD
-<span class="nc" id="L458">        V origen = grafo.buscarVertice(source);</span>
-<span class="nc" id="L459">        V destino = grafo.buscarVertice(target);</span>
-
-<span class="nc bnc" id="L461" title="All 4 branches missed.">        if (origen == null || destino == null) {</span>
-=======
 <span class="fc" id="L458">        V origen = grafo.buscarVertice(source);</span>
 <span class="fc" id="L459">        V destino = grafo.buscarVertice(target);</span>
 
 <span class="pc bpc" id="L461" title="2 of 4 branches missed.">        if (origen == null || destino == null) {</span>
->>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0
 <span class="nc" id="L462">            throw new IllegalArgumentException(&quot;Origen o destino no encontrados en el grafo&quot;);</span>
         }
 
         // Obtener todos los caminos posibles
-<<<<<<< HEAD
-<span class="nc" id="L466">        List&lt;Path&lt;V&gt;&gt; todosCaminos = obtenerTodosLosCaminos(source, target, grafo);</span>
-
-<span class="nc bnc" id="L468" title="All 2 branches missed.">        if (todosCaminos.isEmpty()) {</span>
-=======
 <span class="fc" id="L466">        List&lt;Path&lt;V&gt;&gt; todosCaminos = obtenerTodosLosCaminos(source, target, grafo);</span>
 
 <span class="pc bpc" id="L468" title="1 of 2 branches missed.">        if (todosCaminos.isEmpty()) {</span>
->>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0
 <span class="nc" id="L469">            throw new IllegalStateException(&quot;No hay caminos entre &quot; + origen + &quot; y &quot; + destino);</span>
         }
 
         // Encontrar el camino crítico (el de mayor costo)
-<<<<<<< HEAD
-<span class="nc" id="L473">        Path&lt;V&gt; caminoCritico = todosCaminos.get(0);</span>
-<span class="nc bnc" id="L474" title="All 2 branches missed.">        for (Path&lt;V&gt; camino : todosCaminos) {</span>
-<span class="nc bnc" id="L475" title="All 2 branches missed.">            if (camino.getCost() &gt; caminoCritico.getCost()) {</span>
-<span class="nc" id="L476">                caminoCritico = camino;</span>
-            }
-<span class="nc" id="L478">        }</span>
-
-        // Retornar resultado con todos los caminos y el crítico
-<span class="nc" id="L481">        return new CriticalPathResult&lt;&gt;(caminoCritico, todosCaminos, origen, destino);</span>
-=======
 <span class="fc" id="L473">        Path&lt;V&gt; caminoCritico = todosCaminos.get(0);</span>
 <span class="fc bfc" id="L474" title="All 2 branches covered.">        for (Path&lt;V&gt; camino : todosCaminos) {</span>
 <span class="fc bfc" id="L475" title="All 2 branches covered.">            if (camino.getCost() &gt; caminoCritico.getCost()) {</span>
@@ -503,7 +479,6 @@ import ucu.edu.aed.tda.grafo.model.result.Path;
 
         // Retornar resultado con todos los caminos y el crítico
 <span class="fc" id="L481">        return new CriticalPathResult&lt;&gt;(caminoCritico, todosCaminos, origen, destino);</span>
->>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,8 +1,10 @@
 DirectedGraphAlgorithmsTest$ListaSet.class
 DirectedGraphAlgorithmsTest$1.class
 DirectedGraphAlgorithmsTest$2.class
+PrimAlgorithmTest.class
 FloydWarshallResultTest.class
 GraphTest$ConcreteGraph.class
+UndirectedGraphAlgorithmTest.class
 DirectedGraphAlgorithmsTest$3.class
 CriticalPathResultTest.class
 DijkstraResultTest.class
@@ -11,4 +13,6 @@ PathTest.class
 DirectedGraphTest.class
 DirectedGraphAlgorithmsTest$CriterioString.class
 GraphTest.class
+KruskalAlgorithmTest.class
 DirectedGraphAlgorithmsTest.class
+KevinBaconTest.class

@@ -1,5 +1,6 @@
 ucu\edu\aed\tda\grafo\model\edge\Edge.class
 ucu\edu\aed\tda\grafo\IDirectedIGraph.class
+ucu\edu\aed\tda\grafo\model\Implementaciones\UndirectedGraphAlgorithm.class
 ucu\edu\aed\tda\grafo\IUndirectedGraphAlgorithm.class
 ucu\edu\aed\tda\grafo\model\edge\UndirectedEdge.class
 ucu\edu\aed\tda\grafo\model\Implementaciones\DirectedGraphAlgorithms.class
@@ -11,8 +12,10 @@ ucu\edu\aed\tda\grafo\model\Implementaciones\DirectedGraph.class
 ucu\edu\aed\tda\grafo\model\result\CriticalPathResult.class
 ucu\edu\aed\utils\PrettyGrid.class
 ucu\edu\aed\tda\grafo\model\IGraph.class
+ucu\edu\aed\KevinBacon.class
 ucu\edu\aed\tda\grafo\IUndirectedGraph.class
 ucu\edu\aed\utils\PrettyGrid$Align.class
+ucu\edu\aed\tda\grafo\model\Implementaciones\UndirectedGraph.class
 ucu\edu\aed\tda\grafo\model\Implementaciones\Graph.class
 ucu\edu\aed\tda\grafo\model\result\PathWithSlack.class
 ucu\edu\aed\utils\PrettyGrid$CellFormat.class

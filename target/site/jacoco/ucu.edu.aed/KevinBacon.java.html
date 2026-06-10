@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>KevinBacon.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">aed-2026-s1</a> &gt; <a href="index.source.html" class="el_package">ucu.edu.aed</a> &gt; <span class="el_source">KevinBacon.java</span></div><h1>KevinBacon.java</h1><pre class="source lang-java linenums">package ucu.edu.aed;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+
+import ucu.edu.aed.tda.grafo.IUndirectedGraphAlgorithm;
+import ucu.edu.aed.tda.grafo.model.Implementaciones.UndirectedGraph;
+import ucu.edu.aed.tda.grafo.model.Implementaciones.UndirectedGraphAlgorithm;
+
+<span class="nc" id="L15">public class KevinBacon {</span>
+
+    public static void main(String[] args) {
+<span class="nc" id="L18">        UndirectedGraph&lt;String, String&gt; grafo = cargarGrafoKevinBacon(</span>
+                &quot;actores.txt&quot;,
+                &quot;en_pelicula.txt&quot;
+        );
+
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        if (grafo == null) {</span>
+<span class="nc" id="L24">            System.out.println(&quot;No se pudo cargar el grafo.&quot;);</span>
+<span class="nc" id="L25">            return;</span>
+        }
+
+<span class="nc" id="L28">        IUndirectedGraphAlgorithm algoritmos = new UndirectedGraphAlgorithm();</span>
+
+<span class="nc" id="L30">        String[] actores = {</span>
+                &quot;John_Goodman&quot;,
+                &quot;Tom_Cruise&quot;,
+                &quot;Jason_Statham&quot;,
+                &quot;Lukas_Haas&quot;,
+                &quot;Djimon_Hounsou&quot;
+        };
+
+<span class="nc" id="L38">        try (PrintWriter salida = new PrintWriter(new FileWriter(&quot;salida.txt&quot;))) {</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">            for (String actor : actores) {</span>
+<span class="nc" id="L40">                int numero = algoritmos.numBacon(grafo, actor);</span>
+
+<span class="nc" id="L42">                String linea = actor + &quot;: &quot; + numero;</span>
+
+<span class="nc" id="L44">                System.out.println(linea);</span>
+<span class="nc" id="L45">                salida.println(linea);</span>
+            }
+
+<span class="nc" id="L48">            System.out.println(&quot;Resultados guardados en salida.txt&quot;);</span>
+
+<span class="nc" id="L50">        } catch (IOException e) {</span>
+<span class="nc" id="L51">            System.err.println(&quot;Error al escribir salida.txt: &quot; + e.getMessage());</span>
+<span class="nc" id="L52">        }</span>
+<span class="nc" id="L53">    }</span>
+
+    private static UndirectedGraph&lt;String, String&gt; cargarGrafoKevinBacon(
+            String archivoActores,
+            String archivoPeliculas) {
+
+<span class="nc" id="L59">        UndirectedGraph&lt;String, String&gt; grafo = new UndirectedGraph&lt;&gt;(</span>
+                new LinkedHashSet&lt;&gt;(),
+                new LinkedHashSet&lt;&gt;(),
+                new HashMap&lt;&gt;()
+        );
+
+<span class="nc" id="L65">        try (BufferedReader br = new BufferedReader(new FileReader(archivoActores))) {</span>
+            String linea;
+<span class="nc" id="L67">            boolean primeraLinea = true;</span>
+
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            while ((linea = br.readLine()) != null) {</span>
+<span class="nc" id="L70">                linea = linea.trim();</span>
+
+<span class="nc bnc" id="L72" title="All 2 branches missed.">                if (linea.isEmpty()) {</span>
+<span class="nc" id="L73">                    continue;</span>
+                }
+
+<span class="nc bnc" id="L76" title="All 4 branches missed.">                if (primeraLinea &amp;&amp; esEncabezado(linea)) {</span>
+<span class="nc" id="L77">                    primeraLinea = false;</span>
+<span class="nc" id="L78">                    continue;</span>
+                }
+
+<span class="nc" id="L81">                primeraLinea = false;</span>
+<span class="nc" id="L82">                grafo.agregarVertice(linea);</span>
+            }
+
+<span class="nc" id="L85">        } catch (IOException e) {</span>
+<span class="nc" id="L86">            System.err.println(&quot;Error al leer &quot; + archivoActores + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L87">            return null;</span>
+<span class="nc" id="L88">        }</span>
+
+<span class="nc" id="L90">        try (BufferedReader br = new BufferedReader(new FileReader(archivoPeliculas))) {</span>
+            String linea;
+<span class="nc" id="L92">            boolean primeraLinea = true;</span>
+
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            while ((linea = br.readLine()) != null) {</span>
+<span class="nc" id="L95">                linea = linea.trim();</span>
+
+<span class="nc bnc" id="L97" title="All 2 branches missed.">                if (linea.isEmpty()) {</span>
+<span class="nc" id="L98">                    continue;</span>
+                }
+
+<span class="nc bnc" id="L101" title="All 4 branches missed.">                if (primeraLinea &amp;&amp; esEncabezado(linea)) {</span>
+<span class="nc" id="L102">                    primeraLinea = false;</span>
+<span class="nc" id="L103">                    continue;</span>
+                }
+
+<span class="nc" id="L106">                primeraLinea = false;</span>
+
+<span class="nc" id="L108">                String[] partes = separarLinea(linea, 3);</span>
+
+<span class="nc bnc" id="L110" title="All 2 branches missed.">                if (partes.length &lt; 3) {</span>
+<span class="nc" id="L111">                    System.err.println(&quot;Línea inválida en &quot; + archivoPeliculas + &quot;: &quot; + linea);</span>
+<span class="nc" id="L112">                    continue;</span>
+                }
+
+<span class="nc" id="L115">                String actor1 = partes[0].trim();</span>
+<span class="nc" id="L116">                String actor2 = partes[1].trim();</span>
+<span class="nc" id="L117">                String pelicula = partes[2].trim();</span>
+
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                if (grafo.buscarVertice(grafo.construirComparable(actor1)) == null) {</span>
+<span class="nc" id="L120">                    grafo.agregarVertice(actor1);</span>
+                }
+
+<span class="nc bnc" id="L123" title="All 2 branches missed.">                if (grafo.buscarVertice(grafo.construirComparable(actor2)) == null) {</span>
+<span class="nc" id="L124">                    grafo.agregarVertice(actor2);</span>
+                }
+
+<span class="nc" id="L127">                grafo.agregarArista(actor1, actor2, pelicula);</span>
+<span class="nc" id="L128">            }</span>
+
+<span class="nc" id="L130">        } catch (IOException e) {</span>
+<span class="nc" id="L131">            System.err.println(&quot;Error al leer &quot; + archivoPeliculas + &quot;: &quot; + e.getMessage());</span>
+<span class="nc" id="L132">            return null;</span>
+<span class="nc" id="L133">        }</span>
+
+<span class="nc" id="L135">        return grafo;</span>
+    }
+
+    private static boolean esEncabezado(String linea) {
+<span class="nc" id="L139">        String normalizada = linea.toLowerCase();</span>
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        return normalizada.contains(&quot;actor&quot;)</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">                || normalizada.contains(&quot;pelicula&quot;)</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">                || normalizada.contains(&quot;película&quot;);</span>
+    }
+
+    private static String[] separarLinea(String linea, int limite) {
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (linea.contains(&quot;;&quot;)) {</span>
+<span class="nc" id="L148">            return linea.split(&quot;;&quot;, limite);</span>
+        }
+
+<span class="nc" id="L151">        return linea.split(&quot;,&quot;, limite);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
