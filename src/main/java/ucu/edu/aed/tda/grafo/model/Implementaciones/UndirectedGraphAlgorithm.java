@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -43,9 +44,41 @@ public class UndirectedGraphAlgorithm implements IUndirectedGraphAlgorithm {
 
     @Override
     public <V, D> void bea(IUndirectedGraph<V, D> graph, Consumer<V> consumer) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'bea'");
+        if (graph == null || consumer == null) {
+            return;
+        }
+
+        Set<V> visitados = new HashSet<>();
+
+        for (V vertice : graph.vertices()) {
+            if (!visitados.contains(vertice)) {
+                bea(graph, vertice, consumer, visitados);
+            }
+        }
     }
+
+    private <V, D> void bea(IUndirectedGraph<V, D> graph, V origen, Consumer<V> consumer, Set<V> visitados) {
+        Queue<V> pendientes = new LinkedList<>();
+
+        visitados.add(origen);
+        pendientes.add(origen);
+
+        while (!pendientes.isEmpty()) {
+            V vertice = pendientes.poll();
+            consumer.accept(vertice);
+
+            for (Edge<V, D> adyacente : graph.adyacencias(graph.construirComparable(vertice))) {
+                V vecino = adyacente.target();
+
+                if (!visitados.contains(vecino)) {
+                    visitados.add(vecino);
+                    pendientes.add(vecino);
+                }
+            }
+        }
+
+    }
+
 
     @Override
     public <V, E> List<V> puntosDeArticulacion(IGraph<V, E> grafo) {
