@@ -21,26 +21,174 @@ import ucu.edu.aed.tda.grafo.model.edge.WeightedEdge;
 
 public class UndirectedGraphAlgorithm implements IUndirectedGraphAlgorithm {
 
-    @Override
-    public <V, D extends WeightedEdge> IUndirectedGraph<V, D> kruskal(IUndirectedGraph<V, D> graph) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'kruskal'");
+     @Override
+public <V, D extends WeightedEdge> IUndirectedGraph<V, D> kruskal(IUndirectedGraph<V, D> graph) {
+    if (graph == null) {
+        throw new IllegalArgumentException("El grafo no puede ser null");
     }
 
-    @Override
-    public <V, D extends WeightedEdge> IUndirectedGraph<V, D> prim(IUndirectedGraph<V, D> graph, Comparable<V> source) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'prim'");
+    IUndirectedGraph<V, D> resultado = new UndirectedGraph<>(
+            new LinkedHashSet<>(),
+            new LinkedHashSet<>(),
+            new HashMap<>()
+    );
+
+    for (V vertice : graph.vertices()) {
+        resultado.agregarVertice(vertice);
     }
 
-    @Override
-    public <V, D extends WeightedEdge> Edge<V, D> searchMinEdge(
-            IUndirectedGraph<V, D> graph,
-            Collection<V> U,
-            Collection<V> V) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'searchMinEdge'");
+    if (graph.vertices().isEmpty()) {
+        return resultado;
     }
+
+    Map<V, V> padre = new HashMap<>();
+
+    for (V vertice : graph.vertices()) {
+        padre.put(vertice, vertice);
+    }
+
+    List<Edge<V, D>> aristasOrdenadas = new ArrayList<>(graph.aristas());
+
+    aristasOrdenadas.sort(
+            (arista1, arista2) -> Double.compare(
+                    arista1.dato().getWeight(),
+                    arista2.dato().getWeight()
+            )
+    );
+
+    int aristasNecesarias = graph.vertices().size() - 1;
+    int aristasAgregadas = 0;
+
+    for (Edge<V, D> arista : aristasOrdenadas) {
+        V origen = arista.source();
+        V destino = arista.target();
+
+        if (!estanEnLaMismaComponente(origen, destino, padre)) {
+            resultado.agregarArista(origen, destino, arista.dato());
+            unirComponentes(origen, destino, padre);
+            aristasAgregadas++;
+        }
+
+        if (aristasAgregadas == aristasNecesarias) {
+            break;
+        }
+    }
+
+    if (aristasAgregadas != aristasNecesarias) {
+        throw new IllegalArgumentException("El grafo no es conexo");
+    }
+
+    return resultado;
+}
+
+    private <V> V buscarRepresentante(V vertice, Map<V, V> padre) {
+    V representante = padre.get(vertice);
+
+    if (!representante.equals(vertice)) {
+        representante = buscarRepresentante(representante, padre);
+        padre.put(vertice, representante);
+    }
+
+    return representante;
+}
+private <V> boolean estanEnLaMismaComponente(V origen, V destino, Map<V, V> padre) {
+    return buscarRepresentante(origen, padre)
+            .equals(buscarRepresentante(destino, padre));
+}
+    private <V> void unirComponentes(V origen, V destino, Map<V, V> padre) {
+    V representanteOrigen = buscarRepresentante(origen, padre);
+    V representanteDestino = buscarRepresentante(destino, padre);
+
+    if (!representanteOrigen.equals(representanteDestino)) {
+        padre.put(representanteDestino, representanteOrigen);
+    }
+}
+
+    @Override
+public <V, D extends WeightedEdge> IUndirectedGraph<V, D> prim(
+        IUndirectedGraph<V, D> graph,
+        Comparable<V> source) {
+
+    if (graph == null || source == null) {
+        throw new IllegalArgumentException("Parámetros inválidos");
+    }
+
+    V origen = graph.buscarVertice(source);
+
+    if (origen == null) {
+        throw new IllegalArgumentException("El origen no pertenece al grafo");
+    }
+
+    IUndirectedGraph<V, D> resultado = new UndirectedGraph<>(
+            new LinkedHashSet<>(),
+            new LinkedHashSet<>(),
+            new HashMap<>()
+    );
+
+    for (V vertice : graph.vertices()) {
+        resultado.agregarVertice(vertice);
+    }
+
+    Set<V> visitados = new LinkedHashSet<>();
+    Set<V> noVisitados = new LinkedHashSet<>(graph.vertices());
+
+    visitados.add(origen);
+    noVisitados.remove(origen);
+
+    while (!noVisitados.isEmpty()) {
+        Edge<V, D> menorArista = searchMinEdge(graph, visitados, noVisitados);
+
+        if (menorArista == null) {
+            throw new IllegalArgumentException("El grafo no es conexo");
+        }
+
+        resultado.agregarArista(
+                menorArista.source(),
+                menorArista.target(),
+                menorArista.dato()
+        );
+
+        V nuevoVertice = obtenerVerticeNoVisitado(menorArista, visitados);
+
+        visitados.add(nuevoVertice);
+        noVisitados.remove(nuevoVertice);
+    }
+
+    return resultado;
+}
+
+    @Override
+public <V, D extends WeightedEdge> Edge<V, D> searchMinEdge(
+        IUndirectedGraph<V, D> graph,
+        Collection<V> U,
+        Collection<V> V) {
+
+    if (graph == null || U == null || V == null) {
+        throw new IllegalArgumentException("Parámetros inválidos");
+    }
+
+    Edge<V, D> menorArista = null;
+    double menorPeso = Double.POSITIVE_INFINITY;
+
+    Set<V> visitados = new LinkedHashSet<>(U);
+    Set<V> noVisitados = new LinkedHashSet<>(V);
+
+    for (V vertice : visitados) {
+        for (Edge<V, D> arista : graph.adyacencias(graph.construirComparable(vertice))) {
+
+            V vecino = obtenerOtroExtremo(arista, vertice);
+
+            if (noVisitados.contains(vecino)
+                    && arista.dato().getWeight() < menorPeso) {
+
+                menorPeso = arista.dato().getWeight();
+                menorArista = arista;
+            }
+        }
+    }
+
+    return menorArista;
+}
 
     @Override
     public <V, D> void bea(IUndirectedGraph<V, D> graph, Consumer<V> consumer) {
@@ -79,6 +227,32 @@ public class UndirectedGraphAlgorithm implements IUndirectedGraphAlgorithm {
 
     }
 
+    private <V, D> V obtenerOtroExtremo(Edge<V, D> arista, V vertice) {
+    if (arista.source().equals(vertice)) {
+        return arista.target();
+    }
+
+    return arista.source();
+}
+
+    private <V, D extends WeightedEdge> V obtenerVerticeNoVisitado(
+        Edge<V, D> arista,
+        Set<V> visitados) {
+
+    if (visitados.contains(arista.source())
+            && !visitados.contains(arista.target())) {
+        return arista.target();
+    }
+
+    if (visitados.contains(arista.target())
+            && !visitados.contains(arista.source())) {
+        return arista.source();
+    }
+
+    throw new IllegalArgumentException(
+            "La arista no conecta un vértice visitado con uno no visitado"
+    );
+}
 
     @Override
     public <V, E> List<V> puntosDeArticulacion(IGraph<V, E> grafo) {
