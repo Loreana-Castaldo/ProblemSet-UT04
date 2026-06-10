@@ -1,22 +1,24 @@
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\IFloydWarshallResult.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\Edge.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IUndirectedGraph.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IDirectedIGraph.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IDirectedGraphAlgorithms.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\utils\PrettyGrid.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\DirectedEdge.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\Path.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\ICriticalPathResult.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\UndirectedEdge.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\IDijkstraResult.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\DirectedGraphAlgorithms.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\Graph.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\CriticalPathResult.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\FloydWarshallResult.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\WeightedEdge.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\Main.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\IGraph.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\PathWithSlack.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\DijkstraResult.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\DirectedGraph.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IUndirectedGraphAlgorithm.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\Main.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IDirectedGraphAlgorithms.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IDirectedIGraph.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IUndirectedGraph.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\IUndirectedGraphAlgorithm.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\DirectedEdge.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\Edge.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\UndirectedEdge.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\edge\WeightedEdge.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\IGraph.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\DijkstraResult.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\DirectedGraph.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\DirectedGraphAlgorithms.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\FloydWarshallResult.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\Graph.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\UndirectedGraph.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\Implementaciones\UndirectedGraphAlgorithm.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\CriticalPathResult.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\ICriticalPathResult.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\IDijkstraResult.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\IFloydWarshallResult.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\Path.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\tda\grafo\model\result\PathWithSlack.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\main\java\ucu\edu\aed\utils\PrettyGrid.java

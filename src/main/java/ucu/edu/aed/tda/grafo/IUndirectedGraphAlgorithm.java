@@ -1,11 +1,13 @@
 package ucu.edu.aed.tda.grafo;
 
 
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Consumer;
+
+import ucu.edu.aed.tda.grafo.model.IGraph;
 import ucu.edu.aed.tda.grafo.model.edge.Edge;
 import ucu.edu.aed.tda.grafo.model.edge.WeightedEdge;
-
-import java.util.Collection;
-import java.util.function.Consumer;
 
 public interface IUndirectedGraphAlgorithm {
     /**
@@ -41,4 +43,15 @@ public interface IUndirectedGraphAlgorithm {
      * Implementa el algoritmo de búsqueda en amplitud
      */
     <V, D> void bea(IUndirectedGraph<V, D> graph, Consumer<V> consumer);
+
+    /**
+    * Retorna los puntos de articulación del grafo no dirigido.
+    */
+    <V, E> List<V> puntosDeArticulacion(IGraph<V, E> grafo);
+
+    /**
+    * Retorna el número de Bacon de un actor.
+    * Si el actor no existe o no está conectado con Kevin_Bacon, retorna -1.
+    */
+    int numBacon(IGraph<String, String> grafo, String actor);
 }

@@ -1,17 +1,9 @@
-<<<<<<< HEAD
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\test\java\DijkstraResultTest.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\test\java\DirectedGraphAlgorithmsTest.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\test\java\DirectedGraphTest.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\test\java\FloydWarshallResultTest.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\test\java\GraphTest.java
-C:\Users\Acer\Documents\UCU\Semestre_3\AED\UT04\ProblemSet-UT04\src\test\java\PathTest.java
-=======
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\test\java\CriticalPathResultTest.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\test\java\DijkstraResultTest.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\test\java\DirectedGraphTest.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\test\java\DirectedGraphAlgorithmsTest.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\test\java\PathTest.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\test\java\FloydWarshallResultTest.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\test\java\GraphTest.java
-C:\Users\Estudiante UCU\Desktop\UCU\Algoritmos\2026\UT4\ProblemSet-UT04\src\test\java\PathWithSlackTest.java
->>>>>>> 3a8c2f496f0a9a4e7fd641a3f00c988e62da7df0
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\test\java\CriticalPathResultTest.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\test\java\DijkstraResultTest.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\test\java\DirectedGraphAlgorithmsTest.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\test\java\DirectedGraphTest.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\test\java\FloydWarshallResultTest.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\test\java\GraphTest.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\test\java\PathTest.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\test\java\PathWithSlackTest.java
+C:\Maven\Práctico-UT4-Equipo1 Grafos No Dirigidos\ProblemSet-UT04\src\test\java\UndirectedGraphAlgorithmTest.java

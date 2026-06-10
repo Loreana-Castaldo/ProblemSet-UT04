@@ -10,8 +10,11 @@ import java.util.Map;
 import java.util.Set;
 
 import ucu.edu.aed.tda.grafo.IDirectedGraphAlgorithms;
+import ucu.edu.aed.tda.grafo.IUndirectedGraphAlgorithm;
 import ucu.edu.aed.tda.grafo.model.Implementaciones.DirectedGraph;
 import ucu.edu.aed.tda.grafo.model.Implementaciones.DirectedGraphAlgorithms;
+import ucu.edu.aed.tda.grafo.model.Implementaciones.UndirectedGraph;
+import ucu.edu.aed.tda.grafo.model.Implementaciones.UndirectedGraphAlgorithm;
 import ucu.edu.aed.tda.grafo.model.edge.DirectedEdge;
 import ucu.edu.aed.tda.grafo.model.edge.Edge;
 import ucu.edu.aed.tda.grafo.model.edge.WeightedEdge;
@@ -233,6 +236,34 @@ public class Main {
             System.out.println(a.source() + " -> " + a.target() + " : " + a.dato().getWeight());
         }
 
+        System.out.println("\nPrueba de Flujo de Grafo no Dirijido");
+
+        UndirectedGraph<String, WeightedEdge> grafoNoDirigido = new UndirectedGraph<>(
+            new LinkedHashSet<>(),
+            new LinkedHashSet<>(),
+            new HashMap<>()
+        );
+
+    grafoNoDirigido.agregarVertice("Nairobi");
+    grafoNoDirigido.agregarVertice("Cairo");
+    grafoNoDirigido.agregarVertice("Monrovia");
+    grafoNoDirigido.agregarVertice("Garoua");
+    grafoNoDirigido.agregarVertice("Mekele");
+    grafoNoDirigido.agregarVertice("Praia");
+
+    grafoNoDirigido.agregarArista("Nairobi", "Cairo", new WeightedEdge(1));
+    grafoNoDirigido.agregarArista("Nairobi", "Monrovia", new WeightedEdge(1));
+    grafoNoDirigido.agregarArista("Nairobi", "Garoua", new WeightedEdge(1));
+    grafoNoDirigido.agregarArista("Monrovia", "Garoua", new WeightedEdge(1));
+    grafoNoDirigido.agregarArista("Monrovia", "Mekele", new WeightedEdge(1));
+    grafoNoDirigido.agregarArista("Garoua", "Mekele", new WeightedEdge(1));
+    grafoNoDirigido.agregarArista("Mekele", "Praia", new WeightedEdge(1));
+
+    IUndirectedGraphAlgorithm algoritmosNoDirigidos = new UndirectedGraphAlgorithm();
+
+    System.out.println("Puntos de articulacion:");
+    System.out.println(algoritmosNoDirigidos.puntosDeArticulacion(grafoNoDirigido));
+
     }
 
     private static DirectedGraph<String, WeightedEdge> cargarGrafoDesdeArchivos(
@@ -399,7 +430,7 @@ public class Main {
         try {
             List<String> ordenTopologico = algoritmos.calcularClasificacionTopologica(grafoAsignaturas);
 
-            System.out.println("📋 Orden recomendado de cursado:\n");
+            System.out.println(" Orden recomendado de cursado:\n");
             int semestre = 1;
             for (int i = 0; i < ordenTopologico.size(); i++) {
                 System.out.printf("  %d. %s%n", i + 1, ordenTopologico.get(i));
